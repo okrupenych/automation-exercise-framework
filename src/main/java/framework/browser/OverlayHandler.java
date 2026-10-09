@@ -1,0 +1,48 @@
+package framework.browser;
+
+import com.microsoft.playwright.Locator;
+import com.microsoft.playwright.Page;
+
+public class OverlayHandler {
+
+    private final Page page;
+
+    public OverlayHandler(Page page) {
+        this.page = page;
+    }
+
+    public void registerHandlers() {
+
+        //AD popup autoclose
+        page.addLocatorHandler(
+                page.locator("ins[data-vignette-loaded='true'] iframe")
+                        .contentFrame()
+                        .locator("#dismiss-button"),
+                Locator::click
+        );
+
+        page.addLocatorHandler(
+                page.locator("ins.adsbygoogle[data-anchor-status='displayed'][data-anchor-shown='true']"),
+                ad -> {
+                    // The ad overlay requires two separate clicks to close, even manually.
+                    page.locator(".grippy-host").evaluate("el => el.click()");
+                    page.locator(".grippy-host").evaluate("el => el.click()");
+                },
+                new Page.AddLocatorHandlerOptions().setNoWaitAfter(true)
+        );
+
+        page.addLocatorHandler(
+                page.locator(".left-side-rail-dismiss-btn"),
+                dismissButton -> dismissButton.evaluate("el => el.click()"),
+                new Page.AddLocatorHandlerOptions().setNoWaitAfter(true)
+        );
+
+        page.addLocatorHandler(
+                page.locator(".right-side-rail-dismiss-btn"),
+                dismissButton -> dismissButton.evaluate("el => el.click()"),
+                new Page.AddLocatorHandlerOptions().setNoWaitAfter(true)
+        );
+
+    }
+
+}
