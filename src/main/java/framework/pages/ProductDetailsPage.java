@@ -4,8 +4,12 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import framework.components.CartModal;
 import framework.components.ProductFilterBar;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ProductDetailsPage extends BasePage {
+
+    private static final Logger log = LoggerFactory.getLogger(ProductDetailsPage.class);
 
     private static final String URL = BASE_URL + "/product_details/";
 
@@ -74,7 +78,9 @@ public class ProductDetailsPage extends BasePage {
     }
 
     public void open(int productId) {
+        log.info("Opening product details for product ID \"{}\"", productId);
         page.navigate(getTargetUrl() + productId);
+        log.debug("Navigation completed for product ID \"{}\"", productId);
     }
 
 
@@ -108,10 +114,12 @@ public class ProductDetailsPage extends BasePage {
     }
 
     public void fillQuantity(int quantity) {
+        log.info("Filling quantity \"{}\"", quantity);
         inptQuantity.fill(String.valueOf(quantity));
     }
 
     public void clickAddToCart() {
+        log.info("Clicking \"Add to cart\" button");
         btnAddToCart.click();
     }
 
@@ -122,14 +130,17 @@ public class ProductDetailsPage extends BasePage {
     }
 
     public void fillName(String name) {
+        log.info("Filling review name \"{}\"", name);
         inptName.fill(name);
     }
 
     public void fillEmail(String email) {
+        log.info("Filling review email \"{}\"", email);
         inptEmail.fill(email);
     }
 
     public void fillReviewText(String text) {
+        log.info("Filling review text \"{}\"", text);
         inptReviewText.fill(text);
     }
 
@@ -140,6 +151,7 @@ public class ProductDetailsPage extends BasePage {
     }
 
     public void clickSubmitReview() {
+        log.info("Clicking review \"Submit\" button");
         btnSubmit.click();
     }
 

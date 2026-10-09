@@ -3,8 +3,12 @@ package framework.components;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ProductFilterBar {
+
+    private static final Logger log = LoggerFactory.getLogger(ProductFilterBar.class);
 
     private final Locator rootAccordionCategory;
     private final Locator rootBlockBrands;
@@ -34,10 +38,12 @@ public class ProductFilterBar {
 //----Public interface----
 
     public void clickCategoryHeader(String categoryName) {
+        log.info("Clicking category header");
         categoryHeader(categoryName).click();
     }
 
     public void openCategoryLink(String categoryName, String linkName) {
+        log.info("Opening category \"{}/{}\"", categoryName, linkName);
         Locator content = categoryContent(categoryName);
 
         boolean isOpen = Boolean.TRUE.equals(
@@ -52,6 +58,7 @@ public class ProductFilterBar {
     }
 
     public void openBrandLink(String brandName) {
+        log.info("Opening brand link \"{}\"", brandName);
         rootBlockBrands.getByRole(AriaRole.LINK, new Locator.GetByRoleOptions().setName(brandName)).click();
     }
 

@@ -2,8 +2,12 @@ package framework.components;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Accordion {
+
+    private static final Logger log = LoggerFactory.getLogger(Accordion.class);
 
     private final Locator rootAccordionItems;
 
@@ -46,18 +50,21 @@ public class Accordion {
 
 
     public void openAll() {
+        log.info("Opening all items");
         for (int i = 0; i < rootAccordionItems.count(); i++) {
             openItem(i);
         }
     }
 
     public void closeAll() {
+        log.info("Closing all items");
         for (int i = 0; i < rootAccordionItems.count(); i++) {
             closeItem(i);
         }
     }
 
     public void openItem(int index) {
+        log.info("Opening item at index {}", index);
         Locator targetItem = itemByIndex(index);
         Locator content = itemContent(targetItem);
 
@@ -71,6 +78,7 @@ public class Accordion {
     }
 
     public void closeItem(int index) {
+        log.info("Closing item at index {}", index);
         Locator targetItem = itemByIndex(index);
         Locator content = itemContent(targetItem);
 
@@ -84,6 +92,7 @@ public class Accordion {
     }
 
     public void openItem(String title) {
+        log.info("Opening item \"{}\"", title);
         Locator targetItem = itemByTitle(title);
         Locator content = itemContent(targetItem);
 
@@ -97,6 +106,7 @@ public class Accordion {
     }
 
     public void closeItem(String title) {
+        log.info("Closing item \"{}\"", title);
         Locator targetItem = itemByTitle(title);
         Locator content = itemContent(targetItem);
 

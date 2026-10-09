@@ -5,8 +5,12 @@ import com.microsoft.playwright.Page;
 import framework.components.CartModal;
 import framework.components.ProductFilterBar;
 import framework.components.ProductGrid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ProductsPage extends BasePage {
+
+    private static final Logger log = LoggerFactory.getLogger(ProductsPage.class);
 
     private static final String URL = BASE_URL + "/products";
 
@@ -40,10 +44,12 @@ public class ProductsPage extends BasePage {
 
     // Page actions
     public void fillSearchProduct(String value) {
+        log.info("Filling product search \"{}\"", value);
         inptSearchProduct.fill(value);
     }
 
     public void clickSubmitSearch() {
+        log.info("Clicking submit search button");
         btnSubmitSearchProduct.click();
     }
 

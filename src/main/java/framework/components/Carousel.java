@@ -3,10 +3,14 @@ package framework.components;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.regex.Pattern;
 
 public class Carousel {
+
+    private static final Logger log = LoggerFactory.getLogger(Carousel.class);
 
     private final Page page;
 
@@ -35,22 +39,27 @@ public class Carousel {
 //----Public interface----
 
     public void clickPrevious() {
+        log.info("Clicking previous slide");
         btnPrevious.click();
     }
 
     public void clickNext() {
+        log.info("Clicking next slide");
         btnNext.click();
     }
 
     public void clickTestCases() {
+        log.info("Clicking \"Test Cases\" button");
         btnTestCases.click();
     }
 
     public void clickAPIList() {
+        log.info("Clicking \"APIs list for practice\" button");
         btnAPIList.click();
     }
 
     public void clickIndicator(int i) {
+        log.info("Clicking indicator {}", i);
         btnIndicator.nth(i).click();
 
         page.waitForFunction("""

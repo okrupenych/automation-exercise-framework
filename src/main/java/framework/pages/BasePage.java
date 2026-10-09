@@ -4,8 +4,12 @@ import com.microsoft.playwright.Page;
 import framework.components.Footer;
 import framework.components.NavigationBar;
 import framework.config.Config;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class BasePage {
+
+    private static final Logger log = LoggerFactory.getLogger(BasePage.class);
 
     protected static final String BASE_URL = Config.getBaseUrl();
 
@@ -26,7 +30,11 @@ public abstract class BasePage {
     public abstract String getTargetUrl();
 
     public void open() {
-        page.navigate(getTargetUrl());
+        String url = getTargetUrl();
+
+        log.info("Opening page: {}", url);
+        page.navigate(url);
+        log.debug("Page navigation completed: {}", url);
     }
 
 

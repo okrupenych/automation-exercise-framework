@@ -1,8 +1,12 @@
 package framework.components;
 
 import com.microsoft.playwright.Locator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ProductItem {
+
+    private static final Logger log = LoggerFactory.getLogger(ProductItem.class);
 
     private final Locator imgProductPhoto;
     private final Locator lblProductName;
@@ -36,10 +40,12 @@ public class ProductItem {
     }
 
     public void clickAddToCart() {
+        log.info("Clicking \"Add to cart\" button for product \"{}\"", lblProductName.textContent());
         btnAddToCart.click();
     }
 
     public void clickViewProduct() {
+        log.info("Clicking \"View Product\" link for product \"{}\"", lblProductName.textContent());
         linkViewProduct.click();
     }
 

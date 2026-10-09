@@ -2,8 +2,12 @@ package framework.components;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CartModal {
+
+    private static final Logger log = LoggerFactory.getLogger(CartModal.class);
 
     private final Locator lblHeader;
     private final Locator lblMessage;
@@ -30,10 +34,12 @@ public class CartModal {
     }
 
     public void clickViewCart() {
+        log.info("Clicking \"View Cart\" link");
         linkViewCart.click();
     }
 
     public void clickContinueShopping() {
+        log.info("Clicking \"Continue Shopping\" button");
         btnContinue.click();
     }
 

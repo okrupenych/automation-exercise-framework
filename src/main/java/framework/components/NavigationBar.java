@@ -3,8 +3,12 @@ package framework.components;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class NavigationBar {
+
+    private static final Logger log = LoggerFactory.getLogger(NavigationBar.class);
 
     private final Locator linkLogo;
     private final Locator linkHome;
@@ -34,38 +38,47 @@ public class NavigationBar {
 //----Public interface----
 
     public void clickLogo() {
+        log.info("Clicking site Logo");
         linkLogo.click();
     }
 
     public void openHome() {
+        log.info("Clicking \"Home\" link");
         linkHome.click();
     }
 
     public void openProducts() {
+        log.info("Clicking \"Products\" link");
         linkProducts.click();
     }
 
     public void openCart() {
+        log.info("Clicking \"Cart\" link");
         linkCart.click();
     }
 
     public void openSignupLogin() {
+        log.info("Clicking \"Sign Up/Login\" link");
         linkSignupLogin.click();
     }
 
     public void openTestCases() {
+        log.info("Clicking \"Test Cases\" link");
         linkTestCases.click();
     }
 
     public void openApiTesting() {
+        log.info("Clicking \"API Testing\" link");
         linkApiTesting.click();
     }
 
     public void openVideoTutorials() {
+        log.info("Clicking \"Video Tutorials\" link");
         linkVideoTutorials.click();
     }
 
     public void openContactUs() {
+        log.info("Clicking \"Contact Us\" link");
         linkContactUs.click();
     }
 }

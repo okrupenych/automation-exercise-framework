@@ -2,10 +2,14 @@ package framework.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.file.Paths;
 
 public class ContactUsPage extends BasePage {
+
+    private static final Logger log = LoggerFactory.getLogger(ContactUsPage.class);
 
     private static final String URL = BASE_URL + "/contact_us";
 
@@ -39,26 +43,32 @@ public class ContactUsPage extends BasePage {
 
     // Page actions
     public void fillName(String value) {
+        log.info("Filling name \"{}\"", value);
         inptName.fill(value);
     }
 
     public void fillEmail(String value) {
+        log.info("Filling email \"{}\"", value);
         inptEmail.fill(value);
     }
 
     public void fillSubject(String value) {
+        log.info("Filling subject \"{}\"", value);
         inptSubject.fill(value);
     }
 
     public void fillMessage(String value) {
+        log.info("Filling message \"{}\"", value);
         inptMessage.fill(value);
     }
 
     public void chooseFile(String value) {
+        log.info("Choosing file \"{}\"", value);
         inptFilePicker.setInputFiles(Paths.get(value));
     }
 
     public void clickSubmit() {
+        log.info("Clicking \"Submit\" button");
         btnSubmit.click();
     }
 

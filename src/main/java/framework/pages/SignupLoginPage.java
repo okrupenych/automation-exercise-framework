@@ -2,8 +2,12 @@ package framework.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SignupLoginPage extends BasePage {
+
+    private static final Logger log = LoggerFactory.getLogger(SignupLoginPage.class);
 
     private static final String URL = BASE_URL + "/login";
 
@@ -43,14 +47,17 @@ public class SignupLoginPage extends BasePage {
 
     // Login form
     public void fillLoginEmail(String value) {
+        log.info("Filling login email \"{}\"", value);
         inptLoginEmail.fill(value);
     }
 
     public void fillLoginPassword(String value) {
+        log.info("Filling login password");
         inptLoginPassword.fill(value);
     }
 
     public void clickLoginSubmit() {
+        log.info("Clicking \"Login\" button");
         btnLoginSubmit.click();
     }
 
@@ -60,14 +67,17 @@ public class SignupLoginPage extends BasePage {
 
     // Sign Up form
     public void fillSignupName(String value) {
+        log.info("Filling signup name \"{}\"", value);
         inptSignUpName.fill(value);
     }
 
     public void fillSignupEmail(String value) {
+        log.info("Filling signup email \"{}\"", value);
         inptSignUpEmail.fill(value);
     }
 
     public void clickSignUpSubmit() {
+        log.info("Clicking \"Signup\" button");
         btnSignUpSubmit.click();
     }
 
