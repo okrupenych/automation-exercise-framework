@@ -38,7 +38,7 @@ public class ProductFilterBar {
 //----Public interface----
 
     public void clickCategoryHeader(String categoryName) {
-        log.info("Clicking category header");
+        log.info("Clicking category header \"{}\"", categoryName);
         categoryHeader(categoryName).click();
     }
 
@@ -49,6 +49,7 @@ public class ProductFilterBar {
         boolean isOpen = Boolean.TRUE.equals(
             content.evaluate("el => el.classList.contains('in')")
         );
+        log.trace("Category content expanded: {}", isOpen);
 
         if (!isOpen) {
             clickCategoryHeader(categoryName);

@@ -38,7 +38,7 @@ public class NavigationBar {
 //----Public interface----
 
     public void clickLogo() {
-        log.info("Clicking site Logo");
+        log.info("Clicking site logo");
         linkLogo.click();
     }
 
@@ -58,7 +58,7 @@ public class NavigationBar {
     }
 
     public void openSignupLogin() {
-        log.info("Clicking \"Sign Up/Login\" link");
+        log.info("Clicking \"Signup/Login\" link");
         linkSignupLogin.click();
     }
 

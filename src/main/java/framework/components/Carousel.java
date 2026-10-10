@@ -62,11 +62,13 @@ public class Carousel {
         log.info("Clicking indicator {}", i);
         btnIndicator.nth(i).click();
 
+        log.trace("Waiting for slide transition after selecting indicator {}", i);
         page.waitForFunction("""
             () => !document.querySelector(
                 '#slider-carousel .item.left, #slider-carousel .item.right'
             )
         """);
+        log.debug("Slide transition completed for indicator {}", i);
     }
 
 }

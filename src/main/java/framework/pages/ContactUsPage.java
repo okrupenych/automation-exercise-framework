@@ -43,27 +43,27 @@ public class ContactUsPage extends BasePage {
 
     // Page actions
     public void fillName(String value) {
-        log.info("Filling name \"{}\"", value);
+        log.info("Filling name");
         inptName.fill(value);
     }
 
     public void fillEmail(String value) {
-        log.info("Filling email \"{}\"", value);
+        log.info("Filling email");
         inptEmail.fill(value);
     }
 
     public void fillSubject(String value) {
-        log.info("Filling subject \"{}\"", value);
+        log.info("Filling subject");
         inptSubject.fill(value);
     }
 
     public void fillMessage(String value) {
-        log.info("Filling message \"{}\"", value);
+        log.info("Filling message");
         inptMessage.fill(value);
     }
 
     public void chooseFile(String value) {
-        log.info("Choosing file \"{}\"", value);
+        log.info("Choosing upload file");
         inptFilePicker.setInputFiles(Paths.get(value));
     }
 

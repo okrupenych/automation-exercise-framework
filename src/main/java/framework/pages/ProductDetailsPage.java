@@ -130,17 +130,17 @@ public class ProductDetailsPage extends BasePage {
     }
 
     public void fillName(String name) {
-        log.info("Filling review name \"{}\"", name);
+        log.info("Filling review name");
         inptName.fill(name);
     }
 
     public void fillEmail(String email) {
-        log.info("Filling review email \"{}\"", email);
+        log.info("Filling review email");
         inptEmail.fill(email);
     }
 
     public void fillReviewText(String text) {
-        log.info("Filling review text \"{}\"", text);
+        log.info("Filling review text");
         inptReviewText.fill(text);
     }
 

@@ -47,7 +47,7 @@ public class SignupLoginPage extends BasePage {
 
     // Login form
     public void fillLoginEmail(String value) {
-        log.info("Filling login email \"{}\"", value);
+        log.info("Filling login email");
         inptLoginEmail.fill(value);
     }
 
@@ -67,12 +67,12 @@ public class SignupLoginPage extends BasePage {
 
     // Sign Up form
     public void fillSignupName(String value) {
-        log.info("Filling signup name \"{}\"", value);
+        log.info("Filling signup name");
         inptSignUpName.fill(value);
     }
 
     public void fillSignupEmail(String value) {
-        log.info("Filling signup email \"{}\"", value);
+        log.info("Filling signup email");
         inptSignUpEmail.fill(value);
     }
 

@@ -22,7 +22,12 @@ public class BrowserSession {
 
         page = context.newPage();
 
-        page.setDefaultTimeout(Config.getBrowserTimeout());
+        int timeout = Config.getBrowserTimeout();
+        page.setDefaultTimeout(timeout);
+        log.debug("Default page timeout set to {} ms", timeout);
+        if (timeout == 0) {
+            log.warn("Default page timeout is disabled; operations may wait indefinitely");
+        }
 
         OverlayHandler overlayHandler = new OverlayHandler(page);
         overlayHandler.registerHandlers();
@@ -38,10 +43,12 @@ public class BrowserSession {
         if (context != null) {
             log.debug("Closing browser context");
             context.close();
+            log.trace("Browser context closed");
         }
     }
 
     public void maximize() {
+        log.debug("Maximizing browser window through CDP");
         CDPSession cdp = context.newCDPSession(page);
 
         // Getting Chromium window ID
@@ -50,6 +57,7 @@ public class BrowserSession {
         int windowId = windowInfo
                 .get("windowId")
                 .getAsInt();
+        log.trace("Resolved browser window ID {}", windowId);
 
         // Maximizing native window
         JsonObject bounds = new JsonObject();
@@ -76,6 +84,7 @@ public class BrowserSession {
 
         // Maximizing browser window
         cdp.send("Browser.setWindowBounds", params);
+        log.debug("Browser window maximized with viewport {} x {}", width, height);
     }
 
 }

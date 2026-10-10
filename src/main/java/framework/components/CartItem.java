@@ -1,6 +1,7 @@
 package framework.components;
 
 import com.microsoft.playwright.Locator;
+import com.microsoft.playwright.PlaywrightException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +25,20 @@ public class CartItem {
         lblQuantity = rootItem.locator("td.cart_quantity button");
         lblTotal = rootItem.locator("td.cart_total p");
         btnDelete = rootItem.locator("td.cart_delete a.cart_quantity_delete");
+    }
+
+
+//----Internal implementation----
+
+    private String resolveNameForLog() {
+        try {
+            return lblName.textContent(
+                    new Locator.TextContentOptions().setTimeout(500)
+            );
+        } catch (PlaywrightException e) {
+            log.debug("Could not retrieve product name for logging: \"{}\"", e.getMessage());
+            return "<unknown>";
+        }
     }
 
 
@@ -54,12 +69,12 @@ public class CartItem {
     }
 
     public void clickName() {
-        log.info("Clicking product name \"{}\"", lblName.textContent());
+        log.info("Clicking product name \"{}\"", resolveNameForLog());
         lblName.click();
     }
 
     public void delete() {
-        log.info("Deleting product name \"{}\"", lblName.textContent());
+        log.info("Deleting cart item \"{}\"", resolveNameForLog());
         btnDelete.click();
     }
 

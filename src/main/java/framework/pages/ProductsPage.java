@@ -44,7 +44,7 @@ public class ProductsPage extends BasePage {
 
     // Page actions
     public void fillSearchProduct(String value) {
-        log.info("Filling product search \"{}\"", value);
+        log.info("Filling product search");
         inptSearchProduct.fill(value);
     }
 

@@ -1,14 +1,20 @@
 package framework.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 public class Config {
 
+    private static final Logger log = LoggerFactory.getLogger(Config.class);
+
     private static final Properties properties = new Properties();
 
     static {
+        log.debug("Loading configuration from classpath resource config.properties");
         try (InputStream input = Config.class.getClassLoader()
                 .getResourceAsStream("config.properties")) {
 
@@ -17,6 +23,7 @@ public class Config {
             }
 
             properties.load(input);
+            log.debug("Configuration loaded");
 
         } catch (IOException e) {
             throw new IllegalStateException("Failed to load config.properties", e);
