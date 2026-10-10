@@ -1,6 +1,5 @@
 package framework.browser;
 
-import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +15,7 @@ public class OverlayHandler {
     }
 
     public void registerHandlers() {
+        log.trace("Registering overlay locator handlers");
 
         // AD popup autoclose
         page.addLocatorHandler(

@@ -71,6 +71,7 @@ public class Accordion {
         boolean isOpen = Boolean.TRUE.equals(
                 content.evaluate("el => el.classList.contains('in')")
         );
+        log.trace("Item content expanded: {}", isOpen);
 
         if (!isOpen) {
             itemHeader(targetItem).click();
@@ -85,6 +86,7 @@ public class Accordion {
         boolean isOpen = Boolean.TRUE.equals(
                 content.evaluate("el => el.classList.contains('in')")
         );
+        log.trace("Item content expanded: {}", isOpen);
 
         if (isOpen) {
             itemHeader(targetItem).click();
@@ -99,6 +101,7 @@ public class Accordion {
         boolean isOpen = Boolean.TRUE.equals(
                 content.evaluate("el => el.classList.contains('in')")
         );
+        log.trace("Item content expanded: {}", isOpen);
 
         if (!isOpen) {
             itemHeader(targetItem).click();
@@ -113,6 +116,7 @@ public class Accordion {
         boolean isOpen = Boolean.TRUE.equals(
                 content.evaluate("el => el.classList.contains('in')")
         );
+        log.trace("Item content expanded: {}", isOpen);
 
         if (isOpen) {
             itemHeader(targetItem).click();

@@ -27,7 +27,7 @@ public class Footer {
 //----Public interface----
 
     public void fillEmail(String value) {
-        log.info("Filling email {}", value);
+        log.info("Filling email");
         inptEmail.fill(value);
     }
 

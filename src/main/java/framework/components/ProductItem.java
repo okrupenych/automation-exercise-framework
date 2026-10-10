@@ -1,6 +1,7 @@
 package framework.components;
 
 import com.microsoft.playwright.Locator;
+import com.microsoft.playwright.PlaywrightException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +26,18 @@ public class ProductItem {
     }
 
 
+//----Internal implementation----
+    private String resolveNameForLog() {
+        try {
+            return lblProductName.textContent(
+                    new Locator.TextContentOptions().setTimeout(500)
+            );
+        } catch (PlaywrightException e) {
+            log.debug("Could not retrieve product name for logging: \"{}\"", e.getMessage());
+            return "<unknown>";
+        }
+    }
+
 //----Public interface----
 
     public Locator getPhoto() {
@@ -40,12 +53,12 @@ public class ProductItem {
     }
 
     public void clickAddToCart() {
-        log.info("Clicking \"Add to cart\" button for product \"{}\"", lblProductName.textContent());
+        log.info("Clicking \"Add to cart\" button for product \"{}\"", resolveNameForLog());
         btnAddToCart.click();
     }
 
     public void clickViewProduct() {
-        log.info("Clicking \"View Product\" link for product \"{}\"", lblProductName.textContent());
+        log.info("Clicking \"View Product\" link for product \"{}\"", resolveNameForLog());
         linkViewProduct.click();
     }
 
