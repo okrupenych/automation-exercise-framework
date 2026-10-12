@@ -1,11 +1,14 @@
 package framework.pages;
 
+import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import framework.components.Footer;
 import framework.components.NavigationBar;
 import framework.config.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 public abstract class BasePage {
 
@@ -28,6 +31,8 @@ public abstract class BasePage {
 //----Public interface----
 
     public abstract String getTargetUrl();
+
+    public abstract List<Locator> getRequiredElements();
 
     public void open() {
         String url = getTargetUrl();

@@ -5,6 +5,8 @@ import com.microsoft.playwright.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 public class Footer {
 
     private static final Logger log = LoggerFactory.getLogger(Footer.class);
@@ -25,6 +27,14 @@ public class Footer {
 
 
 //----Public interface----
+
+    public List<Locator> getRequiredElements() {
+        return List.of(
+                inptEmail,
+                btnSubscribe,
+                lblInfo
+        );
+    }
 
     public void fillEmail(String value) {
         log.info("Filling email");

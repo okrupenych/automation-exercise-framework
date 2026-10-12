@@ -1,7 +1,11 @@
 package framework.pages;
 
+import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import framework.components.Accordion;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ApiTestingPage extends BasePage {
 
@@ -16,6 +20,13 @@ public class ApiTestingPage extends BasePage {
 
 
 //----Public interface----
+
+    @Override
+    public List<Locator> getRequiredElements() {
+        return new ArrayList<>(
+                cmpAccordion.getRequiredElements()
+        );
+    }
 
     @Override
     public String getTargetUrl() {

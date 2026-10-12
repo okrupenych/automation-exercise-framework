@@ -5,6 +5,8 @@ import com.microsoft.playwright.PlaywrightException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 public class CartItem {
 
     private static final Logger log = LoggerFactory.getLogger(CartItem.class);
@@ -43,6 +45,18 @@ public class CartItem {
 
 
 //----Public interface----
+
+    public List<Locator> getRequiredElements() {
+        return List.of(
+                imgPhoto,
+                lblName,
+                lblCategory,
+                lblPrice,
+                lblQuantity,
+                lblTotal,
+                btnDelete
+        );
+    }
 
     public Locator getPhoto() {
         return imgPhoto;

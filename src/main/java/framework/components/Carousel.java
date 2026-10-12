@@ -6,6 +6,7 @@ import com.microsoft.playwright.options.AriaRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class Carousel {
@@ -37,6 +38,10 @@ public class Carousel {
 
 
 //----Public interface----
+
+    public List<Locator> getRequiredElements() {
+        return List.of(); // No stable elements to verify
+    }
 
     public void clickPrevious() {
         log.info("Clicking previous slide");

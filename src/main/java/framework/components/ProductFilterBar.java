@@ -6,17 +6,23 @@ import com.microsoft.playwright.options.AriaRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 public class ProductFilterBar {
 
     private static final Logger log = LoggerFactory.getLogger(ProductFilterBar.class);
 
     private final Locator rootAccordionCategory;
     private final Locator rootBlockBrands;
+    private final Locator lblHeaderCategory;
+    private final Locator lblHeaderBrands;
 
     public ProductFilterBar(Page page) {
         Locator rootLeftSideBar = page.locator("div.left-sidebar");
         rootAccordionCategory = rootLeftSideBar.locator("div#accordian");
         rootBlockBrands = rootLeftSideBar.locator("div.brands_products div.brands-name");
+        lblHeaderCategory = rootLeftSideBar.locator("h2:text-is('Category')");
+        lblHeaderBrands = rootLeftSideBar.locator("div.brands_products h2:text-is('Brands')");
     }
 
 
@@ -36,6 +42,18 @@ public class ProductFilterBar {
 
 
 //----Public interface----
+
+    public List<Locator> getRequiredElements() {
+        return List.of(
+                rootAccordionCategory,
+                rootBlockBrands,
+                lblHeaderBrands,
+                lblHeaderCategory,
+                categoryHeader("Women"),
+                categoryHeader("Men"),
+                categoryHeader("Kids")
+        );
+    }
 
     public void clickCategoryHeader(String categoryName) {
         log.info("Clicking category header \"{}\"", categoryName);

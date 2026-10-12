@@ -5,6 +5,8 @@ import com.microsoft.playwright.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 public class SignupPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(SignupPage.class);
@@ -67,6 +69,33 @@ public class SignupPage extends BasePage {
 
 
 //----Public interface----
+
+    @Override
+    public List<Locator> getRequiredElements() {
+        return List.of(
+                rbtnMr,
+                rbtnMrs,
+                inptName,
+                inptEmail,
+                inptPassword,
+                slctDay,
+                slctMonth,
+                slctYear,
+                chkNewsletter,
+                chkSpecialOffers,
+                inptFirstName,
+                inptLastName,
+                inptCompany,
+                inptAddress,
+                inptAddress2,
+                slctCountry,
+                inptState,
+                inptCity,
+                inptZipcode,
+                inptMobileNumber,
+                btnCreateAccount
+        );
+    }
 
     @Override
     public String getTargetUrl() {

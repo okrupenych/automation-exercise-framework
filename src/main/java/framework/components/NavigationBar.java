@@ -6,6 +6,8 @@ import com.microsoft.playwright.options.AriaRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 public class NavigationBar {
 
     private static final Logger log = LoggerFactory.getLogger(NavigationBar.class);
@@ -34,12 +36,26 @@ public class NavigationBar {
         linkApiTesting = rootNavigationBar.getByRole(AriaRole.LINK, new Locator.GetByRoleOptions().setName("API Testing"));
         linkVideoTutorials = rootNavigationBar.getByRole(AriaRole.LINK, new Locator.GetByRoleOptions().setName("Video Tutorials"));
         linkContactUs = rootNavigationBar.getByRole(AriaRole.LINK, new Locator.GetByRoleOptions().setName("Contact us"));
+
         linkLogout = rootNavigationBar.getByRole(AriaRole.LINK, new Locator.GetByRoleOptions().setName("Logout"));
         linkDeleteAccount = rootNavigationBar.getByRole(AriaRole.LINK, new Locator.GetByRoleOptions().setName("Delete Account"));
     }
 
     
 //----Public interface----
+
+    public List<Locator> getRequiredElements() {
+        return List.of(
+                linkLogo,
+                linkHome,
+                linkProducts,
+                linkCart,
+                linkTestCases,
+                linkApiTesting,
+                linkVideoTutorials,
+                linkContactUs
+        );
+    }
 
     public void clickLogo() {
         log.info("Clicking site logo");

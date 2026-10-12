@@ -7,6 +7,9 @@ import framework.components.ProductFilterBar;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProductDetailsPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(ProductDetailsPage.class);
@@ -64,6 +67,29 @@ public class ProductDetailsPage extends BasePage {
 
 
 //----Public interface----
+
+    @Override
+    public List<Locator> getRequiredElements() {
+         List<Locator> elements = new ArrayList<>(List.of(
+                imgProductPhoto,
+                lblProductName,
+                lblProductCategory,
+                lblProductPrice,
+                inptQuantity,
+                btnAddToCart,
+                lblAvailability,
+                lblCondition,
+                lblBrand,
+                inptName,
+                inptEmail,
+                inptReviewText,
+                btnSubmit
+         ));
+
+         elements.addAll(cmpProductFilterBar.getRequiredElements());
+
+         return elements;
+    }
 
     @Override
     public String getTargetUrl() {

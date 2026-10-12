@@ -16,8 +16,6 @@ public class TestLoggerExtension implements
         BeforeTestExecutionCallback,
         TestWatcher {
 
-
-
     private static final Logger log = LoggerFactory.getLogger(TestLoggerExtension.class);
 
     @Override
@@ -56,4 +54,5 @@ public class TestLoggerExtension implements
                 context.getDisplayName(),
                 reason.orElse("Not specified"));
     }
+
 }

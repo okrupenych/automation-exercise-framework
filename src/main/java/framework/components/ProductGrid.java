@@ -3,6 +3,9 @@ package framework.components;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProductGrid {
 
     private final Locator rootHeader;
@@ -16,6 +19,16 @@ public class ProductGrid {
 
 
 //----Public interface----
+
+    public List<Locator> getRequiredElements() {
+        List<Locator> elements = new ArrayList<>(List.of(
+                rootHeader
+        ));
+
+        elements.addAll(itemByIndex(0).getRequiredElements());
+
+        return elements;
+    }
 
     public ProductItem itemByIndex(int index) {
         return new ProductItem(rootProductItems.nth(index));

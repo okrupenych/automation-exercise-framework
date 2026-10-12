@@ -8,6 +8,9 @@ import framework.components.ProductGrid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProductsPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(ProductsPage.class);
@@ -35,6 +38,19 @@ public class ProductsPage extends BasePage {
 
 
 //----Public interface----
+
+    @Override
+    public List<Locator> getRequiredElements() {
+        List<Locator> elements = new ArrayList<>(List.of(
+                inptSearchProduct,
+                btnSubmitSearchProduct
+        ));
+
+        elements.addAll(cmpProductFilterBar.getRequiredElements());
+        elements.addAll(cmpProductGrid.getRequiredElements());
+
+        return elements;
+    }
 
     @Override
     public String getTargetUrl() {

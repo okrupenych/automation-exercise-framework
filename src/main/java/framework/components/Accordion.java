@@ -5,6 +5,8 @@ import com.microsoft.playwright.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 public class Accordion {
 
     private static final Logger log = LoggerFactory.getLogger(Accordion.class);
@@ -39,6 +41,13 @@ public class Accordion {
 
 
 //----Public interface----
+
+    public List<Locator> getRequiredElements() {
+        return List.of(
+                rootAccordionItems.first(),
+                itemHeader(itemByIndex(0))
+        );
+    }
 
     public Locator getItemContent(int index) {
         return itemContent(itemByIndex(index));

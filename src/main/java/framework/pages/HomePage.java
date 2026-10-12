@@ -1,10 +1,14 @@
 package framework.pages;
 
+import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import framework.components.Carousel;
 import framework.components.CartModal;
 import framework.components.ProductFilterBar;
 import framework.components.ProductGrid;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomePage extends BasePage {
 
@@ -24,6 +28,16 @@ public class HomePage extends BasePage {
     }
 
 //----Public interface----
+
+    @Override
+    public List<Locator> getRequiredElements() {
+        List<Locator> elements = new ArrayList<>();
+
+        elements.addAll(cmpProductFilterBar.getRequiredElements());
+        elements.addAll(cmpProductGrid.getRequiredElements());
+
+        return elements;
+    }
 
     @Override
     public String getTargetUrl() {

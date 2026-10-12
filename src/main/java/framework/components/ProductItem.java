@@ -5,6 +5,8 @@ import com.microsoft.playwright.PlaywrightException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 public class ProductItem {
 
     private static final Logger log = LoggerFactory.getLogger(ProductItem.class);
@@ -39,6 +41,16 @@ public class ProductItem {
     }
 
 //----Public interface----
+
+    public List<Locator> getRequiredElements() {
+        return List.of(
+                imgProductPhoto,
+                lblProductName,
+                lblProductPrice,
+                btnAddToCart,
+                linkViewProduct
+        );
+    }
 
     public Locator getPhoto() {
         return imgProductPhoto;
