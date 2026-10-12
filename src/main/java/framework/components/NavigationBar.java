@@ -19,6 +19,8 @@ public class NavigationBar {
     private final Locator linkApiTesting;
     private final Locator linkVideoTutorials;
     private final Locator linkContactUs;
+    private final Locator linkLogout;
+    private final Locator linkDeleteAccount;
 
     public NavigationBar(Page page) {
         Locator rootNavigationBar = page.locator("header");
@@ -32,6 +34,8 @@ public class NavigationBar {
         linkApiTesting = rootNavigationBar.getByRole(AriaRole.LINK, new Locator.GetByRoleOptions().setName("API Testing"));
         linkVideoTutorials = rootNavigationBar.getByRole(AriaRole.LINK, new Locator.GetByRoleOptions().setName("Video Tutorials"));
         linkContactUs = rootNavigationBar.getByRole(AriaRole.LINK, new Locator.GetByRoleOptions().setName("Contact us"));
+        linkLogout = rootNavigationBar.getByRole(AriaRole.LINK, new Locator.GetByRoleOptions().setName("Logout"));
+        linkDeleteAccount = rootNavigationBar.getByRole(AriaRole.LINK, new Locator.GetByRoleOptions().setName("Delete Account"));
     }
 
     
@@ -42,43 +46,53 @@ public class NavigationBar {
         linkLogo.click();
     }
 
-    public void openHome() {
+    public void clickHome() {
         log.info("Clicking \"Home\" link");
         linkHome.click();
     }
 
-    public void openProducts() {
+    public void clickProducts() {
         log.info("Clicking \"Products\" link");
         linkProducts.click();
     }
 
-    public void openCart() {
+    public void clickCart() {
         log.info("Clicking \"Cart\" link");
         linkCart.click();
     }
 
-    public void openSignupLogin() {
+    public void clickSignupLogin() {
         log.info("Clicking \"Signup/Login\" link");
         linkSignupLogin.click();
     }
 
-    public void openTestCases() {
+    public void clickTestCases() {
         log.info("Clicking \"Test Cases\" link");
         linkTestCases.click();
     }
 
-    public void openApiTesting() {
+    public void clickApiTesting() {
         log.info("Clicking \"API Testing\" link");
         linkApiTesting.click();
     }
 
-    public void openVideoTutorials() {
+    public void clickVideoTutorials() {
         log.info("Clicking \"Video Tutorials\" link");
         linkVideoTutorials.click();
     }
 
-    public void openContactUs() {
+    public void clickContactUs() {
         log.info("Clicking \"Contact Us\" link");
         linkContactUs.click();
+    }
+
+    public void clickLogout() {
+        log.info("Clicking \"Logout\" link");
+        linkLogout.click();
+    }
+
+    public void clickDeleteAccount() {
+        log.info("Clicking \"Delete Account\" link");
+        linkDeleteAccount.click();
     }
 }
