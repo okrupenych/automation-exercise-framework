@@ -113,9 +113,9 @@ public class ProductDetailsPage extends BasePage {
         return lblBrand;
     }
 
-    public void fillQuantity(int quantity) {
-        log.info("Filling quantity \"{}\"", quantity);
-        inptQuantity.fill(String.valueOf(quantity));
+    public void fillQuantity(int value) {
+        log.info("Filling quantity \"{}\"", value);
+        inptQuantity.fill(String.valueOf(value));
     }
 
     public void clickAddToCart() {
@@ -129,19 +129,19 @@ public class ProductDetailsPage extends BasePage {
         return lblSuccessMessage;
     }
 
-    public void fillName(String name) {
+    public void fillName(String value) {
         log.info("Filling review name");
-        inptName.fill(name);
+        inptName.fill(value);
     }
 
-    public void fillEmail(String email) {
+    public void fillEmail(String value) {
         log.info("Filling review email");
-        inptEmail.fill(email);
+        inptEmail.fill(value);
     }
 
-    public void fillReviewText(String text) {
+    public void fillReviewText(String value) {
         log.info("Filling review text");
-        inptReviewText.fill(text);
+        inptReviewText.fill(value);
     }
 
     public void fillReviewForm(String name, String email, String reviewText) {
