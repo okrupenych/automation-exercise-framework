@@ -14,16 +14,23 @@ public class ContactUsPage extends BasePage {
 
     private static final String URL = BASE_URL + "/contact_us";
 
+    private final Locator lblHeaderContactUs;
+    private final Locator lblHeaderGetInTouch;
     private final Locator inptName;
     private final Locator inptEmail;
     private final Locator inptSubject;
     private final Locator inptMessage;
     private final Locator inptFilePicker;
     private final Locator btnSubmit;
+    private final Locator lblSuccessMessage;
+    private final Locator btnHome;
 
     public ContactUsPage(Page page) {
         super(page);
         Locator rootContactUsForm = page.locator("form#contact-us-form");
+
+        lblHeaderContactUs = page.locator("div#contact-page h2");
+        lblHeaderGetInTouch = page.locator("div.contact-form > h2");
 
         inptName = rootContactUsForm.locator("input[name='name']");
         inptEmail = rootContactUsForm.locator("input[name='email']");
@@ -31,6 +38,10 @@ public class ContactUsPage extends BasePage {
         inptMessage = rootContactUsForm.locator("textarea[name='message']");
         inptFilePicker = rootContactUsForm.locator("input[name='upload_file']");
         btnSubmit = rootContactUsForm.locator("input[name='submit']");
+
+        lblSuccessMessage = page.locator("div.status.alert.alert-success");
+        btnHome = page.locator("div#form-section a.btn-success");
+
     }
 
 
@@ -39,6 +50,8 @@ public class ContactUsPage extends BasePage {
     @Override
     public List<Locator> getRequiredElements() {
         return List.of(
+                lblHeaderContactUs,
+                lblHeaderGetInTouch,
                 inptName,
                 inptEmail,
                 inptSubject,
@@ -55,6 +68,18 @@ public class ContactUsPage extends BasePage {
 
 
     // Page actions
+    public Locator getContactUsHeader() {
+        return lblHeaderContactUs;
+    }
+
+    public Locator getGetInTouchHeader() {
+        return lblHeaderGetInTouch;
+    }
+
+    public Locator getSuccessMessage() {
+        return lblSuccessMessage;
+    }
+
     public void fillName(String value) {
         log.info("Filling name");
         inptName.fill(value);
@@ -83,6 +108,11 @@ public class ContactUsPage extends BasePage {
     public void clickSubmit() {
         log.info("Clicking \"Submit\" button");
         btnSubmit.click();
+    }
+
+    public void clickHome() {
+        log.info("Clicking \"Home\" button");
+        btnHome.click();
     }
 
 }

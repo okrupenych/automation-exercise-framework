@@ -13,6 +13,7 @@ public class SignupPage extends BasePage {
 
     private static final String URL = BASE_URL + "/signup";
 
+    private final Locator lblHeaderAccount;
     private final Locator rbtnMr;
     private final Locator rbtnMrs;
     private final Locator inptName;
@@ -24,6 +25,7 @@ public class SignupPage extends BasePage {
     private final Locator chkNewsletter;
     private final Locator chkSpecialOffers;
 
+    private final Locator lblHeaderAddress;
     private final Locator inptFirstName;
     private final Locator inptLastName;
     private final Locator inptCompany;
@@ -42,6 +44,7 @@ public class SignupPage extends BasePage {
 
         Locator rootForm = page.locator("div.login-form");
 
+        lblHeaderAccount = rootForm.locator("> h2.title");
         rbtnMr = rootForm.locator("#id_gender1");
         rbtnMrs = rootForm.locator("#id_gender2");
         inptName = rootForm.locator("#name");
@@ -53,6 +56,7 @@ public class SignupPage extends BasePage {
         chkNewsletter = rootForm.locator("#newsletter");
         chkSpecialOffers = rootForm.locator("#optin");
 
+        lblHeaderAddress = rootForm.locator("form > h2.title");
         inptFirstName = rootForm.locator("#first_name");
         inptLastName = rootForm.locator("#last_name");
         inptCompany = rootForm.locator("#company");
@@ -73,6 +77,7 @@ public class SignupPage extends BasePage {
     @Override
     public List<Locator> getRequiredElements() {
         return List.of(
+                lblHeaderAccount,
                 rbtnMr,
                 rbtnMrs,
                 inptName,
@@ -83,6 +88,7 @@ public class SignupPage extends BasePage {
                 slctYear,
                 chkNewsletter,
                 chkSpecialOffers,
+                lblHeaderAddress,
                 inptFirstName,
                 inptLastName,
                 inptCompany,
@@ -104,6 +110,10 @@ public class SignupPage extends BasePage {
 
 
     // Account info section
+    public Locator getAccountHeader() {
+        return lblHeaderAccount;
+    }
+
     public Locator getEmail() {
         return inptEmail;
     }
@@ -148,6 +158,10 @@ public class SignupPage extends BasePage {
 
 
     // Address info section
+    public Locator getAddressHeader() {
+        return lblHeaderAddress;
+    }
+
     public void fillFirstName(String value) {
         log.info("Filling first name");
         inptFirstName.fill(value);

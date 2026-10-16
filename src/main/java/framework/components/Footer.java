@@ -11,6 +11,7 @@ public class Footer {
 
     private static final Logger log = LoggerFactory.getLogger(Footer.class);
 
+    private final Locator lblHeader;
     private final Locator inptEmail;
     private final Locator btnSubscribe;
     private final Locator lblSubscriptionMessage;
@@ -19,6 +20,7 @@ public class Footer {
     public Footer(Page page) {
         Locator rootFooter = page.locator("footer#footer");
 
+        lblHeader = rootFooter.locator("div.single-widget h2");
         inptEmail = rootFooter.locator("input#susbscribe_email");
         btnSubscribe = rootFooter.locator("button#subscribe");
         lblSubscriptionMessage = rootFooter.locator("div#success-subscribe div");
@@ -30,6 +32,7 @@ public class Footer {
 
     public List<Locator> getRequiredElements() {
         return List.of(
+                lblHeader,
                 inptEmail,
                 btnSubscribe,
                 lblInfo
@@ -44,6 +47,10 @@ public class Footer {
     public void clickSubscribe() {
         log.info("Clicking \"Subscribe\" button");
         btnSubscribe.click();
+    }
+
+    public Locator getHeader() {
+        return lblHeader;
     }
 
     public Locator getSubscriptionMessage() {

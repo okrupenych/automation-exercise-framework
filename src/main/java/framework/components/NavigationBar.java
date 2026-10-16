@@ -23,9 +23,10 @@ public class NavigationBar {
     private final Locator linkContactUs;
     private final Locator linkLogout;
     private final Locator linkDeleteAccount;
+    private final Locator lblLoggedInAs;
 
     public NavigationBar(Page page) {
-        Locator rootNavigationBar = page.locator("header");
+        Locator rootNavigationBar = page.locator("ul.navbar-nav");
 
         linkLogo = page.locator(".logo a");
         linkHome = rootNavigationBar.getByRole(AriaRole.LINK, new Locator.GetByRoleOptions().setName("Home"));
@@ -39,7 +40,9 @@ public class NavigationBar {
 
         linkLogout = rootNavigationBar.getByRole(AriaRole.LINK, new Locator.GetByRoleOptions().setName("Logout"));
         linkDeleteAccount = rootNavigationBar.getByRole(AriaRole.LINK, new Locator.GetByRoleOptions().setName("Delete Account"));
+        lblLoggedInAs = rootNavigationBar.locator("a:not([href]):has-text('Logged in as')");
     }
+
 
     
 //----Public interface----
@@ -111,4 +114,9 @@ public class NavigationBar {
         log.info("Clicking \"Delete Account\" link");
         linkDeleteAccount.click();
     }
+
+    public Locator getLoggedInAs() {
+        return lblLoggedInAs;
+    }
+
 }

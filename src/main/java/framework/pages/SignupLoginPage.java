@@ -13,30 +13,34 @@ public class SignupLoginPage extends BasePage {
 
     private static final String URL = BASE_URL + "/login";
 
+    private final Locator lblHeaderLogin;
     private final Locator inptLoginEmail;
     private final Locator inptLoginPassword;
     private final Locator lblLoginError;
     private final Locator btnLoginSubmit;
 
-    private final Locator inptSignUpName;
-    private final Locator inptSignUpEmail;
-    private final Locator lblSignUpError;
-    private final Locator btnSignUpSubmit;
+    private final Locator lblHeaderSignup;
+    private final Locator inptSignupName;
+    private final Locator inptSignupEmail;
+    private final Locator lblSignupError;
+    private final Locator btnSignupSubmit;
 
     public SignupLoginPage(Page page) {
         super(page);
         Locator rootLoginForm = page.locator("div.login-form");
         Locator rootSignupForm = page.locator("div.signup-form");
 
+        lblHeaderLogin = rootLoginForm.locator("h2");
         inptLoginEmail = rootLoginForm.locator("input[data-qa='login-email']");
         inptLoginPassword = rootLoginForm.locator("input[data-qa='login-password']");
         lblLoginError = rootLoginForm.locator("form p");
         btnLoginSubmit = rootLoginForm.locator("button[data-qa='login-button']");
 
-        inptSignUpName = rootSignupForm.locator("input[data-qa='signup-name']");
-        inptSignUpEmail = rootSignupForm.locator("input[data-qa='signup-email']");
-        lblSignUpError = rootSignupForm.locator("form p");
-        btnSignUpSubmit = rootSignupForm.locator("button[data-qa='signup-button']");
+        lblHeaderSignup = rootSignupForm.locator("h2");
+        inptSignupName = rootSignupForm.locator("input[data-qa='signup-name']");
+        inptSignupEmail = rootSignupForm.locator("input[data-qa='signup-email']");
+        lblSignupError = rootSignupForm.locator("form p");
+        btnSignupSubmit = rootSignupForm.locator("button[data-qa='signup-button']");
     }
 
 
@@ -45,12 +49,14 @@ public class SignupLoginPage extends BasePage {
     @Override
     public List<Locator> getRequiredElements() {
         return List.of(
+                lblHeaderLogin,
                 inptLoginEmail,
                 inptLoginPassword,
                 btnLoginSubmit,
-                inptSignUpName,
-                inptSignUpEmail,
-                btnSignUpSubmit
+                lblHeaderSignup,
+                inptSignupName,
+                inptSignupEmail,
+                btnSignupSubmit
         );
     }
 
@@ -59,7 +65,12 @@ public class SignupLoginPage extends BasePage {
         return URL;
     }
 
+
     // Login form
+    public Locator getLoginHeader() {
+        return lblHeaderLogin;
+    }
+
     public void fillLoginEmail(String value) {
         log.info("Filling login email");
         inptLoginEmail.fill(value);
@@ -79,24 +90,29 @@ public class SignupLoginPage extends BasePage {
         return lblLoginError;
     }
 
+
     // Sign Up form
+    public Locator getSignupHeader() {
+        return lblHeaderSignup;
+    }
+
     public void fillSignupName(String value) {
         log.info("Filling signup name");
-        inptSignUpName.fill(value);
+        inptSignupName.fill(value);
     }
 
     public void fillSignupEmail(String value) {
         log.info("Filling signup email");
-        inptSignUpEmail.fill(value);
+        inptSignupEmail.fill(value);
     }
 
-    public void clickSignUpSubmit() {
+    public void clickSignupSubmit() {
         log.info("Clicking \"Signup\" button");
-        btnSignUpSubmit.click();
+        btnSignupSubmit.click();
     }
 
     public Locator getSignupError() {
-        return lblSignUpError;
+        return lblSignupError;
     }
 
 }

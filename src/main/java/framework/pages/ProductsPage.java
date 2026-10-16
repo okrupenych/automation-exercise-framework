@@ -2,7 +2,7 @@ package framework.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
-import framework.components.CartModal;
+import framework.components.Modal;
 import framework.components.ProductFilterBar;
 import framework.components.ProductGrid;
 import org.slf4j.Logger;
@@ -19,7 +19,7 @@ public class ProductsPage extends BasePage {
 
     private final ProductFilterBar cmpProductFilterBar;
     private final ProductGrid cmpProductGrid;
-    private final CartModal cmpCartModal;
+    private final Modal cmpModal;
 
     private final Locator inptSearchProduct;
     private final Locator btnSubmitSearchProduct;
@@ -28,7 +28,7 @@ public class ProductsPage extends BasePage {
         super(page);
         cmpProductFilterBar = new ProductFilterBar(page);
         cmpProductGrid = new ProductGrid(page);
-        cmpCartModal = new CartModal(page);
+        cmpModal = new Modal(page);
 
         Locator rootAdvertisementSection = page.locator("section#advertisement");
 
@@ -79,8 +79,8 @@ public class ProductsPage extends BasePage {
         return cmpProductGrid;
     }
 
-    public CartModal cartModal() {
-        return cmpCartModal;
+    public Modal modal() {
+        return cmpModal;
     }
 
 }

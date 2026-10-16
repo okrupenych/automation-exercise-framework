@@ -30,6 +30,16 @@ public class ProductGrid {
         return elements;
     }
 
+    public List<ProductItem> getAllItems() {
+        List<ProductItem> items = new ArrayList<>();
+
+        for (int i = 0; i < rootProductItems.count(); i++) {
+            items.add(new ProductItem(rootProductItems.nth(i)));
+        }
+
+        return items;
+    }
+
     public ProductItem itemByIndex(int index) {
         return new ProductItem(rootProductItems.nth(index));
     }

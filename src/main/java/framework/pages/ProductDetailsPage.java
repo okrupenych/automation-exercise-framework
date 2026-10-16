@@ -2,7 +2,7 @@ package framework.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
-import framework.components.CartModal;
+import framework.components.Modal;
 import framework.components.ProductFilterBar;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,7 @@ public class ProductDetailsPage extends BasePage {
     private static final String URL = BASE_URL + "/product_details/";
 
     private final ProductFilterBar cmpProductFilterBar;
-    private final CartModal cmpCartModal;
+    private final Modal cmpModal;
 
     // Product Details block
     private final Locator imgProductPhoto;
@@ -41,7 +41,7 @@ public class ProductDetailsPage extends BasePage {
         super(page);
 
         cmpProductFilterBar = new ProductFilterBar(page);
-        cmpCartModal = new CartModal(page);
+        cmpModal = new Modal(page);
 
         Locator rootProductDetails = page.locator("div.product-details");
         Locator rootProductInformation = rootProductDetails.locator("div.product-information");
@@ -187,8 +187,8 @@ public class ProductDetailsPage extends BasePage {
         return cmpProductFilterBar;
     }
 
-    public CartModal cartModal() {
-        return cmpCartModal;
+    public Modal modal() {
+        return cmpModal;
     }
 
 }
