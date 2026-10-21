@@ -55,6 +55,14 @@ public class ProductFilterBar {
         );
     }
 
+    public Locator getBrandsHeader() {
+        return lblHeaderBrands;
+    }
+
+    public Locator getCategoryHeader() {
+        return lblHeaderCategory;
+    }
+
     public void clickCategoryHeader(String categoryName) {
         log.info("Clicking category header \"{}\"", categoryName);
         categoryHeader(categoryName).click();

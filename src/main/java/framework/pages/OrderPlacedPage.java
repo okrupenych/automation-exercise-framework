@@ -1,11 +1,11 @@
 package framework.pages;
 
 import com.microsoft.playwright.Locator;
+import com.microsoft.playwright.Download;
 import com.microsoft.playwright.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -42,6 +42,11 @@ public class OrderPlacedPage extends ConfirmationPage {
     public void clickDownloadInvoice() {
         log.info("Clicking \"Download invoice\" button");
         btnDownloadInvoice.click();
+    }
+
+    public Download downloadInvoice() {
+        log.info("Downloading invoice");
+        return page.waitForDownload(this::clickDownloadInvoice);
     }
 
 }

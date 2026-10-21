@@ -31,6 +31,7 @@ public class ProductDetailsPage extends BasePage {
     private final Locator lblBrand;
 
     // "Write Your Review" block
+    private final Locator lblReviewHeader;
     private final Locator inptName;
     private final Locator inptEmail;
     private final Locator inptReviewText;
@@ -58,6 +59,7 @@ public class ProductDetailsPage extends BasePage {
 
         Locator rootReviewSection = page.locator("div#reviews");
 
+        lblReviewHeader = page.locator("a[href='#reviews']");
         inptName = rootReviewSection.locator("input#name");
         inptEmail = rootReviewSection.locator("input#email");
         inptReviewText = rootReviewSection.locator("textarea#review");
@@ -151,6 +153,10 @@ public class ProductDetailsPage extends BasePage {
 
 
     // "Write your review" form
+    public Locator getReviewHeader() {
+        return lblReviewHeader;
+    }
+
     public Locator getReviewSuccessMessage() {
         return lblSuccessMessage;
     }

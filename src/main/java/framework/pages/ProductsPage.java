@@ -3,22 +3,18 @@ package framework.pages;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import framework.components.Modal;
-import framework.components.ProductFilterBar;
-import framework.components.ProductGrid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductsPage extends BasePage {
+public class ProductsPage extends ShopPage {
 
     private static final Logger log = LoggerFactory.getLogger(ProductsPage.class);
 
     private static final String URL = BASE_URL + "/products";
 
-    private final ProductFilterBar cmpProductFilterBar;
-    private final ProductGrid cmpProductGrid;
     private final Modal cmpModal;
 
     private final Locator inptSearchProduct;
@@ -26,8 +22,6 @@ public class ProductsPage extends BasePage {
 
     public ProductsPage(Page page) {
         super(page);
-        cmpProductFilterBar = new ProductFilterBar(page);
-        cmpProductGrid = new ProductGrid(page);
         cmpModal = new Modal(page);
 
         Locator rootAdvertisementSection = page.locator("section#advertisement");
@@ -46,8 +40,7 @@ public class ProductsPage extends BasePage {
                 btnSubmitSearchProduct
         ));
 
-        elements.addAll(cmpProductFilterBar.getRequiredElements());
-        elements.addAll(cmpProductGrid.getRequiredElements());
+        elements.addAll(super.getRequiredElements());
 
         return elements;
     }
@@ -71,14 +64,6 @@ public class ProductsPage extends BasePage {
 
 
     // Built-in components
-    public ProductFilterBar productsFilterBar() {
-        return cmpProductFilterBar;
-    }
-
-    public ProductGrid productGrid() {
-        return cmpProductGrid;
-    }
-
     public Modal modal() {
         return cmpModal;
     }

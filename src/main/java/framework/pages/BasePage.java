@@ -20,11 +20,13 @@ public abstract class BasePage {
 
     private final NavigationBar cmpNavigationBar;
     private final Footer cmpFooter;
+    private final Locator btnScrollUp;
 
     protected BasePage(Page page) {
         this.page = page;
         cmpNavigationBar = new NavigationBar(page);
         cmpFooter = new Footer(page);
+        btnScrollUp = page.locator("#scrollUp");
     }
 
 
@@ -42,6 +44,26 @@ public abstract class BasePage {
         log.debug("Page navigation completed: {}", url);
     }
 
+
+    public void scrollToBottom() {
+        log.info("Scrolling to bottom of page");
+        page.evaluate("window.scrollTo({top: document.documentElement.scrollHeight, behavior: 'instant'})");
+    }
+
+    public void scrollToTop() {
+        log.info("Scrolling to top of page");
+        page.evaluate("window.scrollTo({top: 0, behavior: 'instant'})");
+    }
+
+    public Locator getScrollUpButton() {
+        return btnScrollUp;
+    }
+
+    public void clickScrollUp() {
+        log.info("Clicking scroll up button");
+        btnScrollUp.click();
+        page.waitForFunction("window.scrollY === 0");
+    }
 
     // Built-in components
     public NavigationBar navigationBar() {

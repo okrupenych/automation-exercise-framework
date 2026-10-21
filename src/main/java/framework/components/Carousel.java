@@ -20,12 +20,14 @@ public class Carousel {
     private final Locator btnTestCases;
     private final Locator btnAPIList;
     private final Locator btnIndicator;
+    private final Locator lblHeading;
 
     public Carousel(Page page) {
         this.page = page;
 
         Locator rootCarousel = page.locator("#slider-carousel");
-        Locator rootActiveSlide = page.locator(".carousel-inner .item.active");
+        Locator rootActiveSlide = rootCarousel.locator(".carousel-inner .item.active");
+        lblHeading = rootActiveSlide.locator("h2");
 
         btnNext = rootCarousel.locator("[data-slide='next']");
         btnPrevious = rootCarousel.locator("[data-slide='prev']");
@@ -46,6 +48,10 @@ public class Carousel {
     public void clickPrevious() {
         log.info("Clicking previous slide");
         btnPrevious.click();
+    }
+
+    public Locator getHeading() {
+        return lblHeading;
     }
 
     public void clickNext() {

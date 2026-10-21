@@ -8,12 +8,10 @@ import java.util.List;
 
 public class ProductGrid {
 
-    private final Locator rootHeader;
     private final Locator rootProductItems;
 
     public ProductGrid(Page page) {
         Locator rootProductGrid = page.locator("div.features_items");
-        rootHeader = rootProductGrid.locator("h2.title");
         rootProductItems = rootProductGrid.locator("div.col-sm-4");
     }
 
@@ -21,13 +19,7 @@ public class ProductGrid {
 //----Public interface----
 
     public List<Locator> getRequiredElements() {
-        List<Locator> elements = new ArrayList<>(List.of(
-                rootHeader
-        ));
-
-        elements.addAll(itemByIndex(0).getRequiredElements());
-
-        return elements;
+        return new ArrayList<>(itemByIndex(0).getRequiredElements());
     }
 
     public List<ProductItem> getAllItems() {
@@ -50,10 +42,6 @@ public class ProductGrid {
                         new Locator.FilterOptions().setHasText(productName)
                 )
         );
-    }
-
-    public Locator getHeader() {
-        return rootHeader;
     }
 
 }
