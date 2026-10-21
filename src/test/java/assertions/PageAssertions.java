@@ -1,6 +1,7 @@
 package assertions;
 
 import com.microsoft.playwright.Locator;
+import com.microsoft.playwright.Download;
 import com.microsoft.playwright.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,8 @@ import java.util.regex.Pattern;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public final class PageAssertions {
 
@@ -17,6 +20,24 @@ public final class PageAssertions {
 
     private PageAssertions() {
         // No need to create an object, all methods are static
+    }
+
+    public static void assertElementVisible(Locator element) {
+        log.info("Verifying that required element is visible");
+        assertThat(element).isVisible();
+    }
+
+    public static void assertElementInViewport(Locator element) {
+        log.info("Verifying that element is in the viewport");
+        assertThat(element).isVisible();
+        assertThat(element).isInViewport();
+    }
+
+    public static void assertDownloadSuccessful(Download download) {
+        log.info("Verifying that file download completed successfully");
+        assertNull(download.failure(), "Download should complete without errors");
+        assertTrue(java.nio.file.Files.isRegularFile(download.path()),
+                "Downloaded file should exist");
     }
 
     public static void assertPageElementsVisible(List<Locator> elements) {
@@ -49,6 +70,11 @@ public final class PageAssertions {
     public static void assertItemsCount(List<?> items, int expectedCount) {
         log.info("Verifying items count: expected {}", expectedCount);
         assertEquals(expectedCount, items.size());
+    }
+
+    public static void assertElementAbsent(Locator element) {
+        log.info("Verifying that element is absent");
+        assertThat(element).hasCount(0);
     }
 
 }
