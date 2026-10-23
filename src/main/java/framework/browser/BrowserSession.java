@@ -15,6 +15,7 @@ public class BrowserSession {
 
     private final BrowserContext context;
     private final Page page;
+    private final OverlayHandler overlayHandler;
 
     public BrowserSession(Browser browser) {
         context = browser.newContext();
@@ -29,11 +30,13 @@ public class BrowserSession {
             log.warn("Default page timeout is disabled; operations may wait indefinitely");
         }
 
-        OverlayHandler overlayHandler = new OverlayHandler(page);
+        overlayHandler = new OverlayHandler(page);
         overlayHandler.registerHandlers();
 
         log.debug("Browser page initialized");
     }
+
+    public OverlayHandler getOverlayHandler() { return overlayHandler; }
 
     public Page getPage() {
         return page;

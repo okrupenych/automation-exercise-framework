@@ -2,6 +2,7 @@ package framework.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import framework.browser.OverlayHandler;
 import framework.components.ProductFilterBar;
 import framework.components.ProductGrid;
 
@@ -16,7 +17,11 @@ public abstract class ShopPage extends BasePage {
     private final Locator lblHeader;
 
     protected ShopPage(Page page) {
-        super(page);
+        this(page, new OverlayHandler(page));
+    }
+
+    protected ShopPage(Page page, OverlayHandler overlayHandler) {
+        super(page, overlayHandler);
         cmpProductFilterBar = new ProductFilterBar(page);
         cmpProductGrid = new ProductGrid(page);
         lblHeader = page.locator("div.features_items").locator("h2.title");

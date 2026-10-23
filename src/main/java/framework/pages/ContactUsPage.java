@@ -80,6 +80,20 @@ public class ContactUsPage extends BasePage {
         return lblSuccessMessage;
     }
 
+    public void waitUntilReady() {
+        log.debug("Waiting for contact form submit handler");
+        // The form is visible before the site's trailing scripts register this handler.
+        // Check the actual jQuery registration so a click cannot fall through to a native POST.
+        page.waitForFunction("""
+                () => {
+                    const form = document.querySelector('#contact-us-form');
+                    const jq = window.jQuery;
+                    return !!form && typeof jq?._data === 'function'
+                        && (jq._data(form, 'events')?.submit?.length ?? 0) > 0;
+                }
+                """);
+    }
+
     public void fillName(String value) {
         log.info("Filling name");
         inptName.fill(value);
@@ -106,6 +120,7 @@ public class ContactUsPage extends BasePage {
     }
 
     public void clickSubmit() {
+        waitUntilReady();
         log.info("Clicking \"Submit\" button");
         btnSubmit.click();
     }

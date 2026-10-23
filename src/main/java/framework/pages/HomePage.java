@@ -1,6 +1,7 @@
 package framework.pages;
 
 import com.microsoft.playwright.Page;
+import framework.browser.OverlayHandler;
 import framework.components.Carousel;
 import framework.components.Modal;
 import framework.components.RecommendedItems;
@@ -14,7 +15,11 @@ public class HomePage extends ShopPage {
     private final RecommendedItems cmpRecommendedItems;
 
     public HomePage(Page page) {
-        super(page);
+        this(page, new OverlayHandler(page));
+    }
+
+    public HomePage(Page page, OverlayHandler overlayHandler) {
+        super(page, overlayHandler);
         cmpCarousel = new Carousel(page);
         cmpModal = new Modal(page);
         cmpRecommendedItems = new RecommendedItems(page);
