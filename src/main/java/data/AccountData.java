@@ -1,6 +1,7 @@
 package data;
 
 public record AccountData(
+        String title,
         String firstName,
         String lastName,
         String email,
@@ -36,5 +37,9 @@ public record AccountData(
             String expirationMonth,
             String expirationYear
     ) {
+    }
+
+    public Credentials credentials() {
+        return new Credentials(email, password);
     }
 }

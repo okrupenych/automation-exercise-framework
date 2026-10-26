@@ -118,6 +118,15 @@ public class SignupPage extends BasePage {
         return inptEmail;
     }
 
+    public void selectTitle(String title) {
+        log.info("Selecting title: " + title);
+        switch (title) {
+            case "Mr" -> selectMr();
+            case "Mrs" -> selectMrs();
+            default -> throw new IllegalArgumentException("Unsupported title: " + title);
+        }
+    }
+
     public void selectMr() {
         log.info("Selecting title: Mr.");
         rbtnMr.check();

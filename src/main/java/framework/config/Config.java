@@ -94,4 +94,20 @@ public class Config {
         return timeout;
     }
 
+    public static String getApiBaseUrl() {
+        return getRequiredProperty("api.base.url");
+    }
+
+    public static int getApiTimeout() {
+        int timeout = getRequiredInt("api.timeout");
+
+        if (timeout < 0) {
+            throw new IllegalStateException(
+                    "Invalid api.timeout: value cannot be negative (" + timeout + ")"
+            );
+        }
+
+        return timeout;
+    }
+
 }
