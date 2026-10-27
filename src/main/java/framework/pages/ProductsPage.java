@@ -2,7 +2,6 @@ package framework.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
-import framework.components.Modal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,14 +14,12 @@ public class ProductsPage extends ShopPage {
 
     private static final String URL = BASE_URL + "/products";
 
-    private final Modal cmpModal;
 
     private final Locator inptSearchProduct;
     private final Locator btnSubmitSearchProduct;
 
     public ProductsPage(Page page) {
         super(page);
-        cmpModal = new Modal(page);
 
         Locator rootAdvertisementSection = page.locator("section#advertisement");
 
@@ -63,9 +60,11 @@ public class ProductsPage extends ShopPage {
     }
 
 
-    // Built-in components
-    public Modal modal() {
-        return cmpModal;
+    // Composite actions
+    public void searchProducts(String query) {
+        fillSearchProduct(query);
+        clickSubmitSearch();
     }
+
 
 }

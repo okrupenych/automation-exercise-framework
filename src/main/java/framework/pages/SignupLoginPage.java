@@ -2,6 +2,7 @@ package framework.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import data.Credentials;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,6 +72,10 @@ public class SignupLoginPage extends BasePage {
         return lblHeaderLogin;
     }
 
+    public Locator getLoginError() {
+        return lblLoginError;
+    }
+
     public void fillLoginEmail(String value) {
         log.info("Filling login email");
         inptLoginEmail.fill(value);
@@ -86,14 +91,14 @@ public class SignupLoginPage extends BasePage {
         btnLoginSubmit.click();
     }
 
-    public Locator getLoginError() {
-        return lblLoginError;
-    }
-
 
     // Sign Up form
     public Locator getSignupHeader() {
         return lblHeaderSignup;
+    }
+
+    public Locator getSignupError() {
+        return lblSignupError;
     }
 
     public void fillSignupName(String value) {
@@ -111,8 +116,17 @@ public class SignupLoginPage extends BasePage {
         btnSignupSubmit.click();
     }
 
-    public Locator getSignupError() {
-        return lblSignupError;
+
+    // Composite actions
+    public void submitLogin(Credentials credentials) {
+        fillLoginEmail(credentials.email());
+        fillLoginPassword(credentials.password());
+        clickLoginSubmit();
     }
 
+    public void submitSignup(String name, String email) {
+        fillSignupName(name);
+        fillSignupEmail(email);
+        clickSignupSubmit();
+    }
 }

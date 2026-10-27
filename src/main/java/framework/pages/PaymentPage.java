@@ -2,6 +2,7 @@ package framework.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import data.AccountData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -97,6 +98,16 @@ public class PaymentPage extends BasePage {
     public void clickPayAndConfirmOrder() {
         log.info("Clicking \"Pay and Confirm Order\" button");
         btnPayAndConfirmOrder.click(new Locator.ClickOptions().setNoWaitAfter(true));
+    }
+
+
+    // Composite actions
+    public void fillPaymentDetails(AccountData.PaymentDetails payment) {
+        fillNameOnCard(payment.nameOnCard());
+        fillCardNumber(payment.cardNumber());
+        fillCVC(payment.cvc());
+        fillExpirationMonth(payment.expirationMonth());
+        fillExpirationYear(payment.expirationYear());
     }
 
 }

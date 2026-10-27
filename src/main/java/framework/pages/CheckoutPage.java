@@ -85,16 +85,6 @@ public class CheckoutPage extends BasePage {
     }
 
 
-    // Components
-    public Breadcrumbs breadcrumbs() {
-        return cmpBreadcrumbs;
-    }
-
-    public Cart cart() {
-        return cmpCart;
-    }
-
-
     // Delivery address info
     public Locator getDeliveryAddressHeader() {
         return rootDeliveryAddress.locator("li.address_title h3");
@@ -154,5 +144,15 @@ public class CheckoutPage extends BasePage {
 
     public Locator getReviewSectionHeader() {
         return lblHeaderReview;
+    }
+
+
+    // Built-in components
+    public Breadcrumbs breadcrumbs() {
+        return cmpBreadcrumbs;
+    }
+
+    public Cart cart() {
+        return cmpCart;
     }
 }

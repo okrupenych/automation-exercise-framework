@@ -130,4 +130,13 @@ public class ContactUsPage extends BasePage {
         btnHome.click();
     }
 
+
+    // Composite Actions
+    public void fillContactForm(String name, String email, String subject, String message) {
+        fillName(name);
+        fillEmail(email);
+        fillSubject(subject);
+        fillMessage(message);
+    }
+
 }

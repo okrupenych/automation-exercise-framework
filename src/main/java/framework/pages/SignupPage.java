@@ -2,10 +2,12 @@ package framework.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import data.AccountData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class SignupPage extends BasePage {
 
@@ -69,6 +71,14 @@ public class SignupPage extends BasePage {
         inptMobileNumber = rootForm.locator("#mobile_number");
 
         btnCreateAccount = rootForm.locator("button[data-qa='create-account']");
+    }
+
+
+//----Internal implementation----
+    private void fillIfPresent(String value, Consumer<String> action) {
+        if (value != null) {
+            action.accept(value);
+        }
     }
 
 
@@ -226,6 +236,38 @@ public class SignupPage extends BasePage {
     public void clickCreateAccount() {
         log.info("Clicking on \"Create account\" button");
         btnCreateAccount.click();
+    }
+
+
+    // Composite actions
+    public void fillRegistration(AccountData account, boolean newsletter, boolean specialOffers) {
+        fillIfPresent(account.title(), this::selectTitle);
+        fillIfPresent(account.fullName(), this::fillName);
+        fillIfPresent(account.password(), this::fillPassword);
+
+        if (account.birthDay() != null
+                && account.birthMonth() != null
+                && account.birthYear() != null) {
+            selectDateOfBirth(
+                    account.birthDay(),
+                    account.birthMonth(),
+                    account.birthYear()
+            );
+        }
+
+        setNewsletter(newsletter);
+        setSpecialOffers(specialOffers);
+
+        fillIfPresent(account.firstName(), this::fillFirstName);
+        fillIfPresent(account.lastName(), this::fillLastName);
+        fillIfPresent(account.company(), this::fillCompany);
+        fillIfPresent(account.address1(), this::fillAddress);
+        fillIfPresent(account.address2(), this::fillAddress2);
+        fillIfPresent(account.country(), this::selectCountry);
+        fillIfPresent(account.state(), this::fillState);
+        fillIfPresent(account.city(), this::fillCity);
+        fillIfPresent(account.zipcode(), this::fillZipcode);
+        fillIfPresent(account.mobileNumber(), this::fillMobileNumber);
     }
 
 }

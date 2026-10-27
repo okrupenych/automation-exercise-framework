@@ -44,4 +44,19 @@ public class ProductGrid {
         );
     }
 
+    public ProductItem itemByExactName(String productName) {
+        // This page is owned by the caller and must not be closed here.
+        @SuppressWarnings("resource")
+        Page page = rootProductItems.page();
+        Locator matches = rootProductItems.filter(new Locator.FilterOptions().setHas(
+                page.locator("div.productinfo p").and(page.getByText(
+                        productName, new Page.GetByTextOptions().setExact(true)))));
+        int count = matches.count();
+        if (count != 1) {
+            throw new IllegalStateException("Expected one card for product \"" + productName
+                    + "\", found " + count);
+        }
+        return new ProductItem(matches);
+    }
+
 }

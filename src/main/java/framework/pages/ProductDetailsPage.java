@@ -188,6 +188,13 @@ public class ProductDetailsPage extends BasePage {
     }
 
 
+    // Composite actions
+    public void addToCart(int quantity) {
+        fillQuantity(quantity);
+        clickAddToCart();
+    }
+
+
     // Built-in components
     public ProductFilterBar productFilterBar() {
         return cmpProductFilterBar;

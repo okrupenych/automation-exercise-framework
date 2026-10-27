@@ -3,7 +3,6 @@ package framework.pages;
 import com.microsoft.playwright.Page;
 import framework.browser.OverlayHandler;
 import framework.components.Carousel;
-import framework.components.Modal;
 import framework.components.RecommendedItems;
 
 public class HomePage extends ShopPage {
@@ -11,7 +10,6 @@ public class HomePage extends ShopPage {
     private static final String URL = BASE_URL + "/";
 
     private final Carousel cmpCarousel;
-    private final Modal cmpModal;
     private final RecommendedItems cmpRecommendedItems;
 
     public HomePage(Page page) {
@@ -21,7 +19,6 @@ public class HomePage extends ShopPage {
     public HomePage(Page page, OverlayHandler overlayHandler) {
         super(page, overlayHandler);
         cmpCarousel = new Carousel(page);
-        cmpModal = new Modal(page);
         cmpRecommendedItems = new RecommendedItems(page);
     }
 
@@ -36,10 +33,6 @@ public class HomePage extends ShopPage {
     // Built-in components
     public Carousel carousel() {
         return cmpCarousel;
-    }
-
-    public Modal modal() {
-        return cmpModal;
     }
 
     public RecommendedItems recommendedItems() {
