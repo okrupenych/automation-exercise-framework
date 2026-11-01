@@ -1,5 +1,6 @@
 /logs/
 /src/test/java/testsuites/ExampleTestSuite.java
+/src/test/java/testsuites/AutomationExerciseOriginalTestCases.java
 
 target/
 !.mvn/wrapper/maven-wrapper.jar

@@ -161,6 +161,18 @@ public class ProductDetailsPage extends BasePage {
         return lblSuccessMessage;
     }
 
+    public Locator getReviewName() {
+        return inptName;
+    }
+
+    public Locator getReviewEmail() {
+        return inptEmail;
+    }
+
+    public Locator getReviewText() {
+        return inptReviewText;
+    }
+
     public void fillName(String value) {
         log.info("Filling review name");
         inptName.fill(value);

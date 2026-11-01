@@ -128,6 +128,14 @@ public class SignupPage extends BasePage {
         return inptEmail;
     }
 
+    public Locator getName() {
+        return inptName;
+    }
+
+    public Locator getPassword() {
+        return inptPassword;
+    }
+
     public void selectTitle(String title) {
         log.info("Selecting title: " + title);
         switch (title) {
@@ -179,6 +187,34 @@ public class SignupPage extends BasePage {
     // Address info section
     public Locator getAddressHeader() {
         return lblHeaderAddress;
+    }
+
+    public Locator getFirstName() {
+        return inptFirstName;
+    }
+
+    public Locator getLastName() {
+        return inptLastName;
+    }
+
+    public Locator getAddress() {
+        return inptAddress;
+    }
+
+    public Locator getState() {
+        return inptState;
+    }
+
+    public Locator getCity() {
+        return inptCity;
+    }
+
+    public Locator getZipcode() {
+        return inptZipcode;
+    }
+
+    public Locator getMobileNumber() {
+        return inptMobileNumber;
     }
 
     public void fillFirstName(String value) {

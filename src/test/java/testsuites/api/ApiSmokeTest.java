@@ -1,4 +1,4 @@
-package testsuites;
+package testsuites.api;
 
 import base.BaseApiTest;
 import data.AccountData;
@@ -8,15 +8,18 @@ import framework.api.models.AccountResponse;
 import framework.api.models.BrandsResponse;
 import framework.api.models.MessageResponse;
 import framework.api.models.ProductsResponse;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("api")
 public class ApiSmokeTest extends BaseApiTest {
 
     @Test
+    @Tag("smoke")
     void searchProducts() {
         ApiResult result = api.searchProducts("shirt");
 
@@ -32,6 +35,7 @@ public class ApiSmokeTest extends BaseApiTest {
     }
 
     @Test
+    @Tag("smoke")
     void getBrands() {
         ApiResult result = api.getBrands();
 
@@ -47,6 +51,7 @@ public class ApiSmokeTest extends BaseApiTest {
     }
 
     @Test
+    @Tag("negative")
     void searchProductsWithoutQuery() {
         ApiResult result = api.searchProducts(null);
 
@@ -64,6 +69,7 @@ public class ApiSmokeTest extends BaseApiTest {
     }
 
     @Test
+    @Tag("negative")
     void verifyLoginWithoutEmail() {
         ApiResult result = api.verifyLogin(
                 new Credentials(null, "test-password")
@@ -226,6 +232,7 @@ public class ApiSmokeTest extends BaseApiTest {
     }
 
     @Test
+    @Tag("smoke")
     void getProducts() {
         ApiResult result = api.getProducts();
 

@@ -76,6 +76,14 @@ public class SignupLoginPage extends BasePage {
         return lblLoginError;
     }
 
+    public Locator getLoginEmail() {
+        return inptLoginEmail;
+    }
+
+    public Locator getLoginPassword() {
+        return inptLoginPassword;
+    }
+
     public void fillLoginEmail(String value) {
         log.info("Filling login email");
         inptLoginEmail.fill(value);
@@ -99,6 +107,14 @@ public class SignupLoginPage extends BasePage {
 
     public Locator getSignupError() {
         return lblSignupError;
+    }
+
+    public Locator getSignupName() {
+        return inptSignupName;
+    }
+
+    public Locator getSignupEmail() {
+        return inptSignupEmail;
     }
 
     public void fillSignupName(String value) {
@@ -129,4 +145,5 @@ public class SignupLoginPage extends BasePage {
         fillSignupEmail(email);
         clickSignupSubmit();
     }
+
 }

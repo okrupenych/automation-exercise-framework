@@ -29,7 +29,7 @@ public class ContactUsPage extends BasePage {
         super(page);
         Locator rootContactUsForm = page.locator("form#contact-us-form");
 
-        lblHeaderContactUs = page.locator("div#contact-page h2");
+        lblHeaderContactUs = page.locator("div#contact-page > div.bg > div.row h2");
         lblHeaderGetInTouch = page.locator("div.contact-form > h2");
 
         inptName = rootContactUsForm.locator("input[name='name']");
@@ -78,6 +78,22 @@ public class ContactUsPage extends BasePage {
 
     public Locator getSuccessMessage() {
         return lblSuccessMessage;
+    }
+
+    public Locator getName() {
+        return inptName;
+    }
+
+    public Locator getEmail() {
+        return inptEmail;
+    }
+
+    public Locator getSubject() {
+        return inptSubject;
+    }
+
+    public Locator getMessage() {
+        return inptMessage;
     }
 
     public void waitUntilReady() {

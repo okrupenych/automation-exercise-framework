@@ -61,4 +61,8 @@ public class Footer {
         return lblInfo;
     }
 
+    public Locator getEmail() {
+        return inptEmail;
+    }
+
 }

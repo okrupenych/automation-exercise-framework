@@ -36,6 +36,17 @@ public final class PageAssertions {
             String total
     ) {}
 
+    public enum ValidationError {
+        VALUE_MISSING("valueMissing"),
+        TYPE_MISMATCH("typeMismatch");
+
+        private final String property;
+
+        ValidationError(String property) {
+            this.property = property;
+        }
+    }
+
     private PageAssertions() {
         // No need to create an object, all methods are static
     }
@@ -237,6 +248,29 @@ public final class PageAssertions {
                 checkoutPage.getBillingAddressPhone(),
                 expected
         );
+    }
+
+    public static void assertFieldValidationError(Locator field, ValidationError expectedError) {
+        log.info("Verifying field validation error: {}", expectedError);
+
+        assertEquals(
+                Boolean.TRUE,
+                field.evaluate(
+                        "(el, property) => el.validity[property]",
+                        expectedError.property
+                ),
+                "Expected validation error: " + expectedError
+        );
+
+        assertEquals(
+                Boolean.TRUE,
+                field.evaluate(
+                        "el => el.validationMessage.length > 0"
+                ),
+                "Expected a non-empty validation message"
+        );
+
+        assertThat(field).isFocused();
     }
 
 }
