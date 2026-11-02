@@ -4,7 +4,7 @@ A learning and portfolio project demonstrating a reusable test framework with Pl
 
 ## Stack and design
 
-- Java 21, Maven, JUnit 5, and Maven Surefire.
+- Java 21, Maven Wrapper (Apache Maven 3.10.0), JUnit 5, and Maven Surefire.
 - Playwright for Chromium UI automation and HTTP requests through `APIRequestContext`.
 - Page Objects and reusable UI components, with shared account flows and page assertions.
 - An API layer separating session management, HTTP transport, endpoint methods, and Gson response models.
@@ -25,34 +25,47 @@ Tests depend on an external demonstration site that may be temporarily unavailab
 
 ## Getting started
 
-Install JDK 21 and Maven, and make both available on `PATH`. Internet access is needed to download dependencies, Playwright browser binaries, and reach the test site. UI tests run in a visible Chromium window by default, so a graphical environment is needed with the default configuration.
+Install JDK 21. Maven Wrapper downloads and uses Apache Maven 3.10.0 automatically, so a separate Maven installation is not required. Internet access is needed to download dependencies and Playwright browser binaries and to reach the test site. UI tests run in a visible Chromium window by default, so a graphical environment is needed with the default configuration.
 
-Run commands from the repository root:
+Run commands from the repository root.
 
-```sh
-# Run all tests
-mvn test
+On Windows:
 
-# Run API or UI tests
-mvn test -Dgroups=api
-mvn test -Dgroups=ui
-
-# Run the smoke subset
-mvn test -Dgroups=smoke
-
-# Run a single test class
-mvn test -Dtest=AccountApiTest
+```cmd
+mvnw.cmd test
+mvnw.cmd test -Dgroups=api
+mvnw.cmd test -Dgroups=ui
+mvnw.cmd test -Dgroups=smoke
+mvnw.cmd test -Dtest=AccountApiTest
 ```
 
-Install the Playwright-managed Chromium browser before the first UI test run:
+On macOS/Linux:
 
 ```sh
-mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install chromium"
+./mvnw test
+./mvnw test -Dgroups=api
+./mvnw test -Dgroups=ui
+./mvnw test -Dgroups=smoke
+./mvnw test -Dtest=AccountApiTest
 ```
 
-Repeat this command after changing the Playwright version. Tests can also be run through JUnit in an IDE configured with JDK 21.
+Install the Playwright-managed Chromium browser before the first UI test run.
 
-Surefire uses JUnit tags for `groups` filtering. Available tags are `ui`, `api`, `smoke`, `negative`, `account`, `catalog`, `cart`, `checkout`, `navigation`, `contact`, `reviews`, and `subscription`. For example, `mvn test "-Dgroups=api & catalog"` selects API catalog tests.
+On Windows:
+
+```cmd
+mvnw.cmd exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install chromium"
+```
+
+On macOS/Linux:
+
+```sh
+./mvnw exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install chromium"
+```
+
+Repeat the matching command after changing the Playwright version. Tests can also be run through JUnit in an IDE configured with JDK 21.
+
+Surefire uses JUnit tags for `groups` filtering. Available tags are `ui`, `api`, `smoke`, `negative`, `account`, `catalog`, `cart`, `checkout`, `navigation`, `contact`, `reviews`, and `subscription`. For example, `mvnw.cmd test "-Dgroups=api & catalog"` on Windows or `./mvnw test "-Dgroups=api & catalog"` on macOS/Linux selects API catalog tests.
 
 ## Configuration
 
