@@ -1,13 +1,11 @@
-package testsuites.api;
+package testsuites.api.account;
 
 import base.BaseApiTest;
 import data.AccountData;
 import data.Credentials;
 import framework.api.ApiResult;
 import framework.api.models.AccountResponse;
-import framework.api.models.BrandsResponse;
 import framework.api.models.MessageResponse;
-import framework.api.models.ProductsResponse;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -16,57 +14,8 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Tag("api")
-public class ApiSmokeTest extends BaseApiTest {
-
-    @Test
-    @Tag("smoke")
-    void searchProducts() {
-        ApiResult result = api.searchProducts("shirt");
-
-        assertEquals(200, result.httpStatus());
-
-        ProductsResponse response =
-                result.as(ProductsResponse.class);
-
-        assertNotNull(response);
-        assertEquals(Integer.valueOf(200), response.responseCode());
-        assertNotNull(response.products());
-        assertFalse(response.products().isEmpty());
-    }
-
-    @Test
-    @Tag("smoke")
-    void getBrands() {
-        ApiResult result = api.getBrands();
-
-        assertEquals(200, result.httpStatus());
-
-        BrandsResponse response =
-                result.as(BrandsResponse.class);
-
-        assertNotNull(response);
-        assertEquals(Integer.valueOf(200), response.responseCode());
-        assertNotNull(response.brands());
-        assertFalse(response.brands().isEmpty());
-    }
-
-    @Test
-    @Tag("negative")
-    void searchProductsWithoutQuery() {
-        ApiResult result = api.searchProducts(null);
-
-        assertEquals(200, result.httpStatus());
-
-        MessageResponse response =
-                result.as(MessageResponse.class);
-
-        assertNotNull(response);
-        assertEquals(Integer.valueOf(400), response.responseCode());
-        assertEquals(
-                "Bad request, search_product parameter is missing in POST request.",
-                response.message()
-        );
-    }
+@Tag("account")
+public class AccountApiTest extends BaseApiTest {
 
     @Test
     @Tag("negative")
@@ -92,26 +41,33 @@ public class ApiSmokeTest extends BaseApiTest {
     void accountLifecycle() {
         AccountData account = new AccountData(
                 "Mr",
-                "Fake", "User",
+                "Fake",
+                "User",
                 "api-" + UUID.randomUUID() + "@test.com",
                 "test-password",
-                "1", "January", "2000",
+                "1",
+                "January",
+                "2000",
                 "Fake inc.",
-                "Fake address 1", null,
+                "Fake address 1",
+                null,
                 "United States",
-                "Fake State", "Fake City",
+                "Fake State",
+                "Fake City",
                 "30",
                 "+3030",
                 null
         );
 
         Throwable scenarioFailure = null;
+
         try {
             ApiResult result = api.createAccount(account);
 
             assertEquals(200, result.httpStatus());
 
-            MessageResponse created = result.as(MessageResponse.class);
+            MessageResponse created =
+                    result.as(MessageResponse.class);
 
             assertNotNull(created);
             assertEquals(Integer.valueOf(201), created.responseCode());
@@ -121,7 +77,8 @@ public class ApiSmokeTest extends BaseApiTest {
 
             assertEquals(200, details.httpStatus());
 
-            AccountResponse response = details.as(AccountResponse.class);
+            AccountResponse response =
+                    details.as(AccountResponse.class);
 
             assertNotNull(response);
             assertEquals(Integer.valueOf(200), response.responseCode());
@@ -150,7 +107,8 @@ public class ApiSmokeTest extends BaseApiTest {
 
             assertEquals(200, login.httpStatus());
 
-            MessageResponse verified = login.as(MessageResponse.class);
+            MessageResponse verified =
+                    login.as(MessageResponse.class);
 
             assertNotNull(verified);
             assertEquals(Integer.valueOf(200), verified.responseCode());
@@ -158,13 +116,19 @@ public class ApiSmokeTest extends BaseApiTest {
 
             AccountData updatedAccount = new AccountData(
                     account.title(),
-                    account.firstName(), account.lastName(),
-                    account.email(), account.password(),
-                    account.birthDay(), account.birthMonth(), account.birthYear(),
+                    account.firstName(),
+                    account.lastName(),
+                    account.email(),
+                    account.password(),
+                    account.birthDay(),
+                    account.birthMonth(),
+                    account.birthYear(),
                     "Updated company",
-                    account.address1(), account.address2(),
+                    account.address1(),
+                    account.address2(),
                     account.country(),
-                    account.state(), "Updated city",
+                    account.state(),
+                    "Updated city",
                     account.zipcode(),
                     account.mobileNumber(),
                     account.payment()
@@ -174,13 +138,15 @@ public class ApiSmokeTest extends BaseApiTest {
 
             assertEquals(200, update.httpStatus());
 
-            MessageResponse updated = update.as(MessageResponse.class);
+            MessageResponse updated =
+                    update.as(MessageResponse.class);
 
             assertNotNull(updated);
             assertEquals(Integer.valueOf(200), updated.responseCode());
             assertEquals("User updated!", updated.message());
 
-            ApiResult updatedDetails = api.getAccountByEmail(account.email());
+            ApiResult updatedDetails =
+                    api.getAccountByEmail(account.email());
 
             assertEquals(200, updatedDetails.httpStatus());
 
@@ -190,21 +156,27 @@ public class ApiSmokeTest extends BaseApiTest {
             assertNotNull(afterUpdate);
             assertEquals(Integer.valueOf(200), afterUpdate.responseCode());
             assertNotNull(afterUpdate.user());
-            assertEquals(updatedAccount.company(), afterUpdate.user().company());
-            assertEquals(updatedAccount.city(), afterUpdate.user().city());
+            assertEquals(
+                    updatedAccount.company(),
+                    afterUpdate.user().company()
+            );
+            assertEquals(
+                    updatedAccount.city(),
+                    afterUpdate.user().city()
+            );
             assertEquals(user.id(), afterUpdate.user().id());
         } catch (RuntimeException | Error failure) {
             scenarioFailure = failure;
             throw failure;
         } finally {
             try {
-                ApiResult cleanup = api.deleteAccount(
-                        account.credentials()
-                );
+                ApiResult cleanup =
+                        api.deleteAccount(account.credentials());
 
                 assertEquals(200, cleanup.httpStatus());
 
-                MessageResponse deleted = cleanup.as(MessageResponse.class);
+                MessageResponse deleted =
+                        cleanup.as(MessageResponse.class);
 
                 assertNotNull(deleted);
                 assertEquals(Integer.valueOf(200), deleted.responseCode());
@@ -229,22 +201,6 @@ public class ApiSmokeTest extends BaseApiTest {
                 }
             }
         }
-    }
-
-    @Test
-    @Tag("smoke")
-    void getProducts() {
-        ApiResult result = api.getProducts();
-
-        assertEquals(200, result.httpStatus());
-
-        ProductsResponse response =
-                result.as(ProductsResponse.class);
-
-        assertNotNull(response);
-        assertEquals(Integer.valueOf(200), response.responseCode());
-        assertNotNull(response.products());
-        assertFalse(response.products().isEmpty());
     }
 
 }
