@@ -8,4 +8,5 @@ public record BrandsResponse(
 ) {
     public record Brand(Integer id, String brand) {
     }
+
 }

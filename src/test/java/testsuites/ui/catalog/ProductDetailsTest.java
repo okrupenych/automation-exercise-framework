@@ -22,6 +22,7 @@ public class ProductDetailsTest extends BaseTest {
         productDetailsPage = new ProductDetailsPage(browserSession.getPage());
     }
 
+
     @Test
     @DisplayName("View Product opens the selected product from the catalog")
     void shouldOpenProductDetailsFromCatalog() {
@@ -119,6 +120,9 @@ public class ProductDetailsTest extends BaseTest {
         );
     }
 
+
+//----Private helpers----
+
     private void assertProductDetailsReady(int productId) {
         PageAssertions.assertPageReady(
                 browserSession.getPage(),
@@ -126,4 +130,5 @@ public class ProductDetailsTest extends BaseTest {
                 productDetailsPage.getTargetUrl() + productId
         );
     }
+
 }

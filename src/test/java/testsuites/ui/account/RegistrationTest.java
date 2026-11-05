@@ -66,6 +66,44 @@ public class RegistrationTest extends BaseTest {
         );
     }
 
+    @AfterEach
+    void deleteTestAccount() {
+        if (!registrationAttempted) {
+            return;
+        }
+
+        try (ApiSession session = new ApiSession()) {
+            AutomationExerciseApi api = new AutomationExerciseApi(
+                    new ApiClient(session.getRequestContext())
+            );
+
+            var result = api.deleteAccount(account.credentials());
+
+            assertEquals(
+                    200,
+                    result.httpStatus(),
+                    "Unexpected HTTP status during account cleanup: " + result.body()
+            );
+
+            MessageResponse response = result.as(MessageResponse.class);
+
+            if (registrationCompleted) {
+                assertEquals(
+                        Integer.valueOf(200),
+                        response.responseCode(),
+                        "Failed to delete the registered account: " + result.body()
+                );
+            } else {
+                assertTrue(
+                        Integer.valueOf(200).equals(response.responseCode())
+                                || Integer.valueOf(404).equals(response.responseCode()),
+                        "Unexpected account cleanup response: " + result.body()
+                );
+            }
+        }
+    }
+
+
     @Test
     @DisplayName("A new user can register with valid account details")
     @Tag("smoke")
@@ -164,43 +202,6 @@ public class RegistrationTest extends BaseTest {
         PageAssertions.assertPageElementsVisible(
                 signupLoginPage.getRequiredElements()
         );
-    }
-
-    @AfterEach
-    void deleteTestAccount() {
-        if (!registrationAttempted) {
-            return;
-        }
-
-        try (ApiSession session = new ApiSession()) {
-            AutomationExerciseApi api = new AutomationExerciseApi(
-                    new ApiClient(session.getRequestContext())
-            );
-
-            var result = api.deleteAccount(account.credentials());
-
-            assertEquals(
-                    200,
-                    result.httpStatus(),
-                    "Unexpected HTTP status during account cleanup: " + result.body()
-            );
-
-            MessageResponse response = result.as(MessageResponse.class);
-
-            if (registrationCompleted) {
-                assertEquals(
-                        Integer.valueOf(200),
-                        response.responseCode(),
-                        "Failed to delete the registered account: " + result.body()
-                );
-            } else {
-                assertTrue(
-                        Integer.valueOf(200).equals(response.responseCode())
-                                || Integer.valueOf(404).equals(response.responseCode()),
-                        "Unexpected account cleanup response: " + result.body()
-                );
-            }
-        }
     }
 
 }

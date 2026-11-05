@@ -25,4 +25,5 @@ public record AccountResponse(
             String zipcode
     ) {
     }
+
 }

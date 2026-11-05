@@ -42,4 +42,5 @@ public record AccountData(
     public Credentials credentials() {
         return new Credentials(email, password);
     }
+
 }

@@ -12,17 +12,22 @@ public class OverlayHandler {
 
     private final Page page;
 
-    public OverlayHandler(Page page) {
-        this.page = page;
-    }
-
     private boolean dismissingPopup;
     private long operationDeadline = Long.MAX_VALUE;
     private long dismissalCount;
     private String lastDismissed = "none";
 
-    public long getDismissalCount() { return dismissalCount; }
-    public String getLastDismissed() { return lastDismissed; }
+    public OverlayHandler(Page page) {
+        this.page = page;
+    }
+
+    public long getDismissalCount() {
+        return dismissalCount;
+    }
+
+    public String getLastDismissed() {
+        return lastDismissed;
+    }
 
     public void withDeadline(long deadline, Runnable action) {
         long previous = operationDeadline;

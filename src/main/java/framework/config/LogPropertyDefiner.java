@@ -6,7 +6,9 @@ import ch.qos.logback.core.PropertyDefinerBase;
 public final class LogPropertyDefiner extends PropertyDefinerBase {
     private String key;
 
-    public void setKey(String key) { this.key = key; }
+    public void setKey(String key) {
+        this.key = key;
+    }
 
     @Override
     public String getPropertyValue() {
@@ -16,4 +18,5 @@ public final class LogPropertyDefiner extends PropertyDefinerBase {
             default -> throw new IllegalStateException("Unsupported logging property: " + key);
         };
     }
+
 }

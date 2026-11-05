@@ -25,7 +25,7 @@ public abstract class ConfirmationPage extends BasePage {
     }
 
 
-//----Public interface----
+//----Public Interface----
 
     @Override
     public List<Locator> getRequiredElements() {
@@ -38,6 +38,7 @@ public abstract class ConfirmationPage extends BasePage {
 
         return elements;
     }
+
 
     // Page actions
     public void clickContinueButton() {

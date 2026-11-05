@@ -21,7 +21,8 @@ public class Breadcrumbs {
         lblCurrentPage = rootBreadcrumbs.locator("li.active");
     }
 
-    //----Public interface----
+
+//----Public Interface----
 
     public List<Locator> getRequiredElements() {
         return List.of(
@@ -42,4 +43,5 @@ public class Breadcrumbs {
     public Locator getHomeLink() {
         return linkHome;
     }
+
 }

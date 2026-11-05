@@ -28,7 +28,7 @@ public class Footer {
     }
 
 
-//----Public interface----
+//----Public Interface----
 
     public List<Locator> getRequiredElements() {
         return List.of(

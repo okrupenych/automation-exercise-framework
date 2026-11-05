@@ -59,4 +59,5 @@ public class AutomationExerciseApi {
 
         return client.send("GET", "getUserDetailByEmail", options);
     }
+
 }

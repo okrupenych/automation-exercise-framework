@@ -68,7 +68,12 @@ public class ProductDetailsPage extends BasePage {
     }
 
 
-//----Public interface----
+//----Public Interface----
+
+    @Override
+    public String getTargetUrl() {
+        return URL;
+    }
 
     @Override
     public List<Locator> getRequiredElements() {
@@ -91,11 +96,6 @@ public class ProductDetailsPage extends BasePage {
          elements.addAll(cmpProductFilterBar.getRequiredElements());
 
          return elements;
-    }
-
-    @Override
-    public String getTargetUrl() {
-        return URL;
     }
 
     @Override

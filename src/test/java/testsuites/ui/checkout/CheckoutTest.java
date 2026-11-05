@@ -134,6 +134,45 @@ public class CheckoutTest extends BaseTest {
         PageAssertions.assertPageReady(page, checkoutPage);
     }
 
+    @AfterEach
+    void deleteTestAccount() {
+        if (!accountCreationAttempted) {
+            return;
+        }
+
+        try (ApiSession session = new ApiSession()) {
+            AutomationExerciseApi api = new AutomationExerciseApi(
+                    new ApiClient(session.getRequestContext())
+            );
+
+            var result = api.deleteAccount(account.credentials());
+
+            assertEquals(
+                    200,
+                    result.httpStatus(),
+                    "Unexpected cleanup HTTP status: " + result.body()
+            );
+
+            Integer responseCode =
+                    result.as(MessageResponse.class).responseCode();
+
+            if (accountCreated) {
+                assertEquals(
+                        Integer.valueOf(200),
+                        responseCode,
+                        "Failed to delete the test account: " + result.body()
+                );
+            } else {
+                assertTrue(
+                        Integer.valueOf(200).equals(responseCode)
+                                || Integer.valueOf(404).equals(responseCode),
+                        "Unexpected cleanup response: " + result.body()
+                );
+            }
+        }
+    }
+
+
     @Test
     @DisplayName("Checkout displays the account's delivery address")
     void shouldDisplayDeliveryAddress() {
@@ -174,44 +213,6 @@ public class CheckoutTest extends BaseTest {
                 browserSession.getPage(),
                 paymentPage
         );
-    }
-
-    @AfterEach
-    void deleteTestAccount() {
-        if (!accountCreationAttempted) {
-            return;
-        }
-
-        try (ApiSession session = new ApiSession()) {
-            AutomationExerciseApi api = new AutomationExerciseApi(
-                    new ApiClient(session.getRequestContext())
-            );
-
-            var result = api.deleteAccount(account.credentials());
-
-            assertEquals(
-                    200,
-                    result.httpStatus(),
-                    "Unexpected cleanup HTTP status: " + result.body()
-            );
-
-            Integer responseCode =
-                    result.as(MessageResponse.class).responseCode();
-
-            if (accountCreated) {
-                assertEquals(
-                        Integer.valueOf(200),
-                        responseCode,
-                        "Failed to delete the test account: " + result.body()
-                );
-            } else {
-                assertTrue(
-                        Integer.valueOf(200).equals(responseCode)
-                                || Integer.valueOf(404).equals(responseCode),
-                        "Unexpected cleanup response: " + result.body()
-                );
-            }
-        }
     }
 
 }

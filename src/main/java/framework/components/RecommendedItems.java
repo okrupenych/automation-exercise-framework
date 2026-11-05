@@ -16,6 +16,9 @@ public class RecommendedItems {
         lblHeader = rootRecommendedItems.locator("h2.title");
     }
 
+
+//----Public Interface----
+
     public List<Locator> getRequiredElements() {
         return List.of(lblHeader);
     }
@@ -39,4 +42,5 @@ public class RecommendedItems {
         return new ProductItem(rootRecommendedItems.locator(
                 ".col-sm-4:has(a[data-product-id='" + productId + "'])"));
     }
+
 }

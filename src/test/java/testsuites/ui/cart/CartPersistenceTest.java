@@ -47,6 +47,7 @@ public class CartPersistenceTest extends BaseTest {
         assertCartContents(expectedItems);
     }
 
+
     @Test
     @DisplayName("Cart contents survive a page reload")
     void shouldPreserveCartAfterReload() {
@@ -93,6 +94,9 @@ public class CartPersistenceTest extends BaseTest {
                 cartPage.cart().itemByName("Blue Top").getName()
         );
     }
+
+
+//----Private helpers----
 
     private void assertCartContents(List<ExpectedCartItem> items) {
         PageAssertions.assertPageReady(

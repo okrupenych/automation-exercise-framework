@@ -30,7 +30,8 @@ public abstract class ShopPage extends BasePage {
         lblHeader = page.locator("div.features_items").locator("h2.title");
     }
 
-//----Public interface----
+
+//----Public Interface----
 
     @Override
     public List<Locator> getRequiredElements() {
@@ -71,6 +72,7 @@ public abstract class ShopPage extends BasePage {
             }
         }
     }
+
 
     // Built-in components
     public Modal modal() {

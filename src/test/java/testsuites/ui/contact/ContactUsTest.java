@@ -36,6 +36,7 @@ public class ContactUsTest extends BaseTest {
         );
     }
 
+
     @Test
     @DisplayName("Contact form submission without an attachment shows success")
     void shouldConfirmSubmissionWithoutAttachment() {

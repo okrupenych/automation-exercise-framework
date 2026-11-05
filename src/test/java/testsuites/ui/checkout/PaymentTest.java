@@ -135,39 +135,6 @@ public class PaymentTest extends BaseTest {
         PageAssertions.assertPageReady(page, paymentPage);
     }
 
-    @Test
-    @DisplayName("Payment confirms the order and allows returning home")
-    @Tag("smoke")
-    void shouldConfirmOrderAfterPayment() {
-        paymentPage.fillPaymentDetails(account.payment());
-        paymentPage.clickPayAndConfirmOrder();
-
-        PageAssertions.assertPageReady(
-                browserSession.getPage(),
-                orderPlacedPage,
-                Pattern.compile(".*/payment_done/\\d+/?$")
-        );
-        PageAssertions.assertElementVisibleWithText(
-                orderPlacedPage.getHeader(),
-                "Order Placed!"
-        );
-
-        var invoice = orderPlacedPage.downloadInvoice();
-        PageAssertions.assertDownloadSuccessful(invoice);
-
-        orderPlacedPage.clickContinueButton();
-
-        HomePage homePage = new HomePage(browserSession.getPage());
-        PageAssertions.assertPageReady(
-                browserSession.getPage(),
-                homePage
-        );
-        PageAssertions.assertElementVisibleWithText(
-                homePage.navigationBar().getLoggedInAs(),
-                "Logged in as " + account.fullName()
-        );
-    }
-
     @AfterEach
     void deleteTestAccount() {
         if (!accountCreationAttempted) {
@@ -204,6 +171,40 @@ public class PaymentTest extends BaseTest {
                 );
             }
         }
+    }
+
+
+    @Test
+    @DisplayName("Payment confirms the order and allows returning home")
+    @Tag("smoke")
+    void shouldConfirmOrderAfterPayment() {
+        paymentPage.fillPaymentDetails(account.payment());
+        paymentPage.clickPayAndConfirmOrder();
+
+        PageAssertions.assertPageReady(
+                browserSession.getPage(),
+                orderPlacedPage,
+                Pattern.compile(".*/payment_done/\\d+/?$")
+        );
+        PageAssertions.assertElementVisibleWithText(
+                orderPlacedPage.getHeader(),
+                "Order Placed!"
+        );
+
+        var invoice = orderPlacedPage.downloadInvoice();
+        PageAssertions.assertDownloadSuccessful(invoice);
+
+        orderPlacedPage.clickContinueButton();
+
+        HomePage homePage = new HomePage(browserSession.getPage());
+        PageAssertions.assertPageReady(
+                browserSession.getPage(),
+                homePage
+        );
+        PageAssertions.assertElementVisibleWithText(
+                homePage.navigationBar().getLoggedInAs(),
+                "Logged in as " + account.fullName()
+        );
     }
 
 }

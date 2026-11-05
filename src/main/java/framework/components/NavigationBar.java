@@ -32,20 +32,25 @@ public class NavigationBar {
         linkHome = rootNavigationBar.getByRole(AriaRole.LINK, new Locator.GetByRoleOptions().setName("Home"));
         linkProducts = rootNavigationBar.getByRole(AriaRole.LINK, new Locator.GetByRoleOptions().setName("Products"));
         linkCart = rootNavigationBar.getByRole(AriaRole.LINK, new Locator.GetByRoleOptions().setName("Cart"));
-        linkSignupLogin = rootNavigationBar.getByRole(AriaRole.LINK, new Locator.GetByRoleOptions().setName("Signup / Login"));
-        linkTestCases = rootNavigationBar.getByRole(AriaRole.LINK, new Locator.GetByRoleOptions().setName("Test Cases"));
-        linkApiTesting = rootNavigationBar.getByRole(AriaRole.LINK, new Locator.GetByRoleOptions().setName("API Testing"));
-        linkVideoTutorials = rootNavigationBar.getByRole(AriaRole.LINK, new Locator.GetByRoleOptions().setName("Video Tutorials"));
-        linkContactUs = rootNavigationBar.getByRole(AriaRole.LINK, new Locator.GetByRoleOptions().setName("Contact us"));
+        linkSignupLogin = rootNavigationBar
+                .getByRole(AriaRole.LINK, new Locator.GetByRoleOptions().setName("Signup / Login"));
+        linkTestCases = rootNavigationBar
+                .getByRole(AriaRole.LINK, new Locator.GetByRoleOptions().setName("Test Cases"));
+        linkApiTesting = rootNavigationBar
+                .getByRole(AriaRole.LINK, new Locator.GetByRoleOptions().setName("API Testing"));
+        linkVideoTutorials = rootNavigationBar
+                .getByRole(AriaRole.LINK, new Locator.GetByRoleOptions().setName("Video Tutorials"));
+        linkContactUs = rootNavigationBar
+                .getByRole(AriaRole.LINK, new Locator.GetByRoleOptions().setName("Contact us"));
 
         linkLogout = rootNavigationBar.getByRole(AriaRole.LINK, new Locator.GetByRoleOptions().setName("Logout"));
-        linkDeleteAccount = rootNavigationBar.getByRole(AriaRole.LINK, new Locator.GetByRoleOptions().setName("Delete Account"));
+        linkDeleteAccount = rootNavigationBar
+                .getByRole(AriaRole.LINK, new Locator.GetByRoleOptions().setName("Delete Account"));
         lblLoggedInAs = rootNavigationBar.locator("a:not([href]):has-text('Logged in as')");
     }
 
 
-    
-//----Public interface----
+//----Public Interface----
 
     public List<Locator> getRequiredElements() {
         return List.of(

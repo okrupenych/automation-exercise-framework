@@ -14,7 +14,8 @@ public class BrandPage extends ShopPage {
         super(page);
     }
 
-//----Public interface----
+
+//----Public Interface----
 
     @Override
     public String getTargetUrl() {

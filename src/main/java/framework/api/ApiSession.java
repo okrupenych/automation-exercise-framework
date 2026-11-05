@@ -28,7 +28,6 @@ public class ApiSession implements AutoCloseable {
         }
     }
 
-//----Public interface----
 
     public APIRequestContext getRequestContext() {
         return requestContext;

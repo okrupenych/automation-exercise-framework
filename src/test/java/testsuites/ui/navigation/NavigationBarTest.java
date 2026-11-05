@@ -30,6 +30,7 @@ public class NavigationBarTest extends BaseTest {
         productsPage = new ProductsPage(page);
     }
 
+
     @Test
     @DisplayName("Products link opens the catalog")
     @Tag("smoke")

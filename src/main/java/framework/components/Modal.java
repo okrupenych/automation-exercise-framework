@@ -27,7 +27,8 @@ public class Modal {
         btnDismiss = rootModal.locator("div.modal-footer button[data-dismiss='modal']");
     }
 
-//----Public interface----
+
+//----Public Interface----
 
     public List<Locator> getRequiredElements() {
         return List.of(

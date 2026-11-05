@@ -22,7 +22,8 @@ public class HomePage extends ShopPage {
         cmpRecommendedItems = new RecommendedItems(page);
     }
 
-//----Public interface----
+
+//----Public Interface----
 
     @Override
     public String getTargetUrl() {

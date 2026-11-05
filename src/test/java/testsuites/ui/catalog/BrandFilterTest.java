@@ -28,6 +28,7 @@ public class BrandFilterTest extends BaseTest {
         );
     }
 
+
     @Test
     @DisplayName("Polo filter shows Polo products")
     void shouldFilterByPolo() {
@@ -63,6 +64,9 @@ public class BrandFilterTest extends BaseTest {
         assertProductVisible("Sleeveless Dress");
         assertProductAbsent("Blue Top");
     }
+
+
+//----Private helpers----
 
     private void assertBrandReady(String brandName) {
         PageAssertions.assertPageReady(

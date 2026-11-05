@@ -25,10 +25,6 @@ public abstract class BaseTest {
     protected BrowserManager browserManager;
     protected BrowserSession browserSession;
 
-    public BrowserSession getBrowserSession() {
-        return browserSession;
-    }
-
     @BeforeAll
     protected void setUpBrowser() {
         com.microsoft.playwright.assertions.PlaywrightAssertions.setDefaultAssertionTimeout(
@@ -73,6 +69,11 @@ public abstract class BaseTest {
             log.error("Failed to stop browser", e);
             throw e;
         }
+    }
+
+
+    public BrowserSession getBrowserSession() {
+        return browserSession;
     }
 
 }

@@ -30,6 +30,7 @@ public class ProductItem {
 
 
 //----Internal implementation----
+
     private String resolveNameForLog() {
         try {
             return lblProductName.textContent(
@@ -41,7 +42,8 @@ public class ProductItem {
         }
     }
 
-//----Public interface----
+
+//----Public Interface----
 
     public List<Locator> getRequiredElements() {
         return List.of(

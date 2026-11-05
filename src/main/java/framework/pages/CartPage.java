@@ -34,7 +34,12 @@ public class CartPage extends BasePage {
     }
 
 
-    //----Public interface----
+//----Public Interface----
+
+    @Override
+    public String getTargetUrl() {
+        return URL;
+    }
 
     @Override
     public List<Locator> getRequiredElements() {
@@ -46,11 +51,6 @@ public class CartPage extends BasePage {
         return elements;
     }
 
-    @Override
-    public String getTargetUrl() {
-        return URL;
-    }
-
 
     // Page actions
     public void clickProceedToCheckout() {
@@ -59,7 +59,7 @@ public class CartPage extends BasePage {
     }
 
 
-//----Built-in components----
+    // Built-in components
 
     public Breadcrumbs breadcrumbs() {
         return cmpBreadcrumbs;
@@ -72,4 +72,5 @@ public class CartPage extends BasePage {
     public Modal modal() {
         return cmpModal;
     }
+
 }

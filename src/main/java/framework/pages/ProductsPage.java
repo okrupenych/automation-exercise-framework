@@ -28,7 +28,12 @@ public class ProductsPage extends ShopPage {
     }
 
 
-//----Public interface----
+//----Public Interface----
+
+    @Override
+    public String getTargetUrl() {
+        return URL;
+    }
 
     @Override
     public List<Locator> getRequiredElements() {
@@ -40,11 +45,6 @@ public class ProductsPage extends ShopPage {
         elements.addAll(super.getRequiredElements());
 
         return elements;
-    }
-
-    @Override
-    public String getTargetUrl() {
-        return URL;
     }
 
 

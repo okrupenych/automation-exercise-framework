@@ -40,7 +40,7 @@ public class Accordion {
     }
 
 
-//----Public interface----
+//----Public Interface----
 
     public List<Locator> getRequiredElements() {
         return List.of(

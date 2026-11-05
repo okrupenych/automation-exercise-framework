@@ -16,7 +16,7 @@ public class ProductGrid {
     }
 
 
-//----Public interface----
+//----Public Interface----
 
     public List<Locator> getRequiredElements() {
         return new ArrayList<>(itemByIndex(0).getRequiredElements());

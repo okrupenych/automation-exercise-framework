@@ -19,18 +19,18 @@ public class TestCasesPage extends BasePage {
     }
 
 
-//----Public interface----
+//----Public Interface----
+
+    @Override
+    public String getTargetUrl() {
+        return URL;
+    }
 
     @Override
     public List<Locator> getRequiredElements() {
         return new ArrayList<>(
                 cmpAccordion.getRequiredElements()
         );
-    }
-
-    @Override
-    public String getTargetUrl() {
-        return URL;
     }
 
 

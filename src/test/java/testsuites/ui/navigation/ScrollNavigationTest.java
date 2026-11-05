@@ -28,6 +28,7 @@ public class ScrollNavigationTest extends BaseTest {
         );
     }
 
+
     @Test
     @DisplayName("Scroll Up button returns the page to the top")
     void shouldReturnToTopUsingScrollUpButton() {

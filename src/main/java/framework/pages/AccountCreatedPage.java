@@ -11,7 +11,7 @@ public class AccountCreatedPage extends ConfirmationPage {
     }
 
 
-//----Public interface----
+//----Public Interface----
 
     @Override
     public String getTargetUrl() {

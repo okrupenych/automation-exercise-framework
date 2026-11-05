@@ -45,7 +45,12 @@ public class ContactUsPage extends BasePage {
     }
 
 
-//----Public interface----
+//----Public Interface----
+
+    @Override
+    public String getTargetUrl() {
+        return URL;
+    }
 
     @Override
     public List<Locator> getRequiredElements() {
@@ -59,11 +64,6 @@ public class ContactUsPage extends BasePage {
                 inptFilePicker,
                 btnSubmit
         );
-    }
-
-    @Override
-    public String getTargetUrl() {
-        return URL;
     }
 
 
@@ -147,7 +147,7 @@ public class ContactUsPage extends BasePage {
     }
 
 
-    // Composite Actions
+    // Composite actions
     public void fillContactForm(String name, String email, String subject, String message) {
         fillName(name);
         fillEmail(email);

@@ -26,6 +26,7 @@ public class ProductSearchTest extends BaseTest {
         );
     }
 
+
     @Test
     @DisplayName("Search finds a product by its full name")
     void shouldFindProductByFullName() {

@@ -89,6 +89,37 @@ public class AccountDeletionTest extends BaseTest {
         accountFlows.login(account.credentials(), account.fullName());
     }
 
+    @AfterEach
+    void cleanUpTestAccount() {
+        if (!accountCreationAttempted) {
+            return;
+        }
+
+        try (ApiSession session = new ApiSession()) {
+            AutomationExerciseApi api = new AutomationExerciseApi(
+                    new ApiClient(session.getRequestContext())
+            );
+
+            var result = api.deleteAccount(account.credentials());
+
+            assertEquals(
+                    200,
+                    result.httpStatus(),
+                    "Unexpected cleanup HTTP status: " + result.body()
+            );
+
+            Integer responseCode =
+                    result.as(MessageResponse.class).responseCode();
+
+            assertTrue(
+                    Integer.valueOf(200).equals(responseCode)
+                            || Integer.valueOf(404).equals(responseCode),
+                    "Unexpected cleanup response: " + result.body()
+            );
+        }
+    }
+
+
     @Test
     @DisplayName("A deleted account can no longer be used to log in")
     @Tag("negative")
@@ -123,36 +154,6 @@ public class AccountDeletionTest extends BaseTest {
         PageAssertions.assertElementAbsent(
                 signupLoginPage.navigationBar().getLoggedInAs()
         );
-    }
-
-    @AfterEach
-    void cleanUpTestAccount() {
-        if (!accountCreationAttempted) {
-            return;
-        }
-
-        try (ApiSession session = new ApiSession()) {
-            AutomationExerciseApi api = new AutomationExerciseApi(
-                    new ApiClient(session.getRequestContext())
-            );
-
-            var result = api.deleteAccount(account.credentials());
-
-            assertEquals(
-                    200,
-                    result.httpStatus(),
-                    "Unexpected cleanup HTTP status: " + result.body()
-            );
-
-            Integer responseCode =
-                    result.as(MessageResponse.class).responseCode();
-
-            assertTrue(
-                    Integer.valueOf(200).equals(responseCode)
-                            || Integer.valueOf(404).equals(responseCode),
-                    "Unexpected cleanup response: " + result.body()
-            );
-        }
     }
 
 }

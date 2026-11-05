@@ -28,6 +28,7 @@ public class CartAdditionTest extends BaseTest {
         cartPage = new CartPage(browserSession.getPage());
     }
 
+
     @Test
     @DisplayName("A product can be added to the cart from the catalog")
     @Tag("smoke")
@@ -96,6 +97,9 @@ public class CartAdditionTest extends BaseTest {
                 new ExpectedCartItem("Blue Top", "Rs. 500", 3, "Rs. 1500")
         );
     }
+
+
+//----Private helpers----
 
     private void openCatalog() {
         productsPage.open();

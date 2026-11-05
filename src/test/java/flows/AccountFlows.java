@@ -14,12 +14,18 @@ import framework.pages.AccountDeletedPage;
 
 public final class AccountFlows {
 
+
+//----Fields----
+
     private final Page page;
 
     private final SignupLoginPage signupLoginPage;
     private final SignupPage signupPage;
     private final AccountCreatedPage accountCreatedPage;
     private final AccountDeletedPage accountDeletedPage;
+
+
+//----Construction----
 
     public AccountFlows(Page page) {
         this.page = page;
@@ -31,7 +37,7 @@ public final class AccountFlows {
     }
 
 
-//----Public interface----
+//----Public Interface----
 
     // Precondition: SignupLoginPage is open and ready for signup.
     public void register(AccountData account, boolean newsletter, boolean specialOffers) {

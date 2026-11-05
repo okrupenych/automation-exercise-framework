@@ -51,6 +51,7 @@ public class GuestCheckoutTest extends BaseTest {
         );
     }
 
+
     @Test
     @DisplayName("Guest checkout offers navigation to the login page")
     void shouldOfferLoginWhenGuestProceedsToCheckout() {
@@ -85,6 +86,9 @@ public class GuestCheckoutTest extends BaseTest {
                 cartPage.navigationBar().getLoggedInAs()
         );
     }
+
+
+//----Private helpers----
 
     private void assertLoginPromptVisible() {
         cartPage.modal().waitUntilVisible();

@@ -11,4 +11,5 @@ public record ApiResult(
     public <T> T as(Class<T> responseType) {
         return GSON.fromJson(body, responseType);
     }
+
 }

@@ -14,7 +14,8 @@ public class CategoryPage extends ShopPage {
         super(page);
     }
 
-//----Public interface----
+
+//----Public Interface----
 
     @Override
     public String getTargetUrl() {

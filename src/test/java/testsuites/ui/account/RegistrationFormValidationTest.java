@@ -62,6 +62,7 @@ public class RegistrationFormValidationTest extends BaseTest {
         );
     }
 
+
     @Test
     @DisplayName("Signup preserves the email and prevents editing it")
     void shouldPreserveEmailAsDisabledField() {
@@ -158,6 +159,9 @@ public class RegistrationFormValidationTest extends BaseTest {
 
         assertRequiredFieldValidation(signupPage.getMobileNumber());
     }
+
+
+//----Private helpers----
 
     private void fillValidRegistration() {
         signupPage.fillRegistration(account, false, false);

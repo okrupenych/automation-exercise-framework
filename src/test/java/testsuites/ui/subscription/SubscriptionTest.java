@@ -32,6 +32,7 @@ public class SubscriptionTest extends BaseTest {
         );
     }
 
+
     @Test
     @DisplayName("Subscription with a valid email shows a success confirmation")
     void shouldConfirmSubscriptionWithValidEmail() {
@@ -69,6 +70,5 @@ public class SubscriptionTest extends BaseTest {
                 PageAssertions.ValidationError.TYPE_MISMATCH
         );
     }
-
 
 }

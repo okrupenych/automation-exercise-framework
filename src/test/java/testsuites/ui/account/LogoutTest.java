@@ -90,28 +90,6 @@ public class LogoutTest extends BaseTest {
         accountFlows.login(account.credentials(), account.fullName());
     }
 
-    @Test
-    @DisplayName("Logout returns the user to the login page and survives reload")
-    void shouldRemainLoggedOutAfterReload() {
-        signupLoginPage.navigationBar().clickLogout();
-
-        assertLoggedOut();
-
-        browserSession.getPage().reload();
-
-        assertLoggedOut();
-    }
-
-    @Test
-    @DisplayName("A user can log in again after logging out")
-    void shouldLoginAgainAfterLogout() {
-        signupLoginPage.navigationBar().clickLogout();
-
-        assertLoggedOut();
-
-        accountFlows.login(account.credentials(), account.fullName());
-    }
-
     @AfterEach
     void deleteTestAccount() {
         if (!accountCreationAttempted) {
@@ -149,6 +127,32 @@ public class LogoutTest extends BaseTest {
             }
         }
     }
+
+
+    @Test
+    @DisplayName("Logout returns the user to the login page and survives reload")
+    void shouldRemainLoggedOutAfterReload() {
+        signupLoginPage.navigationBar().clickLogout();
+
+        assertLoggedOut();
+
+        browserSession.getPage().reload();
+
+        assertLoggedOut();
+    }
+
+    @Test
+    @DisplayName("A user can log in again after logging out")
+    void shouldLoginAgainAfterLogout() {
+        signupLoginPage.navigationBar().clickLogout();
+
+        assertLoggedOut();
+
+        accountFlows.login(account.credentials(), account.fullName());
+    }
+
+
+//----Private helpers----
 
     private void assertLoggedOut() {
         PageAssertions.assertPageReady(

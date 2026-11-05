@@ -80,7 +80,7 @@ public abstract class BasePage {
     }
 
 
-//----Public interface----
+//----Public Interface----
 
     public abstract String getTargetUrl();
 

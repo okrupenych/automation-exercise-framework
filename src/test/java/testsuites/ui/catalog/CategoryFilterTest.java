@@ -30,6 +30,7 @@ public class CategoryFilterTest extends BaseTest {
         );
     }
 
+
     @Test
     @DisplayName("Women Dress category shows women's dresses")
     void shouldFilterByWomenDress() {
@@ -96,6 +97,9 @@ public class CategoryFilterTest extends BaseTest {
         ).hasCount(0);
     }
 
+
+//----Private helpers----
+
     private void assertCategoryReady(int categoryId, String expectedHeader) {
         PageAssertions.assertPageReady(
                 browserSession.getPage(),
@@ -115,4 +119,5 @@ public class CategoryFilterTest extends BaseTest {
                 productName
         );
     }
+
 }

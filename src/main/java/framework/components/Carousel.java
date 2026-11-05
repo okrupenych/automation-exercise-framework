@@ -32,14 +32,20 @@ public class Carousel {
         btnNext = rootCarousel.locator("[data-slide='next']");
         btnPrevious = rootCarousel.locator("[data-slide='prev']");
 
-        btnTestCases = rootActiveSlide.getByRole(AriaRole.BUTTON, new Locator.GetByRoleOptions().setName("Test Cases")).first();
-        btnAPIList = rootActiveSlide.getByRole(AriaRole.BUTTON, new Locator.GetByRoleOptions().setName("APIs list for practice")).first();
+        btnTestCases = rootActiveSlide
+                .getByRole(AriaRole.BUTTON, new Locator.GetByRoleOptions().setName("Test Cases"))
+                .first();
+        btnAPIList = rootActiveSlide
+                .getByRole(AriaRole.BUTTON, new Locator.GetByRoleOptions().setName("APIs list for practice"))
+                .first();
 
-        btnIndicator = page.getByRole(AriaRole.LISTITEM).filter(new Locator.FilterOptions().setHasText(Pattern.compile("^$")));
+        btnIndicator = page
+                .getByRole(AriaRole.LISTITEM)
+                .filter(new Locator.FilterOptions().setHasText(Pattern.compile("^$")));
     }
 
 
-//----Public interface----
+//----Public Interface----
 
     public List<Locator> getRequiredElements() {
         return List.of(); // No stable elements to verify

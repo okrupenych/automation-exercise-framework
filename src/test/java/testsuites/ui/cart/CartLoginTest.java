@@ -105,38 +105,6 @@ public class CartLoginTest extends BaseTest {
         accountFlows = new AccountFlows(browserSession.getPage());
     }
 
-    @Test
-    @DisplayName("Guest cart contents are preserved after login")
-    void shouldPreserveGuestCartAfterLogin() {
-        productsPage.open();
-        PageAssertions.assertPageReady(
-                browserSession.getPage(),
-                productsPage
-        );
-
-        productsPage.addProductsToCart(
-                List.of("Blue Top", "Blue Top", "Sleeveless Dress")
-        );
-        productsPage.navigationBar().clickCart();
-
-        assertExpectedCartContents();
-
-        cartPage.navigationBar().clickSignupLogin();
-        PageAssertions.assertPageReady(
-                browserSession.getPage(),
-                signupLoginPage
-        );
-
-        accountFlows.login(account.credentials(), account.fullName());
-        signupLoginPage.navigationBar().clickCart();
-
-        assertExpectedCartContents();
-        PageAssertions.assertElementVisibleWithText(
-                cartPage.navigationBar().getLoggedInAs(),
-                "Logged in as " + account.fullName()
-        );
-    }
-
     @AfterEach
     void deleteTestAccount() {
         if (!accountCreationAttempted) {
@@ -174,6 +142,42 @@ public class CartLoginTest extends BaseTest {
             }
         }
     }
+
+
+    @Test
+    @DisplayName("Guest cart contents are preserved after login")
+    void shouldPreserveGuestCartAfterLogin() {
+        productsPage.open();
+        PageAssertions.assertPageReady(
+                browserSession.getPage(),
+                productsPage
+        );
+
+        productsPage.addProductsToCart(
+                List.of("Blue Top", "Blue Top", "Sleeveless Dress")
+        );
+        productsPage.navigationBar().clickCart();
+
+        assertExpectedCartContents();
+
+        cartPage.navigationBar().clickSignupLogin();
+        PageAssertions.assertPageReady(
+                browserSession.getPage(),
+                signupLoginPage
+        );
+
+        accountFlows.login(account.credentials(), account.fullName());
+        signupLoginPage.navigationBar().clickCart();
+
+        assertExpectedCartContents();
+        PageAssertions.assertElementVisibleWithText(
+                cartPage.navigationBar().getLoggedInAs(),
+                "Logged in as " + account.fullName()
+        );
+    }
+
+
+//----Private helpers----
 
     private void assertExpectedCartContents() {
         PageAssertions.assertPageReady(

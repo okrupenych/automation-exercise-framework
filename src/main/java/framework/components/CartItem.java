@@ -45,7 +45,7 @@ public class CartItem {
     }
 
 
-//----Public interface----
+//----Public Interface----
 
     public List<Locator> getRequiredElements() {
         return List.of(

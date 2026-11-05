@@ -55,4 +55,5 @@ public final class TransientTextCapture {
 
         return capturedText.join();
     }
+
 }

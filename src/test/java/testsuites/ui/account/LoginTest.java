@@ -89,6 +89,45 @@ public class LoginTest extends BaseTest {
         );
     }
 
+    @AfterEach
+    void deleteTestAccount() {
+        if (!accountCreationAttempted) {
+            return;
+        }
+
+        try (ApiSession session = new ApiSession()) {
+            AutomationExerciseApi api = new AutomationExerciseApi(
+                    new ApiClient(session.getRequestContext())
+            );
+
+            var result = api.deleteAccount(account.credentials());
+
+            assertEquals(
+                    200,
+                    result.httpStatus(),
+                    "Unexpected cleanup HTTP status: " + result.body()
+            );
+
+            Integer responseCode =
+                    result.as(MessageResponse.class).responseCode();
+
+            if (accountCreated) {
+                assertEquals(
+                        Integer.valueOf(200),
+                        responseCode,
+                        "Failed to delete the test account: " + result.body()
+                );
+            } else {
+                assertTrue(
+                        Integer.valueOf(200).equals(responseCode)
+                                || Integer.valueOf(404).equals(responseCode),
+                        "Unexpected cleanup response: " + result.body()
+                );
+            }
+        }
+    }
+
+
     @Test
     @DisplayName("An existing user can log in with valid credentials")
     @Tag("smoke")
@@ -166,43 +205,8 @@ public class LoginTest extends BaseTest {
         assertLoginPageRetained();
     }
 
-    @AfterEach
-    void deleteTestAccount() {
-        if (!accountCreationAttempted) {
-            return;
-        }
 
-        try (ApiSession session = new ApiSession()) {
-            AutomationExerciseApi api = new AutomationExerciseApi(
-                    new ApiClient(session.getRequestContext())
-            );
-
-            var result = api.deleteAccount(account.credentials());
-
-            assertEquals(
-                    200,
-                    result.httpStatus(),
-                    "Unexpected cleanup HTTP status: " + result.body()
-            );
-
-            Integer responseCode =
-                    result.as(MessageResponse.class).responseCode();
-
-            if (accountCreated) {
-                assertEquals(
-                        Integer.valueOf(200),
-                        responseCode,
-                        "Failed to delete the test account: " + result.body()
-                );
-            } else {
-                assertTrue(
-                        Integer.valueOf(200).equals(responseCode)
-                                || Integer.valueOf(404).equals(responseCode),
-                        "Unexpected cleanup response: " + result.body()
-                );
-            }
-        }
-    }
+//----Private helpers----
 
     private void assertLoginRejected() {
         PageAssertions.assertElementVisibleWithText(

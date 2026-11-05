@@ -75,6 +75,7 @@ public class SignupPage extends BasePage {
 
 
 //----Internal implementation----
+
     private void fillIfPresent(String value, Consumer<String> action) {
         if (value != null) {
             action.accept(value);
@@ -82,7 +83,12 @@ public class SignupPage extends BasePage {
     }
 
 
-//----Public interface----
+//----Public Interface----
+
+    @Override
+    public String getTargetUrl() {
+        return URL;
+    }
 
     @Override
     public List<Locator> getRequiredElements() {
@@ -111,11 +117,6 @@ public class SignupPage extends BasePage {
                 inptMobileNumber,
                 btnCreateAccount
         );
-    }
-
-    @Override
-    public String getTargetUrl() {
-        return URL;
     }
 
 

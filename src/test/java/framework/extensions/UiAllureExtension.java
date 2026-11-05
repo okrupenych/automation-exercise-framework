@@ -61,4 +61,5 @@ public class UiAllureExtension implements InvocationInterceptor {
             throw originalFailure;
         }
     }
+
 }

@@ -27,6 +27,9 @@ import data.AccountData;
 
 public final class PageAssertions {
 
+
+//----Fields and types----
+
     private static final Logger log = LoggerFactory.getLogger(PageAssertions.class);
 
     public record ExpectedCartItem(
@@ -46,6 +49,9 @@ public final class PageAssertions {
             this.property = property;
         }
     }
+
+
+//----Construction----
 
     private PageAssertions() {
         // No need to create an object, all methods are static
@@ -82,7 +88,7 @@ public final class PageAssertions {
     }
 
 
-//----Public interface----
+//----Public Interface----
 
     public static void assertElementVisible(Locator element) {
         log.info("Verifying that required element is visible");
@@ -120,7 +126,8 @@ public final class PageAssertions {
     }
 
 
-    // Composite assertions
+//----Composite assertions----
+
     public static void assertElementInViewport(Locator element) {
         log.info("Verifying that element is in the viewport");
         assertThat(element).isVisible();

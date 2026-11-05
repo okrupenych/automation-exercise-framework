@@ -25,4 +25,5 @@ public record ProductsResponse(
             String usertype
     ) {
     }
+
 }

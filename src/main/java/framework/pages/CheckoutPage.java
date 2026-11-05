@@ -19,9 +19,9 @@ public class CheckoutPage extends BasePage {
     private final Breadcrumbs cmpBreadcrumbs;
     private final Cart cmpCart;
 
-    private final Locator lblHeaderAddress;
     private final Locator rootDeliveryAddress;
     private final Locator rootBillingAddress;
+    private final Locator lblHeaderAddress;
     private final Locator lblHeaderReview;
     private final Locator inptOrderComment;
     private final Locator btnSubmit;
@@ -47,7 +47,12 @@ public class CheckoutPage extends BasePage {
     }
 
 
-    //----Public interface----
+//----Public Interface----
+
+    @Override
+    public String getTargetUrl() {
+        return URL;
+    }
 
     @Override
     public List<Locator> getRequiredElements() {
@@ -65,11 +70,6 @@ public class CheckoutPage extends BasePage {
         elements.addAll(cmpCart.getRequiredElements());
 
         return elements;
-    }
-
-    @Override
-    public String getTargetUrl() {
-        return URL;
     }
 
 
@@ -155,4 +155,5 @@ public class CheckoutPage extends BasePage {
     public Cart cart() {
         return cmpCart;
     }
+
 }

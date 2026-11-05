@@ -43,7 +43,9 @@ public class BrowserSession {
         log.debug("Browser page initialized");
     }
 
-    public OverlayHandler getOverlayHandler() { return overlayHandler; }
+    public OverlayHandler getOverlayHandler() {
+        return overlayHandler;
+    }
 
     public Page getPage() {
         return page;

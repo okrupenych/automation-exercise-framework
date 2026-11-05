@@ -40,7 +40,12 @@ public class PaymentPage extends BasePage {
     }
 
 
-//----Public interface----
+//----Public Interface----
+
+    @Override
+    public String getTargetUrl() {
+        return URL;
+    }
 
     @Override
     public List<Locator> getRequiredElements() {
@@ -53,11 +58,6 @@ public class PaymentPage extends BasePage {
                 inptExpirationYear,
                 btnPayAndConfirmOrder
         );
-    }
-
-    @Override
-    public String getTargetUrl() {
-        return URL;
     }
 
 

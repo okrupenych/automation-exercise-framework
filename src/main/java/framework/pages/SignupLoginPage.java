@@ -45,7 +45,12 @@ public class SignupLoginPage extends BasePage {
     }
 
 
-//----Public interface----
+//----Public Interface----
+
+    @Override
+    public String getTargetUrl() {
+        return URL;
+    }
 
     @Override
     public List<Locator> getRequiredElements() {
@@ -59,11 +64,6 @@ public class SignupLoginPage extends BasePage {
                 inptSignupEmail,
                 btnSignupSubmit
         );
-    }
-
-    @Override
-    public String getTargetUrl() {
-        return URL;
     }
 
 

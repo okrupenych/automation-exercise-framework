@@ -31,6 +31,7 @@ public class CartRemovalTest extends BaseTest {
         );
     }
 
+
     @Test
     @DisplayName("Removing a product preserves the other cart items")
     void shouldRemoveProductWithoutChangingOtherItems() {
@@ -110,6 +111,9 @@ public class CartRemovalTest extends BaseTest {
                 )
         );
     }
+
+
+//----Private helpers----
 
     private void addProductsAndOpenCart(String... productNames) {
         productsPage.addProductsToCart(List.of(productNames));
