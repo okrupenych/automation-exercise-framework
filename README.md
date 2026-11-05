@@ -9,6 +9,7 @@ A learning and portfolio project demonstrating a reusable test framework with Pl
 - Page Objects and reusable UI components, with shared account flows and page assertions.
 - An API layer separating session management, HTTP transport, endpoint methods, and Gson response models.
 - SLF4J and Logback logging, with JUnit extensions for test lifecycle logging and log archive maintenance.
+- Allure JUnit Jupiter and Playwright Java reporting, with AspectJ steps and browser diagnostics.
 
 UI tests share a browser within each test class and receive a fresh browser context and page per test. API tests receive a separate request context per test without launching a browser.
 
@@ -144,4 +145,40 @@ src/test/java/
 
 ## Results and logs
 
-Maven results go to the configured Surefire directory. Console and timestamped `framework-*.log` files share the configured log level and directory. Older daily logs are archived under `<logs.directory>/archive/` through the existing JUnit extension. Retention and size limits apply to ZIP archives, not active logs. Screenshots, video and tracing are not currently collected; no inactive switches or reporting dependencies are added. Download storage remains temporary Playwright context storage. Internal polling intervals (50/100 ms), recovery attempt counts, selectors and transition conditions remain implementation details.
+Maven XML/text results go to `target/surefire-reports`; Allure JSON and attachments go separately to `target/allure-results`. Console and timestamped `framework-*.log` files keep the configured log level and directory. Older daily logs are archived under `<logs.directory>/archive/`; retention and size limits apply to ZIP archives, not active logs.
+
+## Allure reports
+
+Reporting uses Allure Java 2.35.5 (`allure-jupiter`, the successor to `allure-junit5`, and `allure-playwright`), AspectJ 1.9.25.1, Maven plugin 2.16.1 and Allure Report 2.36.0. Java 21 needs no `--add-opens` with this weaver. Surefire 3.6.0 loads the agent through a quoted local-repository path in `argLine`; the plugin dependency downloads the agent. Existing `argLine` additions are preserved through late replacement. Keep `forkCount` positive: an in-process run does not load the agent. The JUnit BOM aligns Jupiter and Platform, including the launcher's transitive dependency from Allure.
+
+Reports include test names, tags, statuses, failure stack traces, setup/cleanup fixtures, nested Page Object/component/flow/assertion steps and Playwright actions and web assertions. API calls appear as `API METHOD path` steps with HTTP status and duration; request options and response bodies are omitted. An HTTP error status alone does not fail the step: existing test assertions determine success. Method arguments are omitted from framework steps, and Playwright input values are redacted.
+
+On UI failures, an invocation interceptor collects screenshot, page HTML, URL and title before cleanup, including failures in `@BeforeEach` and `@AfterEach` while a page is available. The adapter deduplicates screenshot/HTML/trace collection. Each test context records a trace with screenshots and DOM snapshots: it is attached immediately on failure or before context close on success. Browser console messages and uncaught JavaScript errors are attached on context close when present (Playwright retains a bounded recent history). Popups are registered by the Playwright adapter. Already closed or crashed pages may have incomplete diagnostics; collection failures are logged without replacing the original test failure. Browser lifetime remains per class, context lifetime per test; API-only tests launch no browser. Video is disabled. Existing framework logs remain in `logs/`.
+
+Run from the repository root on Windows (PowerShell: use `.\mvnw.cmd`):
+
+```cmd
+mvnw.cmd clean test
+mvnw.cmd test -Dgroups=ui
+mvnw.cmd test -Dgroups=api
+mvnw.cmd allure:report
+mvnw.cmd allure:serve
+```
+
+On macOS/Linux:
+
+```sh
+./mvnw clean test
+./mvnw test -Dgroups=ui
+./mvnw test -Dgroups=api
+./mvnw allure:report
+./mvnw allure:serve
+```
+
+`allure:report` generates `target/site/allure-maven/index.html`. `allure:serve` generates a temporary report from the same results and opens it through a local web server; stop it with Ctrl+C. These report goals do not run tests. For an already generated HTML report, an installed Allure 2 CLI can serve it with `allure open target/site/allure-maven`. The Maven plugin downloads its own report distribution into `.allure/`, so no global CLI is needed for the Maven commands.
+
+Use `clean test` for a fresh run: repeated `test` commands accumulate Allure results, which is useful when combining UI and API runs. Do not run `clean` between a test run and report generation. `target/`, `.allure/`, and root-level fallback Allure output directories are ignored by Git. Traces, HTML and browser logs can contain page/session data; input redaction applies to step labels only.
+
+Allure-specific options live in `src/test/resources/allure.properties`, separately from application `config.properties`. Maven passes the absolute results path to the fork; a custom `-Dallure.results.directory=...` must remain different from the Surefire directory and should point inside `target/`. IDE JUnit runs use the relative fallback `target/allure-results`; for full Playwright/framework steps, add the same AspectJ `-javaagent` VM option from `pom.xml` to the IDE's JUnit configuration. Merely adding dependencies does not activate weaving in the IDE.
+
+Configuration references: [JUnit Jupiter](https://allurereport.org/docs/junit-jupiter/), [Playwright Java](https://allurereport.org/docs/playwright-java/), [AspectJ Java 21 support](https://eclipse.dev/aspectj/doc/latest/release/README-1.9.21.html).

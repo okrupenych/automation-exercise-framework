@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith({
+        io.qameta.allure.jupiter.AllureJupiter.class,
         LogArchiveExtension.class,
         TestLoggerExtension.class
 })

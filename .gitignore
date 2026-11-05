@@ -1,4 +1,8 @@
 /logs/
+/.allure/
+/allure-results/
+/allure-report/
+/ajcore.*.txt
 /src/test/java/testsuites/AutomationExerciseOriginalTestCases.java
 
 target/

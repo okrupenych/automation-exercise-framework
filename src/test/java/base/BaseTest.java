@@ -4,6 +4,8 @@ import framework.browser.BrowserManager;
 import framework.browser.BrowserSession;
 import framework.extensions.LogArchiveExtension;
 import framework.extensions.TestLoggerExtension;
+import framework.extensions.UiAllureExtension;
+import io.qameta.allure.playwright.AllurePlaywright;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
@@ -11,8 +13,10 @@ import org.slf4j.LoggerFactory;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith({
+        io.qameta.allure.jupiter.AllureJupiter.class,
         LogArchiveExtension.class,
-        TestLoggerExtension.class
+        TestLoggerExtension.class,
+        UiAllureExtension.class
 })
 public abstract class BaseTest {
 
@@ -20,6 +24,10 @@ public abstract class BaseTest {
 
     protected BrowserManager browserManager;
     protected BrowserSession browserSession;
+
+    public BrowserSession getBrowserSession() {
+        return browserSession;
+    }
 
     @BeforeAll
     protected void setUpBrowser() {
@@ -37,12 +45,23 @@ public abstract class BaseTest {
     @BeforeEach
     protected void setUpSession() {
         browserSession = new BrowserSession(browserManager.getBrowser());
+        try {
+            AllurePlaywright.register(browserSession.getPage());
+            AllurePlaywright.startTracing(browserSession.getPage().context());
+        } catch (RuntimeException diagnosticFailure) {
+            log.warn("Could not start Allure Playwright diagnostics", diagnosticFailure);
+        }
     }
 
     @AfterEach
     protected void tearDownSession() {
         if (browserSession != null) {
-            browserSession.close();
+            try {
+                // Allure's close interceptor saves trace and page logs before context disposal.
+                browserSession.close();
+            } finally {
+                browserSession = null;
+            }
         }
     }
 
