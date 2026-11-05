@@ -1,5 +1,6 @@
 package framework.utils;
 
+import framework.config.Config;
 import com.microsoft.playwright.Page;
 
 import java.util.UUID;
@@ -49,7 +50,7 @@ public final class TransientTextCapture {
 
         page.waitForCondition(
                 capturedText::isDone,
-                new Page.WaitForConditionOptions().setTimeout(5000)
+                new Page.WaitForConditionOptions().setTimeout(Config.getTransientTextTimeout())
         );
 
         return capturedText.join();

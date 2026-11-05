@@ -1,4 +1,10 @@
 <configuration>
+    <define name="configuredLogLevel" class="framework.config.LogPropertyDefiner">
+        <key>log.level</key>
+    </define>
+    <define name="configuredLogDirectory" class="framework.config.LogPropertyDefiner">
+        <key>logs.directory</key>
+    </define>
 
     <timestamp key="runTimestamp"
                datePattern="yyyy-MM-dd_HH-mm-ss-SSS"
@@ -11,7 +17,7 @@
     </appender>
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>logs/framework-${runTimestamp}.log</file>
+        <file>${configuredLogDirectory}/framework-${runTimestamp}.log</file>
         <append>false</append>
 
         <encoder>
@@ -19,7 +25,7 @@
         </encoder>
     </appender>
 
-    <root level="${LOG_LEVEL:-INFO}">
+    <root level="${configuredLogLevel}">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
     </root>

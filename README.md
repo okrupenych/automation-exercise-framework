@@ -5,7 +5,7 @@ A learning and portfolio project demonstrating a reusable test framework with Pl
 ## Stack and design
 
 - Java 21, Maven Wrapper (Apache Maven 3.10.0), JUnit 5, and Maven Surefire.
-- Playwright for Chromium UI automation and HTTP requests through `APIRequestContext`.
+- Playwright for Chromium, Firefox and WebKit UI automation and HTTP requests through `APIRequestContext`.
 - Page Objects and reusable UI components, with shared account flows and page assertions.
 - An API layer separating session management, HTTP transport, endpoint methods, and Gson response models.
 - SLF4J and Logback logging, with JUnit extensions for test lifecycle logging and log archive maintenance.
@@ -74,12 +74,51 @@ Edit [`src/main/resources/config.properties`](src/main/resources/config.properti
 | Property | Default | Purpose |
 | --- | --- | --- |
 | `base.url` | `https://www.automationexercise.com` | UI base URL |
-| `browser.headless` | `false` | Chromium headless mode |
+| `browser.headless` | `false` | Browser headless mode |
 | `browser.timeout` | `15000` | Default page operation timeout, ms |
+| `browser.recovery.timeout` | `15000` | Finite scroll/overlay recovery timeout when browser.timeout is 0, ms |
+| `browser.transient.text.timeout` | `5000` | Transient message capture timeout, ms |
+| `browser.log.name.timeout` | `500` | Product-name lookup timeout for logging, ms |
+| `logs.archive.retention.days` | `30` | Log archive retention, days |
+| `logs.archive.max.size.mb` | `500` | Total log archive size limit, MiB |
 | `api.base.url` | `https://automationexercise.com/api/` | API base URL |
 | `api.timeout` | `30000` | API request timeout, ms |
 
-These settings are read from the classpath properties file; JVM `-D` properties do not override them. Set `browser.headless=true` in that file for headless UI runs.
+Settings use **JVM properties > environment variables > config.properties**. Environment names replace dots with underscores and uppercase the key: `browser.type` ? `BROWSER_TYPE`. Empty overrides are rejected. Values are validated when consumed by their component; API-only runs do not require browser binaries.
+
+Additional settings:
+
+| Property | Default | Purpose |
+| --- | --- | --- |
+| `browser.type` | `chromium` | `chromium`, `firefox`, `webkit` |
+| `browser.launch.timeout` | `180000` | Browser launch timeout, ms; retains Playwright default |
+| `browser.navigation.timeout` | `15000` | Context navigation timeout, ms |
+| `browser.assertion.timeout` | `5000` | Playwright web assertion timeout, ms |
+| `browser.slow.mo` | `0` | Delay between Playwright operations, ms |
+| `browser.viewport.width` / `browser.viewport.height` | `1920` / `1080` | Fixed viewport, CSS pixels, inherited by new pages |
+| `browser.locale` | `en-US` | BCP 47 locale |
+| `browser.timezone` | `UTC` | Timezone identifier, validated by Java and browser |
+| `browser.color.scheme` | `light` | `light`, `dark`, `no-preference` |
+| `log.level` | `INFO` | OFF, ERROR, WARN, INFO, DEBUG, TRACE, ALL |
+| `logs.directory` | `logs` | Shared Logback/archive root; relative to working directory or absolute |
+
+Launch, action, navigation and API timeouts accept zero to disable the deadline. Assertion, recovery, transient text and diagnostic timeouts, viewport dimensions and archive limits must be positive integers. Slow motion is nonnegative. Boolean values are strict. URLs must be absolute HTTP(S), without credentials, queries or fragments; `api.base.url` requires a trailing slash. Locale and timezone are explicit for reproducible runs.
+
+Examples (Windows; use `./mvnw` on macOS/Linux):
+
+```cmd
+mvnw.cmd test -Dgroups=ui -Dbrowser.type=firefox -Dbrowser.headless=true
+mvnw.cmd test -Dbrowser.viewport.width=1440 -Dbrowser.viewport.height=900
+mvnw.cmd test -Dgroups=api -Dapi.base.url=https://example.org/api/ -Dlog.level=DEBUG
+```
+
+PowerShell: `$env:BROWSER_TYPE = "webkit"`. `LOG_LEVEL` remains the environment counterpart of `log.level`; JVM overrides use `-Dlog.level=DEBUG`.
+
+Install each selected Playwright-managed engine with the CLI command above using `install firefox` or `install webkit`. The framework uses no CDP, native window maximization, browser channels, custom executables or engine-specific launch arguments. Viewport size controls page layout, not native window bounds. Bundled Firefox/WebKit are separate engines, not installed Firefox/Safari; rendering and OS support differ. Unsupported engine names fail explicitly. There are no exposed Chromium-only settings.
+
+Surefire/JUnit settings use native JVM/Maven options, separate from the application loader: `groups`, `excludedGroups`, `test`; `forkCount=1`, `reuseForks=true`, `surefire.reportsDirectory=target/surefire-reports` by default. Example: `mvnw.cmd test -Dgroups=api -DexcludedGroups=negative -Dsurefire.reportsDirectory=target/api-results`. JUnit parallel execution defaults to false; enabling it is rejected because shared class state and Playwright objects require serial execution within a JVM. Maven forks provide process isolation, but concurrent archive maintenance is not coordinated: keep one fork for normal runs. Native build options do not use the application environment-name mapping.
+
+Current API tests need no environment credentials: scenarios generate fixture accounts. Keep real passwords/tokens outside tracked configuration and fixtures; supply future authenticated integrations through environment variables or JVM properties, without logging them. Test data and expected results remain unchanged.
 
 ## Repository layout
 
@@ -88,7 +127,7 @@ src/main/java/
   data/                   Account and credential records
   framework/
     api/                  API sessions, client, endpoints, response models
-    browser/              Chromium lifecycle, sessions, overlay handling
+    browser/              Cross-engine browser lifecycle, sessions, overlay handling
     components/           Reusable UI components
     config/               Properties loader
     pages/                Page Objects
@@ -105,4 +144,4 @@ src/test/java/
 
 ## Results and logs
 
-Maven test results are written to `target/surefire-reports/`. Logging goes to the console and timestamped `logs/framework-*.log` files. Older logs are archived under `logs/archive/`, with 30-day retention and a 500 MB archive size limit. The default log level is `INFO`; `LOG_LEVEL` controls verbosity in the Logback configuration.
+Maven results go to the configured Surefire directory. Console and timestamped `framework-*.log` files share the configured log level and directory. Older daily logs are archived under `<logs.directory>/archive/` through the existing JUnit extension. Retention and size limits apply to ZIP archives, not active logs. Screenshots, video and tracing are not currently collected; no inactive switches or reporting dependencies are added. Download storage remains temporary Playwright context storage. Internal polling intervals (50/100 ms), recovery attempt counts, selectors and transition conditions remain implementation details.

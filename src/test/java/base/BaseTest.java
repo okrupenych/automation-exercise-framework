@@ -23,6 +23,8 @@ public abstract class BaseTest {
 
     @BeforeAll
     protected void setUpBrowser() {
+        com.microsoft.playwright.assertions.PlaywrightAssertions.setDefaultAssertionTimeout(
+                framework.config.Config.getAssertionTimeout());
         browserManager = new BrowserManager();
         try {
             browserManager.startBrowser();

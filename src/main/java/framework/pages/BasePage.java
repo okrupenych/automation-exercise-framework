@@ -46,7 +46,11 @@ public abstract class BasePage {
         btnScrollUp.click(new Locator.ClickOptions().setTimeout(remainingMs(deadline)));
         while (System.nanoTime() < deadline) {
             overlayHandler.dismissIfPresent(remainingMs(deadline));
-            double scrollY = ((Number) page.evaluate("window.scrollY")).doubleValue();
+            Object scrollPosition = page.evaluate("window.scrollY");
+            if (!(scrollPosition instanceof Number position)) {
+                throw new IllegalStateException("Expected numeric window.scrollY, got: " + scrollPosition);
+            }
+            double scrollY = position.doubleValue();
             if (Math.abs(scrollY) <= 1) {
                 return;
             }
@@ -108,7 +112,7 @@ public abstract class BasePage {
 
     public void clickScrollUp() {
         log.info("Clicking scroll up button");
-        int timeout = Config.getBrowserTimeout() == 0 ? 15000 : Config.getBrowserTimeout();
+        int timeout = Config.getBrowserTimeout() == 0 ? Config.getBrowserRecoveryTimeout() : Config.getBrowserTimeout();
         long deadline = System.nanoTime() + timeout * 1_000_000L;
         try {
             overlayHandler.withDeadline(deadline, () -> performScrollUp(deadline));

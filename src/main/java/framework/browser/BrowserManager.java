@@ -15,19 +15,29 @@ public class BrowserManager {
     private Browser browser;
 
     public void startBrowser() {
-        log.info("Starting Chromium browser");
-
+        String engine = Config.getBrowserType();
+        BrowserType.LaunchOptions options = new BrowserType.LaunchOptions()
+                .setHeadless(Config.isHeadless())
+                .setTimeout(Config.getLaunchTimeout())
+                .setSlowMo(Config.getSlowMo());
+        log.info("Starting {} browser", engine);
         playwright = Playwright.create();
-        log.trace("Playwright runtime created");
-
-        browser = playwright.chromium().launch(
-            new BrowserType.LaunchOptions().setHeadless(Config.isHeadless())
-        );
-        log.debug("Chromium browser started");
+        try {
+            BrowserType type = switch (engine) {
+                case "firefox" -> playwright.firefox();
+                case "webkit" -> playwright.webkit();
+                default -> playwright.chromium();
+            };
+            browser = type.launch(options);
+        } catch (RuntimeException e) {
+            playwright.close();
+            playwright = null;
+            throw e;
+        }
     }
 
     public void stopBrowser() {
-        log.info("Stopping Chromium browser");
+        log.info("Stopping browser");
 
         try {
             if (browser != null) {

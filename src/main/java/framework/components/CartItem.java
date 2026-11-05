@@ -1,5 +1,6 @@
 package framework.components;
 
+import framework.config.Config;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.PlaywrightException;
 import org.slf4j.Logger;
@@ -35,7 +36,7 @@ public class CartItem {
     private String resolveNameForLog() {
         try {
             return lblName.textContent(
-                    new Locator.TextContentOptions().setTimeout(500)
+                    new Locator.TextContentOptions().setTimeout(Config.getLogNameTimeout())
             );
         } catch (PlaywrightException e) {
             log.debug("Could not retrieve product name for logging: \"{}\"", e.getMessage());

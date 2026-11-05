@@ -108,7 +108,7 @@ public class OverlayHandler {
                     }
                     log.trace("AD popup detected");
                     dismissPopup(dismissButton, Config.getBrowserTimeout() == 0
-                            ? 15000 : Config.getBrowserTimeout());
+                            ? Config.getBrowserRecoveryTimeout() : Config.getBrowserTimeout());
                     log.trace("AD popup dismissed");
                 },
                 new Page.AddLocatorHandlerOptions().setNoWaitAfter(true)

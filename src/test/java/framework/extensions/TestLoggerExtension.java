@@ -20,6 +20,10 @@ public class TestLoggerExtension implements
 
     @Override
     public void beforeAll(ExtensionContext context) {
+        if (context.getConfigurationParameter("junit.jupiter.execution.parallel.enabled")
+                .map(Boolean::parseBoolean).orElse(false)) {
+            throw new IllegalStateException("Parallel JUnit execution is unsupported by the shared Playwright lifecycle");
+        }
         log.info("===== SUITE START: {} =====", context.getRequiredTestClass().getSimpleName());
     }
 

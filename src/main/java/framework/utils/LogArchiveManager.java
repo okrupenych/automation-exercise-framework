@@ -1,5 +1,6 @@
 package framework.utils;
 
+import framework.config.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +16,7 @@ public class LogArchiveManager {
 
     private static final Logger log = LoggerFactory.getLogger(LogArchiveManager.class);
 
-    private static final Path LOG_DIR = Paths.get("logs");
+    private static final Path LOG_DIR = Config.getLogDirectory();
     private static final Path ARCHIVE_DIR = LOG_DIR.resolve("archive");
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -23,8 +24,8 @@ public class LogArchiveManager {
     private static final String LOG_PREFIX = "framework-";
     private static final String LOG_EXTENSION = ".log";
 
-    private static final int RETENTION_DAYS = 30;
-    private static final long MAX_ARCHIVE_SIZE = 500L * 1024 * 1024;
+    private static final int RETENTION_DAYS = Config.getLogArchiveRetentionDays();
+    private static final long MAX_ARCHIVE_SIZE = Config.getLogArchiveMaxSizeMb() * 1024L * 1024;
 
     private static boolean isArchived(Path archivePath, Path logFile) throws IOException {
 
