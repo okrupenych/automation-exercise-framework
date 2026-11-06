@@ -49,6 +49,10 @@ public class Accordion {
         );
     }
 
+    public int getItemCount() {
+        return rootAccordionItems.count();
+    }
+
     public Locator getItemContent(int index) {
         return itemContent(itemByIndex(index));
     }
