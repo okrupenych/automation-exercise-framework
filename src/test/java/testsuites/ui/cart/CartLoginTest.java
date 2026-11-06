@@ -159,7 +159,7 @@ public class CartLoginTest extends BaseTest {
         );
         productsPage.navigationBar().clickCart();
 
-        assertExpectedCartContents();
+        assertExpectedCartContents(expectedItems);
 
         cartPage.navigationBar().clickSignupLogin();
         PageAssertions.assertPageReady(
@@ -170,7 +170,62 @@ public class CartLoginTest extends BaseTest {
         accountFlows.login(account.credentials(), account.fullName());
         signupLoginPage.navigationBar().clickCart();
 
-        assertExpectedCartContents();
+        assertExpectedCartContents(expectedItems);
+        PageAssertions.assertElementVisibleWithText(
+                cartPage.navigationBar().getLoggedInAs(),
+                "Logged in as " + account.fullName()
+        );
+    }
+
+
+    @Test
+    @DisplayName("Guest cart contents from search are preserved after login")
+    void shouldPreserveSearchedProductInGuestCartAfterLogin() {
+        List<ExpectedCartItem> searchedItems = List.of(
+                new ExpectedCartItem(
+                        "Blue Top",
+                        "Rs. 500",
+                        1,
+                        PriceUtils.multiply("Rs. 500", 1)
+                )
+        );
+
+        productsPage.open();
+        PageAssertions.assertPageReady(
+                browserSession.getPage(),
+                productsPage
+        );
+
+        productsPage.searchProducts("Blue Top");
+
+        PageAssertions.assertElementVisibleWithText(
+                productsPage.getHeader(),
+                "Searched Products"
+        );
+        PageAssertions.assertElementVisibleWithText(
+                productsPage.productGrid().itemByIndex(0).getName(),
+                "Blue Top"
+        );
+        PageAssertions.assertItemsCount(
+                productsPage.productGrid().getAllItems(),
+                1
+        );
+
+        productsPage.addProductsToCart(List.of("Blue Top"));
+        productsPage.navigationBar().clickCart();
+
+        assertExpectedCartContents(searchedItems);
+
+        cartPage.navigationBar().clickSignupLogin();
+        PageAssertions.assertPageReady(
+                browserSession.getPage(),
+                signupLoginPage
+        );
+
+        accountFlows.login(account.credentials(), account.fullName());
+        signupLoginPage.navigationBar().clickCart();
+
+        assertExpectedCartContents(searchedItems);
         PageAssertions.assertElementVisibleWithText(
                 cartPage.navigationBar().getLoggedInAs(),
                 "Logged in as " + account.fullName()
@@ -180,7 +235,7 @@ public class CartLoginTest extends BaseTest {
 
 //----Private helpers----
 
-    private void assertExpectedCartContents() {
+    private void assertExpectedCartContents(List<ExpectedCartItem> expectedItems) {
         PageAssertions.assertPageReady(
                 browserSession.getPage(),
                 cartPage
