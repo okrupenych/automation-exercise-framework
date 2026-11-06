@@ -5,6 +5,7 @@ import assertions.PageAssertions.ExpectedCartItem;
 import base.BaseTest;
 import framework.pages.CartPage;
 import framework.pages.ProductsPage;
+import framework.utils.PriceUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -41,10 +42,10 @@ public class CartRemovalTest extends BaseTest {
                 cartPage.cart(),
                 List.of(
                         new ExpectedCartItem(
-                                "Blue Top", "Rs. 500", 1, "Rs. 500"
+                                "Blue Top", "Rs. 500", 1, PriceUtils.multiply("Rs. 500", 1)
                         ),
                         new ExpectedCartItem(
-                                "Sleeveless Dress", "Rs. 1000", 1, "Rs. 1000"
+                                "Sleeveless Dress", "Rs. 1000", 1, PriceUtils.multiply("Rs. 1000", 1)
                         )
                 )
         );
@@ -56,7 +57,7 @@ public class CartRemovalTest extends BaseTest {
                 cartPage.cart(),
                 List.of(
                         new ExpectedCartItem(
-                                "Sleeveless Dress", "Rs. 1000", 1, "Rs. 1000"
+                                "Sleeveless Dress", "Rs. 1000", 1, PriceUtils.multiply("Rs. 1000", 1)
                         )
                 )
         );
@@ -71,7 +72,7 @@ public class CartRemovalTest extends BaseTest {
                 cartPage.cart(),
                 List.of(
                         new ExpectedCartItem(
-                                "Blue Top", "Rs. 500", 1, "Rs. 500"
+                                "Blue Top", "Rs. 500", 1, PriceUtils.multiply("Rs. 500", 1)
                         )
                 )
         );
@@ -91,10 +92,10 @@ public class CartRemovalTest extends BaseTest {
                 cartPage.cart(),
                 List.of(
                         new ExpectedCartItem(
-                                "Blue Top", "Rs. 500", 2, "Rs. 1000"
+                                "Blue Top", "Rs. 500", 2, PriceUtils.multiply("Rs. 500", 2)
                         ),
                         new ExpectedCartItem(
-                                "Sleeveless Dress", "Rs. 1000", 1, "Rs. 1000"
+                                "Sleeveless Dress", "Rs. 1000", 1, PriceUtils.multiply("Rs. 1000", 1)
                         )
                 )
         );
@@ -106,7 +107,7 @@ public class CartRemovalTest extends BaseTest {
                 cartPage.cart(),
                 List.of(
                         new ExpectedCartItem(
-                                "Sleeveless Dress", "Rs. 1000", 1, "Rs. 1000"
+                                "Sleeveless Dress", "Rs. 1000", 1, PriceUtils.multiply("Rs. 1000", 1)
                         )
                 )
         );

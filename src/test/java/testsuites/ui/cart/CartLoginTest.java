@@ -12,6 +12,7 @@ import framework.api.models.MessageResponse;
 import framework.pages.CartPage;
 import framework.pages.ProductsPage;
 import framework.pages.SignupLoginPage;
+import framework.utils.PriceUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -42,13 +43,13 @@ public class CartLoginTest extends BaseTest {
                     "Blue Top",
                     "Rs. 500",
                     2,
-                    "Rs. 1000"
+                    PriceUtils.multiply("Rs. 500", 2)
             ),
             new ExpectedCartItem(
                     "Sleeveless Dress",
                     "Rs. 1000",
                     1,
-                    "Rs. 1000"
+                    PriceUtils.multiply("Rs. 1000", 1)
             )
     );
 

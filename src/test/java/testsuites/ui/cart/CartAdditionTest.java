@@ -6,6 +6,7 @@ import base.BaseTest;
 import framework.pages.CartPage;
 import framework.pages.ProductDetailsPage;
 import framework.pages.ProductsPage;
+import framework.utils.PriceUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -42,7 +43,7 @@ public class CartAdditionTest extends BaseTest {
         productsPage.modal().clickProceedLink();
 
         assertCartContents(
-                new ExpectedCartItem("Blue Top", "Rs. 500", 1, "Rs. 500")
+                new ExpectedCartItem("Blue Top", "Rs. 500", 1, PriceUtils.multiply("Rs. 500", 1))
         );
     }
 
@@ -57,9 +58,9 @@ public class CartAdditionTest extends BaseTest {
         productsPage.navigationBar().clickCart();
 
         assertCartContents(
-                new ExpectedCartItem("Blue Top", "Rs. 500", 1, "Rs. 500"),
+                new ExpectedCartItem("Blue Top", "Rs. 500", 1, PriceUtils.multiply("Rs. 500", 1)),
                 new ExpectedCartItem(
-                        "Sleeveless Dress", "Rs. 1000", 1, "Rs. 1000"
+                        "Sleeveless Dress", "Rs. 1000", 1, PriceUtils.multiply("Rs. 1000", 1)
                 )
         );
     }
@@ -75,7 +76,7 @@ public class CartAdditionTest extends BaseTest {
         productsPage.navigationBar().clickCart();
 
         assertCartContents(
-                new ExpectedCartItem("Blue Top", "Rs. 500", 2, "Rs. 1000")
+                new ExpectedCartItem("Blue Top", "Rs. 500", 2, PriceUtils.multiply("Rs. 500", 2))
         );
     }
 
@@ -94,7 +95,7 @@ public class CartAdditionTest extends BaseTest {
         productDetailsPage.modal().clickProceedLink();
 
         assertCartContents(
-                new ExpectedCartItem("Blue Top", "Rs. 500", 3, "Rs. 1500")
+                new ExpectedCartItem("Blue Top", "Rs. 500", 3, PriceUtils.multiply("Rs. 500", 3))
         );
     }
 

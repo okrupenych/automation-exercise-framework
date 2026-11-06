@@ -6,6 +6,7 @@ import base.BaseTest;
 import framework.pages.CartPage;
 import framework.pages.ProductsPage;
 import framework.pages.SignupLoginPage;
+import framework.utils.PriceUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -25,7 +26,7 @@ public class GuestCheckoutTest extends BaseTest {
                     "Blue Top",
                     "Rs. 500",
                     1,
-                    "Rs. 500"
+                    PriceUtils.multiply("Rs. 500", 1)
             )
     );
 

@@ -16,6 +16,7 @@ import framework.pages.OrderPlacedPage;
 import framework.pages.PaymentPage;
 import framework.pages.ProductsPage;
 import framework.pages.SignupLoginPage;
+import framework.utils.PriceUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -123,7 +124,7 @@ public class PaymentTest extends BaseTest {
                 cartPage.cart(),
                 List.of(
                         new ExpectedCartItem(
-                                "Blue Top", "Rs. 500", 1, "Rs. 500"
+                                "Blue Top", "Rs. 500", 1, PriceUtils.multiply("Rs. 500", 1)
                         )
                 )
         );
