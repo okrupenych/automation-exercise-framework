@@ -38,24 +38,57 @@ public class ScrollNavigationTest extends BaseTest {
                 homePage.footer().getHeader()
         );
 
-        double initialScrollY = ((Number) Objects.requireNonNull(
-                browserSession.getPage().evaluate("window.scrollY"),
-                "Expected window.scrollY to return a number"
-        )).doubleValue();
+        double initialScrollY = getScrollY();
 
-        assertTrue(initialScrollY > 0, "Expected the page to be scrolled down");
+        assertTrue(
+                initialScrollY > 0,
+                "Expected the page to be scrolled down"
+        );
 
         homePage.clickScrollUp();
 
-        double finalScrollY = ((Number) Objects.requireNonNull(
-                browserSession.getPage().evaluate("window.scrollY"),
-                "Expected window.scrollY to return a number"
-        )).doubleValue();
+        double finalScrollY = getScrollY();
 
         assertTrue(
                 Math.abs(finalScrollY) <= 1,
                 "Expected the page at the top, actual scrollY: " + finalScrollY
         );
+    }
+
+    @Test
+    @DisplayName("Scrolling directly returns the page to the top")
+    void shouldReturnToTopWithoutUsingScrollUpButton() {
+        homePage.scrollToBottom();
+
+        PageAssertions.assertElementInViewport(
+                homePage.footer().getHeader()
+        );
+
+        double initialScrollY = getScrollY();
+
+        assertTrue(
+                initialScrollY > 0,
+                "Expected the page to be scrolled down"
+        );
+
+        homePage.scrollToTop();
+
+        double finalScrollY = getScrollY();
+
+        assertTrue(
+                Math.abs(finalScrollY) <= 1,
+                "Expected the page at the top, actual scrollY: " + finalScrollY
+        );
+    }
+
+
+//----Private helpers----
+
+    private double getScrollY() {
+        return ((Number) Objects.requireNonNull(
+                browserSession.getPage().evaluate("window.scrollY"),
+                "Expected window.scrollY to return a number"
+        )).doubleValue();
     }
 
 }
