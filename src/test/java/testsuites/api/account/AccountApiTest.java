@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
+import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,24 +18,14 @@ import static org.junit.jupiter.api.Assertions.*;
 @Tag("account")
 public class AccountApiTest extends BaseApiTest {
 
+    private static final String MISSING_PARAMETER_MESSAGE =
+            "Bad request, email or password parameter is missing in POST request.";
+
+
     @Test
-    @Tag("negative")
-    void verifyLoginWithoutEmail() {
-        ApiResult result = api.verifyLogin(
-                new Credentials(null, "test-password")
-        );
-
-        assertEquals(200, result.httpStatus());
-
-        MessageResponse response =
-                result.as(MessageResponse.class);
-
-        assertNotNull(response);
-        assertEquals(Integer.valueOf(400), response.responseCode());
-        assertEquals(
-                "Bad request, email or password parameter is missing in POST request.",
-                response.message()
-        );
+    void verifyLoginWithCorrectCredentials() {
+        withAccount(account -> assertMessage(
+                api.verifyLogin(account.credentials()), 200, "User exists!"));
     }
 
     @Test
@@ -201,6 +192,90 @@ public class AccountApiTest extends BaseApiTest {
                 }
             }
         }
+    }
+
+    @Test
+    @Tag("negative")
+    void verifyLoginWithoutEmailAndPassword() {
+        assertMessage(api.verifyLogin(new Credentials(null, null)),
+                400, MISSING_PARAMETER_MESSAGE);
+    }
+
+    @Test
+    @Tag("negative")
+    void verifyLoginWithoutPassword() {
+        withAccount(account -> assertMessage(
+                api.verifyLogin(new Credentials(account.email(), null)),
+                400, MISSING_PARAMETER_MESSAGE));
+    }
+
+    @Test
+    @Tag("negative")
+    void verifyLoginWithIncorrectPassword() {
+        withAccount(account -> assertMessage(
+                api.verifyLogin(new Credentials(account.email(), account.password() + "-incorrect")),
+                404, "User not found!"));
+    }
+
+    @Test
+    @Tag("negative")
+    void verifyLoginWithNonexistentEmail() {
+        withAccount(account -> assertMessage(
+                api.verifyLogin(new Credentials("nonexistent-" + UUID.randomUUID() + "@test.com",
+                        account.password())),
+                404, "User not found!"));
+    }
+
+    @Test
+    @Tag("negative")
+    void verifyLoginWithoutEmail() {
+        assertMessage(api.verifyLogin(new Credentials(null, "test-password")),
+                400, MISSING_PARAMETER_MESSAGE);
+    }
+
+
+//----Private helpers----
+
+    private void withAccount(Consumer<AccountData> scenario) {
+        AccountData account = new AccountData(
+                "Mr", "Fake", "User",
+                "api-login-" + UUID.randomUUID() + "@test.com",
+                "test-password",
+                "1", "January", "2000",
+                "Fake inc.",
+                "Fake address 1", null,
+                "United States", "Fake State", "Fake City",
+                "30", "+3030",
+                null
+        );
+
+        Throwable scenarioFailure = null;
+
+        try {
+            assertMessage(api.createAccount(account), 201, "User created!");
+            scenario.accept(account);
+        } catch (RuntimeException | Error failure) {
+            scenarioFailure = failure;
+            throw failure;
+        } finally {
+            try {
+                assertMessage(api.deleteAccount(account.credentials()), 200, "Account deleted!");
+            } catch (RuntimeException | Error cleanupFailure) {
+                if (scenarioFailure != null) {
+                    scenarioFailure.addSuppressed(cleanupFailure);
+                } else {
+                    throw cleanupFailure;
+                }
+            }
+        }
+    }
+
+    private void assertMessage(ApiResult result, int responseCode, String message) {
+        assertEquals(200, result.httpStatus());
+        MessageResponse response = result.as(MessageResponse.class);
+        assertNotNull(response);
+        assertEquals(Integer.valueOf(responseCode), response.responseCode());
+        assertEquals(message, response.message());
     }
 
 }
