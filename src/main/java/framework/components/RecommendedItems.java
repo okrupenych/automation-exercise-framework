@@ -31,6 +31,14 @@ public class RecommendedItems {
         lblHeader.scrollIntoViewIfNeeded();
     }
 
+    public void showFirstSlide() {
+        rootRecommendedItems.evaluate(
+                "el => window.jQuery(el).find('#recommended-item-carousel').carousel('pause').carousel(0)"
+        );
+        rootRecommendedItems.locator("#recommended-item-carousel .item:first-child.active .col-sm-4")
+                .first().waitFor();
+    }
+
     public ProductItem itemByIndex(int index) {
         Locator activeItem = rootRecommendedItems
                 .locator("#recommended-item-carousel .item.active .col-sm-4").nth(index);
