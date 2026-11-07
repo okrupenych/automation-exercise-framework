@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ProductItem {
 
@@ -65,6 +66,13 @@ public class ProductItem {
 
     public Locator getPrice() {
         return lblProductPrice;
+    }
+
+    public int getProductId() {
+        return Integer.parseInt(Objects.requireNonNull(
+                btnAddToCart.getAttribute("data-product-id"),
+                "Product card should have a data-product-id attribute"
+        ));
     }
 
     public void clickAddToCart() {
