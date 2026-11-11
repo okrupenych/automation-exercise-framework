@@ -4,8 +4,14 @@ import assertions.PageAssertions;
 import base.BaseTest;
 import com.microsoft.playwright.Locator;
 import data.AccountData;
+import data.Credentials;
+import framework.api.ApiClient;
+import framework.api.ApiSession;
+import framework.api.AutomationExerciseApi;
+import framework.api.models.MessageResponse;
 import framework.pages.SignupLoginPage;
 import framework.pages.SignupPage;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -14,6 +20,8 @@ import org.junit.jupiter.api.Test;
 import java.util.UUID;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Tag("ui")
 @Tag("account")
@@ -21,9 +29,12 @@ public class RegistrationFormValidationTest extends BaseTest {
 
     private SignupPage signupPage;
     private AccountData account;
+    private Credentials cleanupCredentials;
+    private boolean registrationAttempted;
 
     @BeforeEach
     void openRegistrationForm() {
+        registrationAttempted = false;
         account = new AccountData(
                 "Mr",
                 "Test",
@@ -44,6 +55,8 @@ public class RegistrationFormValidationTest extends BaseTest {
                 null
         );
 
+        cleanupCredentials = account.credentials();
+
         SignupLoginPage signupLoginPage =
                 new SignupLoginPage(browserSession.getPage());
         signupPage = new SignupPage(browserSession.getPage());
@@ -60,6 +73,32 @@ public class RegistrationFormValidationTest extends BaseTest {
                 browserSession.getPage(),
                 signupPage
         );
+    }
+
+    @AfterEach
+    void deleteTestAccount() {
+        if (!registrationAttempted) {
+            return;
+        }
+
+        try (ApiSession session = new ApiSession()) {
+            AutomationExerciseApi api = new AutomationExerciseApi(
+                    new ApiClient(session.getRequestContext())
+            );
+            var result = api.deleteAccount(cleanupCredentials);
+
+            assertEquals(
+                    200,
+                    result.httpStatus(),
+                    "Unexpected HTTP status during account cleanup: " + result.body()
+            );
+            Integer responseCode = result.as(MessageResponse.class).responseCode();
+            assertTrue(
+                    Integer.valueOf(200).equals(responseCode)
+                            || Integer.valueOf(404).equals(responseCode),
+                    "Unexpected account cleanup response: " + result.body()
+            );
+        }
     }
 
 
@@ -86,6 +125,7 @@ public class RegistrationFormValidationTest extends BaseTest {
     void shouldRejectRegistrationWithoutPassword() {
         fillValidRegistration();
         signupPage.fillPassword("");
+        cleanupCredentials = new Credentials(account.email(), "");
 
         assertRequiredFieldValidation(signupPage.getPassword());
     }
@@ -168,6 +208,7 @@ public class RegistrationFormValidationTest extends BaseTest {
     }
 
     private void assertRequiredFieldValidation(Locator field) {
+        registrationAttempted = true;
         signupPage.clickCreateAccount();
 
         PageAssertions.assertFieldValidationError(

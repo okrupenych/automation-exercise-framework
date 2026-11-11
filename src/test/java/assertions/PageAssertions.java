@@ -9,17 +9,13 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.regex.Pattern;
-import java.util.Locale;
 import java.util.Objects;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import framework.components.ProductGrid;
 import framework.pages.BasePage;
 import framework.components.Cart;
 import framework.pages.CheckoutPage;
@@ -192,25 +188,6 @@ public final class PageAssertions {
             assertCartItemDetails(
                     cart.itemByProductId(expected.productId()),
                     expected
-            );
-        }
-    }
-
-    public static void assertSearchResults(ProductGrid productGrid, String searchQuery) {
-        var products = productGrid.getAllItems();
-        assertFalse(products.isEmpty(), "Search should return products");
-
-        String expected = searchQuery.toLowerCase(Locale.ROOT);
-
-        for (var product : products) {
-            assertElementVisible(product.getName());
-
-            String nameText = product.getName().textContent();
-            assertNotNull(nameText, "Product name text should not be null");
-            String actualName = nameText.trim();
-            assertTrue(
-                    actualName.toLowerCase(Locale.ROOT).contains(expected),
-                    "Product should match search '" + searchQuery + "': " + actualName
             );
         }
     }

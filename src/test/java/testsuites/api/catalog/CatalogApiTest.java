@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Tag("api")
 @Tag("catalog")
@@ -51,7 +52,7 @@ public class CatalogApiTest extends BaseApiTest {
     @Test
     @Tag("smoke")
     void searchProducts() {
-        ApiResult result = api.searchProducts("shirt");
+        ApiResult result = api.searchProducts("Blue");
 
         assertEquals(200, result.httpStatus());
 
@@ -62,6 +63,12 @@ public class CatalogApiTest extends BaseApiTest {
         assertEquals(Integer.valueOf(200), response.responseCode());
         assertNotNull(response.products());
         assertFalse(response.products().isEmpty());
+        var productNames = response.products().stream()
+                .map(ProductsResponse.Product::name)
+                .toList();
+        assertTrue(productNames.contains("Blue Top"), "Blue search should include Blue Top: " + productNames);
+        assertFalse(productNames.contains("Sleeveless Dress"),
+                "Blue search should exclude Sleeveless Dress: " + productNames);
     }
 
     @Test

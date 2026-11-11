@@ -20,8 +20,6 @@ UI tests share a browser within each test class and receive a fresh browser cont
 
 Account scenarios generate unique email addresses and include cleanup logic. API assertions check both HTTP status and the application's JSON `responseCode` where applicable.
 
-One partial-name UI search test is disabled while the expected matching rules are clarified.
-
 Tests depend on an external demonstration site that may be temporarily unavailable.
 
 ## Getting started
@@ -29,6 +27,22 @@ Tests depend on an external demonstration site that may be temporarily unavailab
 Install JDK 21. Maven Wrapper downloads and uses Apache Maven 3.10.0 automatically, so a separate Maven installation is not required. Internet access is needed to download dependencies and Playwright browser binaries and to reach the test site. UI tests run in a visible Chromium window by default, so a graphical environment is needed with the default configuration.
 
 Run commands from the repository root.
+
+Install the Playwright-managed Chromium browser before the first UI test run.
+
+On Windows:
+
+```cmd
+mvnw.cmd exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install chromium"
+```
+
+On macOS/Linux:
+
+```sh
+./mvnw exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install chromium"
+```
+
+Repeat the matching command after changing the Playwright version. Tests can also be run through JUnit in an IDE configured with JDK 21.
 
 On Windows:
 
@@ -50,23 +64,7 @@ On macOS/Linux:
 ./mvnw test -Dtest=AccountApiTest
 ```
 
-Install the Playwright-managed Chromium browser before the first UI test run.
-
-On Windows:
-
-```cmd
-mvnw.cmd exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install chromium"
-```
-
-On macOS/Linux:
-
-```sh
-./mvnw exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install chromium"
-```
-
-Repeat the matching command after changing the Playwright version. Tests can also be run through JUnit in an IDE configured with JDK 21.
-
-Surefire uses JUnit tags for `groups` filtering. Available tags are `ui`, `api`, `smoke`, `negative`, `account`, `catalog`, `cart`, `checkout`, `navigation`, `contact`, `reviews`, and `subscription`. For example, `mvnw.cmd test "-Dgroups=api & catalog"` on Windows or `./mvnw test "-Dgroups=api & catalog"` on macOS/Linux selects API catalog tests.
+Surefire uses JUnit tags for `groups` filtering. Available tags are `ui`, `api`, `smoke`, `negative`, `account`, `catalog`, `cart`, `checkout`, `navigation`, `contact`, `reviews`, `subscription`, and `accordion`. For example, `mvnw.cmd test "-Dgroups=api & catalog"` on Windows or `./mvnw test "-Dgroups=api & catalog"` on macOS/Linux selects API catalog tests.
 
 ## Configuration
 
