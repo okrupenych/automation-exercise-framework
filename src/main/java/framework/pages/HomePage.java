@@ -1,9 +1,12 @@
 package framework.pages;
 
 import com.microsoft.playwright.Page;
+import data.CartItemData;
 import framework.browser.OverlayHandler;
 import framework.components.Carousel;
 import framework.components.RecommendedItems;
+
+import java.util.List;
 
 public class HomePage extends ShopPage {
 
@@ -28,6 +31,21 @@ public class HomePage extends ShopPage {
     @Override
     public String getTargetUrl() {
         return URL;
+    }
+
+
+    // Composite actions
+    public void addRecommendedCartItems(List<CartItemData> items) {
+        cmpRecommendedItems.scrollIntoView();
+        cmpRecommendedItems.showFirstSlide();
+        for (CartItemData item : items) {
+            for (int i = 0; i < item.quantity(); i++) {
+                cmpRecommendedItems.itemByProductId(item.productId()).clickAddToCart();
+                modal().waitUntilVisible();
+                modal().clickDismissButton();
+                modal().waitUntilHidden();
+            }
+        }
     }
 
 

@@ -1,9 +1,9 @@
 package testsuites.ui.checkout;
 
 import assertions.PageAssertions;
-import assertions.PageAssertions.ExpectedCartItem;
 import base.BaseTest;
 import data.AccountData;
+import data.CartItemData;
 import flows.AccountFlows;
 import framework.api.ApiClient;
 import framework.api.ApiSession;
@@ -16,7 +16,6 @@ import framework.pages.OrderPlacedPage;
 import framework.pages.PaymentPage;
 import framework.pages.ProductsPage;
 import framework.pages.SignupLoginPage;
-import framework.utils.PriceUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -36,6 +35,7 @@ public class PaymentTest extends BaseTest {
 
     private PaymentPage paymentPage;
     private OrderPlacedPage orderPlacedPage;
+    private HomePage homePage;
     private AccountData account;
 
     private boolean accountCreationAttempted;
@@ -101,6 +101,7 @@ public class PaymentTest extends BaseTest {
         CheckoutPage checkoutPage = new CheckoutPage(page);
         paymentPage = new PaymentPage(page);
         orderPlacedPage = new OrderPlacedPage(page);
+        homePage = new HomePage(page);
 
         signupLoginPage.open();
         PageAssertions.assertPageReady(page, signupLoginPage);
@@ -113,21 +114,12 @@ public class PaymentTest extends BaseTest {
         signupLoginPage.navigationBar().clickProducts();
         PageAssertions.assertPageReady(page, productsPage);
 
-        productsPage.addProductsToCart(List.of("Blue Top"));
+        List<CartItemData> items = List.of(new CartItemData(1, "Blue Top", "Rs. 500", 1));
+        productsPage.addCartItems(items);
         productsPage.navigationBar().clickCart();
 
         PageAssertions.assertPageReady(page, cartPage);
-        PageAssertions.assertElementVisible(
-                cartPage.cart().itemByName("Blue Top").getName()
-        );
-        PageAssertions.assertCartContents(
-                cartPage.cart(),
-                List.of(
-                        new ExpectedCartItem(
-                                "Blue Top", "Rs. 500", 1, PriceUtils.multiply("Rs. 500", 1)
-                        )
-                )
-        );
+        PageAssertions.assertCartContents(cartPage.cart(), items);
 
         cartPage.clickProceedToCheckout();
         PageAssertions.assertPageReady(page, checkoutPage);
@@ -197,7 +189,6 @@ public class PaymentTest extends BaseTest {
 
         orderPlacedPage.clickContinueButton();
 
-        HomePage homePage = new HomePage(browserSession.getPage());
         PageAssertions.assertPageReady(
                 browserSession.getPage(),
                 homePage

@@ -2,6 +2,7 @@ package framework.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import data.CartItemData;
 import framework.browser.OverlayHandler;
 import framework.components.ProductFilterBar;
 import framework.components.ProductGrid;
@@ -71,6 +72,16 @@ public abstract class ShopPage extends BasePage {
                 throw new IllegalStateException("Failed to add product \"" + name + "\" to cart: " + e.getMessage(), e);
             }
         }
+    }
+
+    public void addCartItems(List<CartItemData> items) {
+        List<String> productNames = new ArrayList<>();
+        for (CartItemData item : items) {
+            for (int i = 0; i < item.quantity(); i++) {
+                productNames.add(item.name());
+            }
+        }
+        addProductsToCart(productNames);
     }
 
 

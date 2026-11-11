@@ -1,13 +1,12 @@
 package testsuites.ui.cart;
 
 import assertions.PageAssertions;
-import assertions.PageAssertions.ExpectedCartItem;
 import base.BaseTest;
+import data.CartItemData;
 import framework.pages.CartPage;
 import framework.pages.HomePage;
 import framework.pages.ProductDetailsPage;
 import framework.pages.ProductsPage;
-import framework.utils.PriceUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -37,110 +36,84 @@ public class CartAdditionTest extends BaseTest {
     @DisplayName("A product can be added to the cart from the catalog")
     @Tag("smoke")
     void shouldAddProductFromCatalog() {
+        List<CartItemData> items = List.of(
+                new CartItemData(1, "Blue Top", "Rs. 500", 1)
+        );
+
         openCatalog();
 
-        productsPage.productGrid().itemByName("Blue Top").clickAddToCart();
+        productsPage.addCartItems(items);
+        productsPage.navigationBar().clickCart();
 
-        productsPage.modal().waitUntilVisible();
-        productsPage.modal().clickProceedLink();
-
-        assertCartContents(
-                new ExpectedCartItem(
-                        "Blue Top",
-                        "Rs. 500",
-                        1,
-                        PriceUtils.multiply("Rs. 500", 1)
-                )
-        );
+        assertCartContents(items);
     }
 
     @Test
     @DisplayName("A product can be added to the cart from recommended items on the Home page")
     void shouldAddProductFromRecommendedItems() {
+        List<CartItemData> items = List.of(
+                new CartItemData(1, "Blue Top", "Rs. 500", 1)
+        );
+
         homePage.open();
         PageAssertions.assertPageReady(browserSession.getPage(), homePage);
 
-        homePage.recommendedItems().scrollIntoView();
-        homePage.recommendedItems().showFirstSlide();
-        homePage.recommendedItems().itemByIndex(0).clickAddToCart();
+        homePage.addRecommendedCartItems(items);
+        homePage.navigationBar().clickCart();
 
-        homePage.modal().waitUntilVisible();
-        homePage.modal().clickProceedLink();
-
-        assertCartContents(
-                new ExpectedCartItem(
-                        "Blue Top",
-                        "Rs. 500",
-                        1,
-                        PriceUtils.multiply("Rs. 500", 1)
-                )
-        );
+        assertCartContents(items);
     }
 
     @Test
     @DisplayName("Different products appear as separate cart items")
     void shouldAddDifferentProducts() {
+        List<CartItemData> items = List.of(
+                new CartItemData(1, "Blue Top", "Rs. 500", 1),
+                new CartItemData(3, "Sleeveless Dress", "Rs. 1000", 1)
+        );
+
         openCatalog();
 
-        productsPage.addProductsToCart(List.of("Blue Top", "Sleeveless Dress"));
+        productsPage.addCartItems(items);
         productsPage.navigationBar().clickCart();
 
-        assertCartContents(
-                new ExpectedCartItem(
-                        "Blue Top",
-                        "Rs. 500",
-                        1,
-                        PriceUtils.multiply("Rs. 500", 1)
-                ),
-                new ExpectedCartItem(
-                        "Sleeveless Dress",
-                        "Rs. 1000",
-                        1,
-                        PriceUtils.multiply("Rs. 1000", 1)
-                )
-        );
+        assertCartContents(items);
     }
 
     @Test
     @DisplayName("Adding the same product again increases its quantity")
     void shouldIncreaseQuantityWhenAddingSameProductAgain() {
+        List<CartItemData> items = List.of(
+                new CartItemData(1, "Blue Top", "Rs. 500", 2)
+        );
+
         openCatalog();
 
-        productsPage.addProductsToCart(List.of("Blue Top", "Blue Top"));
+        productsPage.addCartItems(items);
         productsPage.navigationBar().clickCart();
 
-        assertCartContents(
-                new ExpectedCartItem(
-                        "Blue Top",
-                        "Rs. 500",
-                        2,
-                        PriceUtils.multiply("Rs. 500", 2)
-                )
-        );
+        assertCartContents(items);
     }
 
     @Test
     @DisplayName("The cart receives the quantity selected on the product page")
     void shouldAddSelectedQuantityFromProductDetails() {
-        productDetailsPage.open(1);
+        List<CartItemData> items = List.of(
+                new CartItemData(1, "Blue Top", "Rs. 500", 3)
+        );
+
+        productDetailsPage.open(items.getFirst());
         PageAssertions.assertPageReady(
                 browserSession.getPage(),
                 productDetailsPage,
-                productDetailsPage.getTargetUrl() + 1
+                productDetailsPage.getTargetUrl() + items.getFirst().productId()
         );
 
-        productDetailsPage.addToCart(3);
+        productDetailsPage.addToCart(items.getFirst());
         productDetailsPage.modal().waitUntilVisible();
         productDetailsPage.modal().clickProceedLink();
 
-        assertCartContents(
-                new ExpectedCartItem(
-                        "Blue Top",
-                        "Rs. 500",
-                        3,
-                        PriceUtils.multiply("Rs. 500", 3)
-                )
-        );
+        assertCartContents(items);
     }
 
 
@@ -151,14 +124,10 @@ public class CartAdditionTest extends BaseTest {
         PageAssertions.assertPageReady(browserSession.getPage(), productsPage);
     }
 
-    private void assertCartContents(ExpectedCartItem... expectedItems) {
+    private void assertCartContents(List<CartItemData> expectedItems) {
         PageAssertions.assertPageReady(browserSession.getPage(), cartPage);
 
-        for (ExpectedCartItem expected : expectedItems) {
-            PageAssertions.assertElementVisible(cartPage.cart().itemByName(expected.name()).getName());
-        }
-
-        PageAssertions.assertCartContents(cartPage.cart(), List.of(expectedItems));
+        PageAssertions.assertCartContents(cartPage.cart(), expectedItems);
     }
 
 }

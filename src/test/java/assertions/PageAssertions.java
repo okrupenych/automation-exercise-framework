@@ -24,6 +24,7 @@ import framework.pages.BasePage;
 import framework.components.Cart;
 import framework.pages.CheckoutPage;
 import data.AccountData;
+import data.CartItemData;
 
 public final class PageAssertions {
 
@@ -31,13 +32,6 @@ public final class PageAssertions {
 //----Fields and types----
 
     private static final Logger log = LoggerFactory.getLogger(PageAssertions.class);
-
-    public record ExpectedCartItem(
-            String name,
-            String unitPrice,
-            int quantity,
-            String total
-    ) {}
 
     public enum ValidationError {
         VALUE_MISSING("valueMissing"),
@@ -59,6 +53,16 @@ public final class PageAssertions {
 
 
 //----Internal implementation----
+
+    private static void assertCartItemDetails(CartItem item, CartItemData expected) {
+        assertElementVisibleWithText(item.getName(), expected.name());
+        assertElementText(item.getPrice(), expected.unitPrice());
+        assertElementText(
+                item.getQuantity(),
+                Integer.toString(expected.quantity())
+        );
+        assertElementText(item.getTotal(), expected.total());
+    }
 
     private static void assertAddress(
             Locator name,
@@ -181,36 +185,12 @@ public final class PageAssertions {
         assertElementText(element, expectedText);
     }
 
-    public static void assertCartItemDetails(CartItem item, ExpectedCartItem expected) {
-        assertElementVisibleWithText(item.getName(), expected.name());
-        assertElementText(item.getPrice(), expected.unitPrice());
-        assertElementText(
-                item.getQuantity(),
-                Integer.toString(expected.quantity())
-        );
-        assertElementText(item.getTotal(), expected.total());
-    }
-
-    public static void assertCartProducts(Cart cart, List<ExpectedCartItem> expectedItems) {
+    public static void assertCartContents(Cart cart, List<CartItemData> expectedItems) {
         assertItemsCount(cart.getAllItems(), expectedItems.size());
 
-        for (ExpectedCartItem expected : expectedItems) {
-            var item = cart.itemByName(expected.name());
-
-            assertElementVisibleWithText(item.getName(), expected.name());
-            assertElementText(
-                    item.getQuantity(),
-                    Integer.toString(expected.quantity())
-            );
-        }
-    }
-
-    public static void assertCartContents(Cart cart, List<ExpectedCartItem> expectedItems) {
-        assertItemsCount(cart.getAllItems(), expectedItems.size());
-
-        for (ExpectedCartItem expected : expectedItems) {
+        for (CartItemData expected : expectedItems) {
             assertCartItemDetails(
-                    cart.itemByName(expected.name()),
+                    cart.itemByProductId(expected.productId()),
                     expected
             );
         }

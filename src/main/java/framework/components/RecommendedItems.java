@@ -39,6 +39,11 @@ public class RecommendedItems {
                 .first().waitFor();
     }
 
+    public ProductItem itemByProductId(int productId) {
+        return new ProductItem(rootRecommendedItems.locator(
+                ".col-sm-4:has(a[data-product-id='" + productId + "'])"));
+    }
+
     public ProductItem itemByIndex(int index) {
         Locator activeItem = rootRecommendedItems
                 .locator("#recommended-item-carousel .item.active .col-sm-4").nth(index);

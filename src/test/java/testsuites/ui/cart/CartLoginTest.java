@@ -1,9 +1,9 @@
 package testsuites.ui.cart;
 
 import assertions.PageAssertions;
-import assertions.PageAssertions.ExpectedCartItem;
 import base.BaseTest;
 import data.AccountData;
+import data.CartItemData;
 import flows.AccountFlows;
 import framework.api.ApiClient;
 import framework.api.ApiSession;
@@ -12,7 +12,6 @@ import framework.api.models.MessageResponse;
 import framework.pages.CartPage;
 import framework.pages.ProductsPage;
 import framework.pages.SignupLoginPage;
-import framework.utils.PriceUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -38,19 +37,9 @@ public class CartLoginTest extends BaseTest {
     private boolean accountCreationAttempted;
     private boolean accountCreated;
 
-    private final List<ExpectedCartItem> expectedItems = List.of(
-            new ExpectedCartItem(
-                    "Blue Top",
-                    "Rs. 500",
-                    2,
-                    PriceUtils.multiply("Rs. 500", 2)
-            ),
-            new ExpectedCartItem(
-                    "Sleeveless Dress",
-                    "Rs. 1000",
-                    1,
-                    PriceUtils.multiply("Rs. 1000", 1)
-            )
+    private final List<CartItemData> expectedItems = List.of(
+            new CartItemData(1, "Blue Top", "Rs. 500", 2),
+            new CartItemData(3, "Sleeveless Dress", "Rs. 1000", 1)
     );
 
     @BeforeEach
@@ -154,9 +143,7 @@ public class CartLoginTest extends BaseTest {
                 productsPage
         );
 
-        productsPage.addProductsToCart(
-                List.of("Blue Top", "Blue Top", "Sleeveless Dress")
-        );
+        productsPage.addCartItems(expectedItems);
         productsPage.navigationBar().clickCart();
 
         assertExpectedCartContents(expectedItems);
@@ -181,13 +168,8 @@ public class CartLoginTest extends BaseTest {
     @Test
     @DisplayName("Guest cart contents from search are preserved after login")
     void shouldPreserveSearchedProductInGuestCartAfterLogin() {
-        List<ExpectedCartItem> searchedItems = List.of(
-                new ExpectedCartItem(
-                        "Blue Top",
-                        "Rs. 500",
-                        1,
-                        PriceUtils.multiply("Rs. 500", 1)
-                )
+        List<CartItemData> searchedItems = List.of(
+                new CartItemData(1, "Blue Top", "Rs. 500", 1)
         );
 
         productsPage.open();
@@ -196,7 +178,7 @@ public class CartLoginTest extends BaseTest {
                 productsPage
         );
 
-        productsPage.searchProducts("Blue Top");
+        productsPage.searchProducts(searchedItems.getFirst().name());
 
         PageAssertions.assertElementVisibleWithText(
                 productsPage.getHeader(),
@@ -204,14 +186,14 @@ public class CartLoginTest extends BaseTest {
         );
         PageAssertions.assertElementVisibleWithText(
                 productsPage.productGrid().itemByIndex(0).getName(),
-                "Blue Top"
+                searchedItems.getFirst().name()
         );
         PageAssertions.assertItemsCount(
                 productsPage.productGrid().getAllItems(),
-                1
+                searchedItems.size()
         );
 
-        productsPage.addProductsToCart(List.of("Blue Top"));
+        productsPage.addCartItems(searchedItems);
         productsPage.navigationBar().clickCart();
 
         assertExpectedCartContents(searchedItems);
@@ -235,17 +217,11 @@ public class CartLoginTest extends BaseTest {
 
 //----Private helpers----
 
-    private void assertExpectedCartContents(List<ExpectedCartItem> expectedItems) {
+    private void assertExpectedCartContents(List<CartItemData> expectedItems) {
         PageAssertions.assertPageReady(
                 browserSession.getPage(),
                 cartPage
         );
-
-        for (ExpectedCartItem item : expectedItems) {
-            PageAssertions.assertElementVisible(
-                    cartPage.cart().itemByName(item.name()).getName()
-            );
-        }
 
         PageAssertions.assertCartContents(cartPage.cart(), expectedItems);
     }

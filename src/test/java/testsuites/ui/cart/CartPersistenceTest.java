@@ -1,11 +1,10 @@
 package testsuites.ui.cart;
 
 import assertions.PageAssertions;
-import assertions.PageAssertions.ExpectedCartItem;
 import base.BaseTest;
+import data.CartItemData;
 import framework.pages.CartPage;
 import framework.pages.ProductsPage;
-import framework.utils.PriceUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -20,13 +19,9 @@ public class CartPersistenceTest extends BaseTest {
     private ProductsPage productsPage;
     private CartPage cartPage;
 
-    private final List<ExpectedCartItem> expectedItems = List.of(
-            new ExpectedCartItem(
-                    "Blue Top", "Rs. 500", 2, PriceUtils.multiply("Rs. 500", 2)
-            ),
-            new ExpectedCartItem(
-                    "Sleeveless Dress", "Rs. 1000", 1, PriceUtils.multiply("Rs. 1000", 1)
-            )
+    private final List<CartItemData> expectedItems = List.of(
+            new CartItemData(1, "Blue Top", "Rs. 500", 2),
+            new CartItemData(3, "Sleeveless Dress", "Rs. 1000", 1)
     );
 
     @BeforeEach
@@ -40,9 +35,7 @@ public class CartPersistenceTest extends BaseTest {
                 productsPage
         );
 
-        productsPage.addProductsToCart(
-                List.of("Blue Top", "Blue Top", "Sleeveless Dress")
-        );
+        productsPage.addCartItems(expectedItems);
         productsPage.navigationBar().clickCart();
 
         assertCartContents(expectedItems);
@@ -75,41 +68,31 @@ public class CartPersistenceTest extends BaseTest {
     @Test
     @DisplayName("A removed product does not return after a page reload")
     void shouldPreserveRemovalAfterReload() {
-        cartPage.cart().itemByName("Blue Top").delete();
+        cartPage.cart().itemByProductId(expectedItems.get(0).productId()).delete();
 
         PageAssertions.assertElementAbsent(
-                cartPage.cart().itemByName("Blue Top").getName()
+                cartPage.cart().itemByProductId(expectedItems.get(0).productId()).getName()
         );
 
-        List<ExpectedCartItem> remainingItems = List.of(
-                new ExpectedCartItem(
-                        "Sleeveless Dress", "Rs. 1000", 1, PriceUtils.multiply("Rs. 1000", 1)
-                )
-        );
+        List<CartItemData> remainingItems = List.of(expectedItems.get(1));
         assertCartContents(remainingItems);
 
         browserSession.getPage().reload();
 
         assertCartContents(remainingItems);
         PageAssertions.assertElementAbsent(
-                cartPage.cart().itemByName("Blue Top").getName()
+                cartPage.cart().itemByProductId(expectedItems.getFirst().productId()).getName()
         );
     }
 
 
 //----Private helpers----
 
-    private void assertCartContents(List<ExpectedCartItem> items) {
+    private void assertCartContents(List<CartItemData> items) {
         PageAssertions.assertPageReady(
                 browserSession.getPage(),
                 cartPage
         );
-
-        for (ExpectedCartItem item : items) {
-            PageAssertions.assertElementVisible(
-                    cartPage.cart().itemByName(item.name()).getName()
-            );
-        }
 
         PageAssertions.assertCartContents(cartPage.cart(), items);
     }

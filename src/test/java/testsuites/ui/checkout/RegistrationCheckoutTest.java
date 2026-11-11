@@ -1,9 +1,9 @@
 package testsuites.ui.checkout;
 
 import assertions.PageAssertions;
-import assertions.PageAssertions.ExpectedCartItem;
 import base.BaseTest;
 import data.AccountData;
+import data.CartItemData;
 import flows.AccountFlows;
 import framework.api.ApiClient;
 import framework.api.ApiSession;
@@ -15,7 +15,6 @@ import framework.pages.OrderPlacedPage;
 import framework.pages.PaymentPage;
 import framework.pages.ProductsPage;
 import framework.pages.SignupLoginPage;
-import framework.utils.PriceUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -45,13 +44,8 @@ public class RegistrationCheckoutTest extends BaseTest {
     private boolean registrationAttempted;
     private boolean registrationCompleted;
 
-    private final List<ExpectedCartItem> expectedItems = List.of(
-            new ExpectedCartItem(
-                    "Blue Top",
-                    "Rs. 500",
-                    1,
-                    PriceUtils.multiply("Rs. 500", 1)
-            )
+    private final List<CartItemData> expectedItems = List.of(
+            new CartItemData(1, "Blue Top", "Rs. 500", 1)
     );
 
     @BeforeEach
@@ -139,7 +133,7 @@ public class RegistrationCheckoutTest extends BaseTest {
         productsPage.open();
         PageAssertions.assertPageReady(browserSession.getPage(), productsPage);
 
-        productsPage.addProductsToCart(List.of("Blue Top"));
+        productsPage.addCartItems(expectedItems);
         productsPage.navigationBar().clickCart();
 
         assertCartContents();
@@ -181,7 +175,7 @@ public class RegistrationCheckoutTest extends BaseTest {
         signupLoginPage.navigationBar().clickProducts();
         PageAssertions.assertPageReady(browserSession.getPage(), productsPage);
 
-        productsPage.addProductsToCart(List.of("Blue Top"));
+        productsPage.addCartItems(expectedItems);
         productsPage.navigationBar().clickCart();
 
         assertCartContents();
@@ -194,7 +188,6 @@ public class RegistrationCheckoutTest extends BaseTest {
 
     private void assertCartContents() {
         PageAssertions.assertPageReady(browserSession.getPage(), cartPage);
-        PageAssertions.assertElementVisible(cartPage.cart().itemByName("Blue Top").getName());
         PageAssertions.assertCartContents(cartPage.cart(), expectedItems);
     }
 
@@ -204,7 +197,6 @@ public class RegistrationCheckoutTest extends BaseTest {
 
         PageAssertions.assertDeliveryAddress(checkoutPage, account);
         PageAssertions.assertBillingAddress(checkoutPage, account);
-        PageAssertions.assertElementVisible(checkoutPage.cart().itemByName("Blue Top").getName());
         PageAssertions.assertCartContents(checkoutPage.cart(), expectedItems);
 
         checkoutPage.clickPlaceOrder();

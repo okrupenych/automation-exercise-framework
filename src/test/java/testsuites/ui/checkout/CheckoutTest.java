@@ -1,9 +1,9 @@
 package testsuites.ui.checkout;
 
 import assertions.PageAssertions;
-import assertions.PageAssertions.ExpectedCartItem;
 import base.BaseTest;
 import data.AccountData;
+import data.CartItemData;
 import flows.AccountFlows;
 import framework.api.ApiClient;
 import framework.api.ApiSession;
@@ -14,7 +14,6 @@ import framework.pages.CheckoutPage;
 import framework.pages.PaymentPage;
 import framework.pages.ProductsPage;
 import framework.pages.SignupLoginPage;
-import framework.utils.PriceUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -32,24 +31,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class CheckoutTest extends BaseTest {
 
     private CheckoutPage checkoutPage;
+    private PaymentPage paymentPage;
     private AccountData account;
 
     private boolean accountCreationAttempted;
     private boolean accountCreated;
 
-    private final List<ExpectedCartItem> expectedItems = List.of(
-            new ExpectedCartItem(
-                    "Blue Top",
-                    "Rs. 500",
-                    2,
-                    PriceUtils.multiply("Rs. 500", 2)
-            ),
-            new ExpectedCartItem(
-                    "Sleeveless Dress",
-                    "Rs. 1000",
-                    1,
-                    PriceUtils.multiply("Rs. 1000", 1)
-            )
+    private final List<CartItemData> expectedItems = List.of(
+            new CartItemData(1, "Blue Top", "Rs. 500", 2),
+            new CartItemData(3, "Sleeveless Dress", "Rs. 1000", 1)
     );
 
     @BeforeEach
@@ -104,6 +94,7 @@ public class CheckoutTest extends BaseTest {
         ProductsPage productsPage = new ProductsPage(page);
         CartPage cartPage = new CartPage(page);
         checkoutPage = new CheckoutPage(page);
+        paymentPage = new PaymentPage(page);
 
         signupLoginPage.open();
         PageAssertions.assertPageReady(page, signupLoginPage);
@@ -116,18 +107,11 @@ public class CheckoutTest extends BaseTest {
         signupLoginPage.navigationBar().clickProducts();
         PageAssertions.assertPageReady(page, productsPage);
 
-        productsPage.addProductsToCart(
-                List.of("Blue Top", "Blue Top", "Sleeveless Dress")
-        );
+        productsPage.addCartItems(expectedItems);
         productsPage.navigationBar().clickCart();
 
         PageAssertions.assertPageReady(page, cartPage);
 
-        for (ExpectedCartItem item : expectedItems) {
-            PageAssertions.assertElementVisible(
-                    cartPage.cart().itemByName(item.name()).getName()
-            );
-        }
         PageAssertions.assertCartContents(cartPage.cart(), expectedItems);
 
         cartPage.clickProceedToCheckout();
@@ -189,12 +173,6 @@ public class CheckoutTest extends BaseTest {
     @Test
     @DisplayName("Order review preserves cart products, quantities and prices")
     void shouldDisplayCartContentsInOrderReview() {
-        for (ExpectedCartItem item : expectedItems) {
-            PageAssertions.assertElementVisible(
-                    checkoutPage.cart().itemByName(item.name()).getName()
-            );
-        }
-
         PageAssertions.assertCartContents(
                 checkoutPage.cart(),
                 expectedItems
@@ -206,9 +184,6 @@ public class CheckoutTest extends BaseTest {
     void shouldProceedToPaymentWithoutComment() {
         checkoutPage.fillOrderComment("");
         checkoutPage.clickPlaceOrder();
-
-        PaymentPage paymentPage =
-                new PaymentPage(browserSession.getPage());
 
         PageAssertions.assertPageReady(
                 browserSession.getPage(),

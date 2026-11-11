@@ -2,6 +2,7 @@ package framework.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import data.CartItemData;
 import framework.components.Modal;
 import framework.components.ProductFilterBar;
 import org.slf4j.Logger;
@@ -105,6 +106,10 @@ public class ProductDetailsPage extends BasePage {
         );
     }
 
+    public void open(CartItemData item) {
+        open(item.productId());
+    }
+
     public void open(int productId) {
         log.info("Opening product details for product ID \"{}\"", productId);
         page.navigate(getTargetUrl() + productId);
@@ -204,6 +209,10 @@ public class ProductDetailsPage extends BasePage {
     public void addToCart(int quantity) {
         fillQuantity(quantity);
         clickAddToCart();
+    }
+
+    public void addToCart(CartItemData item) {
+        addToCart(item.quantity());
     }
 
 
